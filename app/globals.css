@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+@layer base {
+  .logo-font {
+    font-family: monospace;
+  }
+}
+
+@layer utilities {
+  .text-default {
+    @apply text-gray-700;
+  }
+  
+  .text-muted {
+    @apply text-gray-500;
+  }
+}
+
