@@ -1,15 +1,17 @@
-import "./globals.css"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
-import { ResourceProvider } from "@/context/ResourceContext"
-import Navigation from "@/components/Navigation"
-import { CustomToaster } from "@/components/ui/custom-toaster"
+import "./globals.css"
+import { Sidebar } from "@/components/sidebar"
+import { SelectedResourcesProvider } from "@/contexts/SelectedResourcesContext"
+import { SearchProvider } from "@/contexts/SearchContext"
+import { Providers } from "@/components/providers"
+import type React from "react" //Import React
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Resource Library and Chat",
-  description: "Browse resources and chat about them",
+  title: "Carrot - Your Knowledge Hub",
+  description: "Discover and engage with curated resources through AI-powered conversations",
 }
 
 export default function RootLayout({
@@ -18,13 +20,18 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} min-h-screen bg-[#121212] text-white`}>
-        <ResourceProvider>
-          <Navigation />
-          {children}
-          <CustomToaster />
-        </ResourceProvider>
+    <html lang="en" className="dark">
+      <body className={`${inter.className} bg-background text-foreground`}>
+        <Providers>
+          <SearchProvider>
+            <SelectedResourcesProvider>
+              <div className="flex h-screen">
+                <Sidebar />
+                <main className="flex-1 overflow-y-auto pb-0 px-6 pt-6">{children}</main>
+              </div>
+            </SelectedResourcesProvider>
+          </SearchProvider>
+        </Providers>
       </body>
     </html>
   )
