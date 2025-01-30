@@ -1,9 +1,9 @@
 [build]
   command = "npm run build"  # this is your build command
-  publish = "out"  # specify the directory to publish
+  publish = ".next"  # specify the directory to publish
   
 [build.environment]
   NODE_VERSION = "16"  # or whatever node version you're using
 
 [build.install]
-  command = "npm ci"  # Use this if you prefer a clean install based on package-lock.json
+  command = "npm i --force"  # Use this if you prefer a clean install based on package-lock.json
