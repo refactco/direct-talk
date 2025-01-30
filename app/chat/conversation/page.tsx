@@ -4,12 +4,11 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Book, MessageSquare, Plus } from "lucide-react"
 import { useSelectedResources } from "@/contexts/SelectedResourcesContext"
-import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import { getResource } from "@/lib/api"
-import type { Resource } from "@/types/resources"
 import { ResourceSelector } from "@/components/ResourceSelector"
+import { getPreviousChat, createNewChat } from "@/lib/history-storage"
 
 interface ApiResponse {
   id: string
@@ -20,12 +19,12 @@ interface ApiResponse {
   }[]
 }
 
-const sendMessage = async (prompt: string, contentId: string) => {
+const sendMessage = async (prompt: string, chatId: string) => {
   try {
-    console.log("Sending message to API:", { prompt, contentId })
+    console.log("Sending message to API:", { prompt, chatId })
     const formData = new URLSearchParams()
     formData.append("prompt", prompt)
-    formData.append("content_id", contentId)
+    formData.append("chat_id", chatId)
 
     const response = await fetch("https://api-focus.sajjadrad.com/v1/chat", {
       method: "POST",
@@ -54,56 +53,38 @@ export default function ChatConversationPage() {
   const [isResourceLoading, setIsResourceLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [isResourceSelectorOpen, setIsResourceSelectorOpen] = useState(false)
+  const [chatId, setChatId] = useState<string | null>(null)
   const searchParams = useSearchParams()
 
   const handlePlusClick = () => {
     setIsResourceSelectorOpen(true)
   }
 
-  // Fetch and restore resource if not in context
   useEffect(() => {
-    const contentId = searchParams.get("content_id")
-
-    if (contentId && !selectedResource) {
-      setIsResourceLoading(true)
-      getResource(contentId)
-        .then((resource: Resource) => {
-          console.log("Restoring resource:", resource)
-          addResource(resource)
-        })
-        .catch((error) => {
-          console.error("Error fetching resource:", error)
-          setErrorMessage("Failed to load resource. Please try again.")
-        })
-        .finally(() => {
-          setIsResourceLoading(false)
-        })
+    const fetchChatData = async () => {
+      const id = searchParams.get("id")
+      if (id) {
+        setChatId(id)
+        try {
+          const chatData = await getPreviousChat(id)
+          setMessages(
+            chatData.messages.map((msg: any) => ({
+              role: msg.role,
+              content: msg.result || msg.content,
+            })),
+          )
+          if (chatData.content_id && !selectedResource) {
+            const resource = await getResource(chatData.content_id)
+            addResource(resource)
+          }
+        } catch (error) {
+          console.error("Error fetching chat data:", error)
+          setErrorMessage("Failed to load chat. Please try again.")
+        }
+      }
     }
+    fetchChatData()
   }, [searchParams, selectedResource, addResource])
-
-  // Handle initial message
-  useEffect(() => {
-    const prompt = searchParams.get("prompt")
-    const contentId = searchParams.get("content_id")
-
-    if (prompt && contentId && messages.length === 0 && !isResourceLoading) {
-      setMessages([{ role: "user", content: prompt }])
-      setIsLoading(true)
-
-      sendMessage(prompt, contentId)
-        .then((result) => {
-          console.log("Setting assistant message with result:", result)
-          setMessages((prev) => [...prev, { role: "assistant", content: result }])
-        })
-        .catch((error) => {
-          console.error("Error in initial message fetch:", error)
-          setErrorMessage("Failed to get initial response. Please try again.")
-        })
-        .finally(() => {
-          setIsLoading(false)
-        })
-    }
-  }, [searchParams, messages.length, isResourceLoading])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -117,7 +98,12 @@ export default function ChatConversationPage() {
     setErrorMessage(null)
 
     try {
-      const result = await sendMessage(userMessage, selectedResource.id)
+      let currentChatId = chatId
+      if (!currentChatId) {
+        currentChatId = await createNewChat(selectedResource.id, userMessage)
+        setChatId(currentChatId)
+      }
+      const result = await sendMessage(userMessage, currentChatId)
       console.log("Setting assistant message with result:", result)
       setMessages((prev) => [...prev, { role: "assistant", content: result }])
     } catch (error) {

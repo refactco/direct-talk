@@ -20,7 +20,7 @@ interface ResourceSelectorProps {
 
 export function ResourceSelector({ open, onOpenChange, showWarning = false }: ResourceSelectorProps) {
   const [search, setSearch] = useState("")
-  const { addResource } = useSelectedResources()
+  const { addResource, removeResource, isSelected } = useSelectedResources()
 
   const filteredResources = resources.filter(
     (resource) =>
@@ -29,8 +29,11 @@ export function ResourceSelector({ open, onOpenChange, showWarning = false }: Re
   )
 
   const handleResourceSelect = (resource: Resource) => {
-    addResource(resource)
-    onOpenChange(false)
+    if (isSelected(resource.id)) {
+      removeResource(resource.id)
+    } else {
+      addResource(resource)
+    }
   }
 
   useEffect(() => {

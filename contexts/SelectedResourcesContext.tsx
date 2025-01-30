@@ -1,5 +1,6 @@
 "use client"
 
+import type React from "react"
 import { createContext, useContext, useState, useEffect } from "react"
 import type { Resource } from "@/types/resources"
 
@@ -7,6 +8,7 @@ type SelectedResourcesContextType = {
   selectedResource: Resource | null
   addResource: (resource: Resource) => void
   removeResource: () => void
+  resetSelectedResource: () => void
   isSelected: (resourceId: string) => boolean
 }
 
@@ -29,12 +31,19 @@ export function SelectedResourcesProvider({ children }: { children: React.ReactN
     setSelectedResource(null)
   }
 
+  const resetSelectedResource = () => {
+    console.log("Resetting selected resource")
+    setSelectedResource(null)
+  }
+
   const isSelected = (resourceId: string) => {
     return selectedResource?.id === resourceId
   }
 
   return (
-    <SelectedResourcesContext.Provider value={{ selectedResource, addResource, removeResource, isSelected }}>
+    <SelectedResourcesContext.Provider
+      value={{ selectedResource, addResource, removeResource, resetSelectedResource, isSelected }}
+    >
       {children}
     </SelectedResourcesContext.Provider>
   )

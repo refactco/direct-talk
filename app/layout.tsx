@@ -5,7 +5,7 @@ import { Sidebar } from "@/components/sidebar"
 import { SelectedResourcesProvider } from "@/contexts/SelectedResourcesContext"
 import { SearchProvider } from "@/contexts/SearchContext"
 import { Providers } from "@/components/providers"
-import type React from "react" //Import React
+import type React from "react" // Added import for React
 
 const inter = Inter({ subsets: ["latin"] })
 

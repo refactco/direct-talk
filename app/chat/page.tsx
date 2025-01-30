@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Plus, ArrowRight, BookOpen, X } from "lucide-react"
+import { Plus, ArrowRight, BookOpen, X, Loader2 } from "lucide-react"
 import { useSelectedResources } from "@/contexts/SelectedResourcesContext"
 import { ResourceSelector } from "@/components/ResourceSelector"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -13,17 +13,31 @@ import { useRouter } from "next/navigation"
 export default function ChatPage() {
   const [message, setMessage] = useState("")
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [showWarning, setShowWarning] = useState(false)
   const { selectedResource, removeResource } = useSelectedResources()
   const router = useRouter()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (message.trim() && selectedResource) {
-      const queryParams = new URLSearchParams({
-        prompt: message,
-        content_id: selectedResource.id,
-      })
-      router.push(`/chat/conversation?${queryParams.toString()}`)
+    setErrorMessage(null)
+    if (message.trim()) {
+      if (selectedResource) {
+        try {
+          setIsLoading(true)
+          const chatId = await createNewChat(selectedResource.id, message)
+          router.push(`/chat/conversation?id=${chatId}`)
+        } catch (error) {
+          console.error("Error creating new chat:", error)
+          setErrorMessage(`Failed to create a new chat: ${error instanceof Error ? error.message : "Unknown error"}`)
+        } finally {
+          setIsLoading(false)
+        }
+      } else {
+        setIsModalOpen(true)
+        setShowWarning(true)
+      }
     }
   }
 
@@ -32,6 +46,24 @@ export default function ChatPage() {
       e.preventDefault()
       handleSubmit(e as unknown as React.FormEvent)
     }
+  }
+
+  const createNewChat = async (resourceId: string, prompt: string): Promise<string> => {
+    // Replace this with your actual API call
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ resourceId, prompt }),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to create chat: ${response.status} ${response.statusText}`)
+    }
+
+    const data = await response.json()
+    return data.id
   }
 
   return (
@@ -110,16 +142,22 @@ export default function ChatPage() {
                 className="absolute right-3 bottom-3 h-8 w-8 rounded-full"
                 size="icon"
                 variant="ghost"
-                disabled={!selectedResource || !message.trim()}
+                disabled={!selectedResource || !message.trim() || isLoading}
               >
-                <ArrowRight className="h-4 w-4" />
+                {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ArrowRight className="h-4 w-4" />}
               </Button>
             </div>
           </div>
         </form>
+        {errorMessage && <p className="text-red-500">{errorMessage}</p>}
       </div>
 
-      <ResourceSelector open={isModalOpen} onOpenChange={setIsModalOpen} />
+      <ResourceSelector
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        showWarning={showWarning}
+        setShowWarning={setShowWarning}
+      />
     </div>
   )
 }
