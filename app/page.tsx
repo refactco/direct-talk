@@ -10,6 +10,7 @@ import type React from "react"
 import { DetailSheet } from "@/components/DetailSheet"
 import { HomeResourceCard } from "@/components/HomeResourceCard"
 import { ResourceSelector } from "@/components/ResourceSelector"
+import { AuthModal } from "@/components/AuthModal"
 import Image from "next/image"
 
 export default function HomePage() {
@@ -20,6 +21,7 @@ export default function HomePage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isResourceSheetOpen, setIsResourceSheetOpen] = useState(false)
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
   const { selectedResources, removeResource, addResource, isSelected } = useSelectedResources()
   const router = useRouter()
 
@@ -40,16 +42,8 @@ export default function HomePage() {
     setErrorMessage(null)
     if (message.trim()) {
       if (selectedResources.length > 0) {
-        try {
-          setIsLoading(true)
-          const chatId = await createNewChat(selectedResources[0].id, message)
-          await router.push(`/chat/conversation?id=${chatId}`)
-        } catch (error) {
-          console.error("Error creating new chat:", error)
-          setErrorMessage(`Failed to create a new chat: ${error instanceof Error ? error.message : "Unknown error"}`)
-        } finally {
-          setIsLoading(false)
-        }
+        console.log("Attempting to open AuthModal") // Debug log
+        setIsAuthModalOpen(true)
       } else {
         setIsModalOpen(true)
         setShowWarning(true)
@@ -63,6 +57,22 @@ export default function HomePage() {
       handleSubmit(e as unknown as React.FormEvent)
     }
   }
+
+  const handleAuthenticated = async () => {
+    setIsAuthModalOpen(false)
+    setIsLoading(true)
+    try {
+      const chatId = await createNewChat(selectedResources[0].id, message)
+      router.push(`/chat/conversation?id=${chatId}`)
+    } catch (error) {
+      console.error("Error creating new chat:", error)
+      setErrorMessage(`Failed to create a new chat: ${error instanceof Error ? error.message : "Unknown error"}`)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  console.log("AuthModal open state:", isAuthModalOpen) // Debug log
 
   return (
     <div className="flex flex-col items-center justify-between min-h-[calc(100vh-4rem)] p-4 sm:p-6">
@@ -221,6 +231,14 @@ export default function HomePage() {
           if (!open) setShowWarning(false)
         }}
         showWarning={showWarning}
+      />
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => {
+          console.log("Closing AuthModal") // Debug log
+          setIsAuthModalOpen(false)
+        }}
+        onAuthenticated={handleAuthenticated}
       />
     </div>
   )

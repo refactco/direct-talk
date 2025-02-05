@@ -9,6 +9,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { ResourceSelector } from "@/components/ResourceSelector"
 import { createNewChat, addMessageToChat, addChatToHistory } from "@/lib/history-storage"
 import { getResource } from "@/lib/api"
+import { AuthModal } from "@/components/AuthModal"
 import Image from "next/image"
 
 interface Message {
@@ -59,6 +60,7 @@ export default function ChatConversationPage() {
   const [isResourceSelectorOpen, setIsResourceSelectorOpen] = useState(false)
   const [chatData, setChatData] = useState<ChatData | null>(null)
   const [chatId, setChatId] = useState<string | null>(null)
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
   const searchParams = useSearchParams()
   const router = useRouter()
 
@@ -103,6 +105,9 @@ export default function ChatConversationPage() {
         if (data) {
           setChatData(data)
           setMessages(data.messages)
+        } else {
+          // If no chat data is found, show the auth modal
+          setIsAuthModalOpen(true)
         }
       })
     }
@@ -176,6 +181,21 @@ export default function ChatConversationPage() {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault()
       handleSubmit(e as unknown as React.FormEvent)
+    }
+  }
+
+  const handleAuthenticated = () => {
+    setIsAuthModalOpen(false)
+    // After authentication, try to fetch chat data again or create a new chat
+    if (chatId === "new") {
+      handleSubmit({ preventDefault: () => {} } as React.FormEvent)
+    } else {
+      fetchChatData(chatId).then((data) => {
+        if (data) {
+          setChatData(data)
+          setMessages(data.messages)
+        }
+      })
     }
   }
 
@@ -299,6 +319,7 @@ export default function ChatConversationPage() {
       </div>
 
       <ResourceSelector open={isResourceSelectorOpen} onOpenChange={setIsResourceSelectorOpen} />
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => router.push("/")} onAuthenticated={handleAuthenticated} />
     </div>
   )
 }

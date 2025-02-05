@@ -19,6 +19,10 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
     return () => observer.disconnect()
   }, [])
 
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>
+  return (
+    <NextThemesProvider {...props} attribute="class" defaultTheme="dark">
+      {children}
+    </NextThemesProvider>
+  )
 }
 

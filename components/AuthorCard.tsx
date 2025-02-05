@@ -1,11 +1,9 @@
-'use client';
-
-import { DetailSheet } from '@/components/DetailSheet';
-import type { Author } from '@/types/resources';
-import { useState } from 'react';
+import { useState } from "react"
+import type { Author } from "@/types/resources"
+import { DetailSheet } from "@/components/DetailSheet"
 
 export function AuthorCard({ author }: { author: Author }) {
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [isSheetOpen, setIsSheetOpen] = useState(false)
 
   return (
     <>
@@ -15,7 +13,7 @@ export function AuthorCard({ author }: { author: Author }) {
       >
         <div className="aspect-square overflow-hidden rounded-full">
           <img
-            src={author.imageUrl || '/placeholder.svg'}
+            src={author.imageUrl || "/placeholder.svg"}
             alt={author.name}
             className="h-full w-full object-cover transition-transform group-hover:scale-105"
           />
@@ -24,11 +22,8 @@ export function AuthorCard({ author }: { author: Author }) {
           <h3 className="font-semibold break-words">{author.name}</h3>
         </div>
       </div>
-      <DetailSheet
-        item={author}
-        open={isSheetOpen}
-        onOpenChange={setIsSheetOpen}
-      />
+      <DetailSheet item={author} open={isSheetOpen} onOpenChange={setIsSheetOpen} />
     </>
-  );
+  )
 }
+

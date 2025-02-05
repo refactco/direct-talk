@@ -8,8 +8,9 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { getChatHistory, removeChatFromHistory, type ChatHistoryItem } from "@/lib/history-storage"
 import { cn } from "@/lib/utils"
 import { Logo, CollapseIcon, HistoryIcon } from "@/components/icons/sidebar-icons"
-import { User } from "lucide-react"
+import { User, LogOut } from "lucide-react"
 import { ThemeToggle } from "@/components/ThemeToggle"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 export function Sidebar() {
   const router = useRouter()
@@ -119,21 +120,38 @@ export function Sidebar() {
         </div>
       </div>
 
-      {/* Account Section */}
-      <div className={cn("p-4", isCollapsed && "flex flex-col items-center")}>
+      {/* Theme Toggle */}
+      <div className={cn("p-2", isCollapsed && "flex justify-center")}>
         <ThemeToggle />
-        <Button
-          variant="ghost"
-          className={cn("w-full justify-start mt-2", isCollapsed && "justify-center p-0 h-12 w-12")}
-          onClick={() => router.push("/auth/login")}
-        >
-          <div className={cn("flex items-center gap-3", isCollapsed && "flex-col gap-1")}>
-            <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center">
-              <User className="h-4 w-4" />
-            </div>
-            {!isCollapsed && <span className="text-base font-bold">Account</span>}
-          </div>
-        </Button>
+      </div>
+
+      {/* Account Section */}
+      <div className={cn("p-2", isCollapsed && "flex justify-center")}>
+        <DropdownMenu direction="top">
+          <DropdownMenuTrigger asChild onClick={() => console.log("Dropdown trigger clicked")}>
+            <Button variant="ghost" className={cn("w-full justify-start", isCollapsed && "w-12 px-0")}>
+              <div className={cn("flex items-center gap-3", isCollapsed && "flex-col gap-1")}>
+                <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center">
+                  <User className="h-4 w-4" />
+                </div>
+                {!isCollapsed && <span className="text-base font-bold">Account</span>}
+              </div>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="center"
+            className="w-56 bg-popover text-popover-foreground border border-border shadow-md"
+          >
+            <DropdownMenuItem>
+              <User className="mr-2 h-4 w-4" />
+              <span>Profile</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push("/auth/login")}>
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Logout</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   )
