@@ -9,6 +9,11 @@ export interface ChatHistoryItem {
   createdAt: string
 }
 
+export interface Message {
+  role: "user" | "assistant"
+  content: string
+}
+
 export function getChatHistory(): ChatHistoryItem[] {
   if (typeof window === "undefined") return []
   const history = localStorage.getItem(HISTORY_STORAGE_KEY)
@@ -20,6 +25,9 @@ export function addChatToHistory(chat: ChatHistoryItem): void {
   const history = getChatHistory()
   const updatedHistory = [chat, ...history.filter((item) => item.id !== chat.id)].slice(0, 10)
   localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(updatedHistory))
+
+  // Dispatch a custom event to notify that the chat history has been updated
+  window.dispatchEvent(new CustomEvent("chatHistoryUpdated"))
 }
 
 export function removeChatFromHistory(chatId: string): void {
@@ -27,11 +35,17 @@ export function removeChatFromHistory(chatId: string): void {
   const history = getChatHistory()
   const updatedHistory = history.filter((item) => item.id !== chatId)
   localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(updatedHistory))
+
+  // Dispatch a custom event to notify that the chat history has been updated
+  window.dispatchEvent(new CustomEvent("chatHistoryUpdated"))
 }
 
 export function clearChatHistory(): void {
   if (typeof window === "undefined") return
   localStorage.removeItem(HISTORY_STORAGE_KEY)
+
+  // Dispatch a custom event to notify that the chat history has been cleared
+  window.dispatchEvent(new CustomEvent("chatHistoryUpdated"))
 }
 
 export async function createNewChat(contentId: string, question: string): Promise<string> {
@@ -88,6 +102,40 @@ export async function getPreviousChat(chatId: string): Promise<any> {
     throw new Error("Failed to fetch previous chat")
   }
 
-  return response.json()
+  const data = await response.json()
+  console.log("getPreviousChat response:", data)
+  return data
+}
+
+export async function addMessageToChat(chatId: string, message: Message): Promise<void> {
+  try {
+    const response = await fetch(`https://api-focus.sajjadrad.com/v1/chat/${chatId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer TEST_API_KEY",
+      },
+      body: JSON.stringify(message),
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`)
+    }
+
+    // Update local storage if needed
+    const history = getChatHistory()
+    const chatIndex = history.findIndex((item) => item.id === chatId)
+    if (chatIndex !== -1) {
+      history[chatIndex].title = message.content // Update the title with the latest message
+      localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(history))
+
+      // Dispatch a custom event to notify that the chat history has been updated
+      window.dispatchEvent(new CustomEvent("chatHistoryUpdated"))
+    }
+  } catch (error) {
+    console.error("Error in addMessageToChat:", error)
+    throw error
+  }
 }
 

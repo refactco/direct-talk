@@ -1,17 +1,19 @@
 "use client"
 
+import { useState } from "react"
 import type { Resource } from "@/types/resources"
 import { useSelectedResources } from "@/contexts/SelectedResourcesContext"
-import { Button } from "@/components/ui/button"
-import { Plus, Check, ExternalLink } from "lucide-react"
-import Link from "next/link"
+import { ArrowUpRight } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { DetailSheet } from "@/components/ResourceSheet"
 
 export function ResourceCard({ resource }: { resource: Resource }) {
   const { addResource, removeResource, isSelected } = useSelectedResources()
+  const [isSheetOpen, setIsSheetOpen] = useState(false)
   const selected = isSelected(resource.id)
 
-  const handleToggleResource = () => {
+  const handleCardClick = (e: React.MouseEvent) => {
+    e.preventDefault()
     if (selected) {
       removeResource(resource.id)
     } else {
@@ -19,49 +21,50 @@ export function ResourceCard({ resource }: { resource: Resource }) {
     }
   }
 
+  const handleIconClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setIsSheetOpen(true)
+  }
+
+  const getResourceIcon = (type: string) => {
+    return (
+      <div className="w-8 h-8 bg-[#343330] rounded-full flex items-center justify-center text-white">
+        {type[0].toUpperCase()}
+      </div>
+    )
+  }
+
   return (
-    <div
-      className="group relative w-48 space-y-4 rounded-md p-3 transition-colors hover:bg-background-highlight flex flex-col"
-      onClick={handleToggleResource}
-    >
-      <div className="aspect-square overflow-hidden rounded-md relative cursor-pointer">
-        <img
-          src={resource.imageUrl || "/placeholder.svg"}
-          alt={resource.title}
-          className="h-full w-full object-cover transition-transform group-hover:scale-105"
-        />
-        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-opacity duration-300" />
-        <Button
-          size="icon"
-          variant={selected ? "default" : "secondary"}
-          className={cn(
-            "absolute top-2 right-2 rounded-full w-8 h-8 p-0 transition-opacity duration-300",
-            selected
-              ? "bg-green-500 hover:bg-green-600 text-white opacity-100"
-              : "bg-background/80 backdrop-blur-sm opacity-0 group-hover:opacity-100",
-          )}
-          onClick={(e) => {
-            e.stopPropagation()
-            handleToggleResource()
-          }}
+    <>
+      <div
+        className="relative w-[166px] space-y-4 rounded-[8px] transition-colors hover:bg-[#262626] group cursor-pointer"
+        onClick={handleCardClick}
+      >
+        <div className="bg-white rounded-[8px] w-[166px] h-[166px] flex items-center justify-center relative overflow-hidden">
+          {getResourceIcon(resource.type)}
+        </div>
+        <div className="w-full pl-2 pt-4">
+          <h3 className="text-[16px] font-bold text-white text-left truncate">{resource.title}</h3>
+          <p className="text-[14px] text-white mt-1">{resource.type}</p>
+        </div>
+        <div className="absolute top-2 right-2 flex items-center space-x-2">
+          <div
+            className={cn(
+              "w-6 h-6 rounded-full transition-colors",
+              selected ? "bg-green-500" : "bg-white bg-opacity-20",
+            )}
+          />
+        </div>
+        <div
+          className="absolute top-2 left-2 p-1 rounded-full bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          onClick={handleIconClick}
         >
-          {selected ? <Check className="h-4 w-4" /> : <Plus className="h-4 w-4 opacity-0 group-hover:opacity-100" />}
-        </Button>
-        <Link
-          href={`/resources/${resource.id}`}
-          className="absolute top-2 left-2 rounded-full w-8 h-8 p-0 bg-background/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
-          onClick={(e) => {
-            e.stopPropagation()
-          }}
-        >
-          <ExternalLink className="h-4 w-4" />
-        </Link>
+          <ArrowUpRight className="w-4 h-4 text-black" />
+        </div>
       </div>
-      <div className="flex-1 cursor-pointer">
-        <h3 className="font-semibold break-words hover:underline">{resource.title}</h3>
-        <p className="text-sm text-muted-foreground">{resource.type}</p>
-      </div>
-    </div>
+
+      <DetailSheet item={resource} open={isSheetOpen} onOpenChange={setIsSheetOpen} />
+    </>
   )
 }
 

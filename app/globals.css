@@ -24,6 +24,9 @@
     --input: 240 5.9% 90%;
     --ring: 142.1 76.2% 36.3%;
     --radius: 0.5rem;
+    --background-secondary: 0 0% 96.1%;
+    --background-highlight: 0 0% 93.3%;
+    --foreground-muted: 240 3.8% 46.1%;
   }
 
   .dark {
@@ -46,6 +49,9 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 142.4 71.8% 29.2%;
+    --background-secondary: 240 3.7% 15.9%;
+    --background-highlight: 240 5.9% 10%;
+    --foreground-muted: 240 5% 64.9%;
   }
 }
 
@@ -114,5 +120,9 @@
       opacity: 1;
     }
   }
+}
+
+.text-shadow {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 

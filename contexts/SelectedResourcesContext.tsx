@@ -5,17 +5,17 @@ import { createContext, useContext, useState, useEffect } from "react"
 import type { Resource } from "@/types/resources"
 
 type SelectedResourcesContextType = {
-  selectedResource: Resource | null
+  selectedResources: Resource[]
   addResource: (resource: Resource) => void
-  removeResource: () => void
-  resetSelectedResource: () => void
+  removeResource: (resourceId: string) => void
+  resetSelectedResources: () => void
   isSelected: (resourceId: string) => boolean
 }
 
 const SelectedResourcesContext = createContext<SelectedResourcesContextType | undefined>(undefined)
 
 export function SelectedResourcesProvider({ children }: { children: React.ReactNode }) {
-  const [selectedResource, setSelectedResource] = useState<Resource | null>(null)
+  const [selectedResources, setSelectedResources] = useState<Resource[]>([])
 
   useEffect(() => {
     console.log("SelectedResourcesProvider mounted")
@@ -23,26 +23,31 @@ export function SelectedResourcesProvider({ children }: { children: React.ReactN
 
   const addResource = (resource: Resource) => {
     console.log("Adding resource:", resource)
-    setSelectedResource(resource)
+    setSelectedResources((prev) => {
+      if (!prev.some((r) => r.id === resource.id)) {
+        return [...prev, resource]
+      }
+      return prev
+    })
   }
 
-  const removeResource = () => {
-    console.log("Removing resource")
-    setSelectedResource(null)
+  const removeResource = (resourceId: string) => {
+    console.log("Removing resource:", resourceId)
+    setSelectedResources((prev) => prev.filter((r) => r.id !== resourceId))
   }
 
-  const resetSelectedResource = () => {
-    console.log("Resetting selected resource")
-    setSelectedResource(null)
+  const resetSelectedResources = () => {
+    console.log("Resetting selected resources")
+    setSelectedResources([])
   }
 
   const isSelected = (resourceId: string) => {
-    return selectedResource?.id === resourceId
+    return selectedResources.some((r) => r.id === resourceId)
   }
 
   return (
     <SelectedResourcesContext.Provider
-      value={{ selectedResource, addResource, removeResource, resetSelectedResource, isSelected }}
+      value={{ selectedResources, addResource, removeResource, resetSelectedResources, isSelected }}
     >
       {children}
     </SelectedResourcesContext.Provider>
