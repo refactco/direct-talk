@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Book, Plus, X } from "lucide-react";
+import { Book } from "lucide-react";
 import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -14,6 +13,7 @@ import {
 } from "@/lib/history-storage";
 import { getResource } from "@/lib/api";
 import { AuthModal } from "@/components/AuthModal";
+import { ChatInput } from "@/components/ChatInput";
 import Image from "next/image";
 
 interface Message {
@@ -134,24 +134,17 @@ export default function ChatConversationPage() {
     }
   }, [chatId, selectedResources]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (message: string) => {
+    if (!message.trim() || isLoading || selectedResources.length === 0) return;
 
-    if (!input.trim() || isLoading || selectedResources.length === 0) return;
-
-    const userMessage = input;
-    setInput("");
-    setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
+    setMessages((prev) => [...prev, { role: "user", content: message }]);
     setIsLoading(true);
     setErrorMessage(null);
 
     try {
       let currentChatId = chatId;
       if (currentChatId === "new" || !currentChatId) {
-        currentChatId = await createNewChat(
-          selectedResources[0].id,
-          userMessage
-        );
+        currentChatId = await createNewChat(selectedResources[0].id, message);
         setChatId(currentChatId);
         router.push(`/chat/conversation?id=${currentChatId}`);
       }
@@ -161,10 +154,10 @@ export default function ChatConversationPage() {
       console.log("Sending message with:", {
         currentChatId,
         contentId,
-        userMessage
+        message
       });
 
-      const result = await sendMessage(userMessage, currentChatId, contentId);
+      const result = await sendMessage(message, currentChatId, contentId);
       const assistantMessage = { role: "assistant", content: result };
       setMessages((prev) => [...prev, assistantMessage]);
       await addMessageToChat(currentChatId, {
@@ -177,7 +170,7 @@ export default function ChatConversationPage() {
         content_id: contentId,
         messages: [
           ...(prevChatData?.messages || []),
-          { role: "user", content: userMessage },
+          { role: "user", content: message },
           assistantMessage
         ]
       }));
@@ -185,7 +178,7 @@ export default function ChatConversationPage() {
       // Update chat history
       const updatedChatItem = {
         id: currentChatId,
-        title: userMessage,
+        title: message,
         contentId: selectedResources[0].id,
         createdAt: new Date().toISOString()
       };
@@ -196,17 +189,10 @@ export default function ChatConversationPage() {
     } catch (error) {
       console.error("Error in handleSubmit:", error);
       setErrorMessage(
-        `Failed to get response: ${error.message || "Unknown error"}`
+        `Failed to get response: ${error instanceof Error ? error.message : "Unknown error"}`
       );
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit(e as unknown as React.FormEvent);
     }
   };
 
@@ -214,9 +200,7 @@ export default function ChatConversationPage() {
     setIsAuthModalOpen(false);
     // After authentication, try to fetch chat data again or create a new chat
     if (chatId === "new") {
-      handleSubmit({
-        preventDefault: () => {}
-      } as React.FormEvent);
+      handleSubmit(""); // Pass an empty string as we don't have a message here
     } else {
       fetchChatData(chatId).then((data) => {
         if (data) {
@@ -250,15 +234,6 @@ export default function ChatConversationPage() {
                   {contextSelectedResource.type}
                 </span>
               </div>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  removeResource();
-                }}
-                className="absolute top-1 right-1 sm:top-2 sm:right-2 text-white hover:text-gray-300"
-              >
-                <X className="h-3 w-3 sm:h-4 sm:w-4" />
-              </button>
             </div>
           )}
           <div className="space-y-4 sm:space-y-6 py-4 sm:py-6">
@@ -328,38 +303,14 @@ export default function ChatConversationPage() {
 
       <div className="sticky bottom-0 w-full bg-background pb-4 sm:pb-6 pt-2 sm:pt-4">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <form onSubmit={handleSubmit} className="relative">
-            <div className="rounded-full border border-border bg-accent hover:bg-accent/80 transition-colors overflow-hidden flex items-center">
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="h-6 w-6 sm:h-8 sm:w-8 rounded-full hover:bg-accent ml-1 sm:ml-2 shrink-0"
-                onClick={() => setIsResourceSelectorOpen(true)}
-              >
-                <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
-              </Button>
-
-              <input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Ask follow-up..."
-                className="flex-1 h-10 sm:h-12 bg-transparent border-0 focus:outline-none focus:ring-0 text-xs sm:text-sm placeholder-muted-foreground px-2 sm:px-3"
-                disabled={isLoading}
-              />
-
-              <Button
-                type="submit"
-                size="icon"
-                variant="ghost"
-                disabled={isLoading || !input.trim()}
-                className="h-6 w-6 sm:h-8 sm:w-8 rounded-full hover:bg-accent shrink-0 mr-1 sm:mr-2"
-              >
-                <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4" />
-              </Button>
-            </div>
-          </form>
+          <ChatInput
+            onSubmit={handleSubmit}
+            onAddResource={() => setIsResourceSelectorOpen(true)}
+            onRemoveResource={removeResource}
+            selectedResources={selectedResources}
+            isLoading={isLoading}
+            placeholder="Ask follow-up..."
+          />
         </div>
       </div>
 
