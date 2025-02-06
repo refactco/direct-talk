@@ -50,16 +50,15 @@ export function clearChatHistory(): void {
 
 export async function createNewChat(contentId: string, question: string): Promise<string> {
   try {
-    const response = await fetch("https://api-focus.sajjadrad.com/v1/chat", {
+    const response = await fetch("/api/chat", {
       method: "POST",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: "Bearer TEST_API_KEY",
+        "Content-Type": "application/json",
       },
-      body: new URLSearchParams({
-        content_id: contentId,
+      body: JSON.stringify({
         prompt: question,
-      }).toString(),
+        content_id: contentId,
+      }),
     })
 
     if (!response.ok) {
@@ -92,11 +91,7 @@ export async function createNewChat(contentId: string, question: string): Promis
 }
 
 export async function getPreviousChat(chatId: string): Promise<any> {
-  const response = await fetch(`https://api-focus.sajjadrad.com/v1/chat/${chatId}`, {
-    headers: {
-      Authorization: "Bearer TEST_API_KEY",
-    },
-  })
+  const response = await fetch(`/api/chat?id=${chatId}`)
 
   if (!response.ok) {
     throw new Error("Failed to fetch previous chat")
@@ -109,13 +104,16 @@ export async function getPreviousChat(chatId: string): Promise<any> {
 
 export async function addMessageToChat(chatId: string, message: Message): Promise<void> {
   try {
-    const response = await fetch(`https://api-focus.sajjadrad.com/v1/chat/${chatId}`, {
+    const response = await fetch("/api/chat", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer TEST_API_KEY",
       },
-      body: JSON.stringify(message),
+      body: JSON.stringify({
+        chat_id: chatId,
+        prompt: message.content,
+        content_id: "", // Add content_id if needed
+      }),
     })
 
     if (!response.ok) {

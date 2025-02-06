@@ -1,34 +1,58 @@
-import type { NextRequest } from "next/server"
-import { sleep } from "@/lib/utils"
+import { NextResponse } from "next/server"
+import { v4 as uuidv4 } from "uuid"
 
-export async function POST(req: NextRequest) {
-  const { messages } = await req.json()
-  const lastMessage = messages[messages.length - 1]
+interface Message {
+  role: "user" | "assistant"
+  content: string
+}
 
-  // Simulate network delay
-  await sleep(1000)
+interface ChatSession {
+  id: string
+  contentId: string
+  messages: Message[]
+}
 
-  // Create a mock stream
-  const stream = new ReadableStream({
-    async start(controller) {
-      const mockResponse = `This response is generated from the knowledge contained in your selected resources. Let me know if you have any follow-up questions!`
+// In-memory storage for chat sessions
+const chatSessions: Record<string, ChatSession> = {}
 
-      // Stream the response word by word
-      const words = mockResponse.split(" ")
-      for (const word of words) {
-        const encoder = new TextEncoder()
-        const chunk = encoder.encode(word + " ")
-        controller.enqueue(chunk)
-        await sleep(50) // Add small delay between words
-      }
-      controller.close()
-    },
+export async function POST(request: Request) {
+  const { prompt, chat_id, content_id } = await request.json()
+
+  let chatSession: ChatSession
+
+  if (chat_id && chatSessions[chat_id]) {
+    chatSession = chatSessions[chat_id]
+  } else {
+    const newChatId = uuidv4()
+    chatSession = {
+      id: newChatId,
+      contentId: content_id,
+      messages: [],
+    }
+    chatSessions[newChatId] = chatSession
+  }
+
+  // Add user message
+  chatSession.messages.push({ role: "user", content: prompt })
+
+  // Generate mock AI response
+  const aiResponse = `This is a mock response to: "${prompt}"`
+  chatSession.messages.push({ role: "assistant", content: aiResponse })
+
+  return NextResponse.json({
+    id: chatSession.id,
+    messages: [{ role: "assistant", content: aiResponse }],
   })
+}
 
-  return new Response(stream, {
-    headers: {
-      "Content-Type": "text/plain; charset=utf-8",
-    },
-  })
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url)
+  const chatId = searchParams.get("id")
+
+  if (!chatId || !chatSessions[chatId]) {
+    return NextResponse.json({ error: "Chat session not found" }, { status: 404 })
+  }
+
+  return NextResponse.json(chatSessions[chatId])
 }
 
