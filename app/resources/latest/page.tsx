@@ -1,8 +1,8 @@
-import { getResources } from "@/lib/api"
-import { ResourceCard } from "@/components/ResourceCard"
+import { getResources } from "@/lib/api";
+import { ResourceCard } from "@/components/ResourceCard";
 
 export default async function LatestResourcesPage() {
-  const resources = await getResources({ sort: "latest" })
+  const resources = await getResources({ sort: "latest" });
 
   return (
     <div className="container mx-auto p-6">
@@ -13,6 +13,5 @@ export default async function LatestResourcesPage() {
         ))}
       </div>
     </div>
-  )
+  );
 }
-

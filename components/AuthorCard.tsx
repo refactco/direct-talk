@@ -1,9 +1,9 @@
-import { useState } from "react"
-import type { Author } from "@/types/resources"
-import { DetailSheet } from "@/components/DetailSheet"
+import { useState } from "react";
+import type { Author } from "@/types/resources";
+import { DetailSheet } from "@/components/DetailSheet";
 
 export function AuthorCard({ author }: { author: Author }) {
-  const [isSheetOpen, setIsSheetOpen] = useState(false)
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   return (
     <>
@@ -22,8 +22,11 @@ export function AuthorCard({ author }: { author: Author }) {
           <h3 className="font-semibold break-words">{author.name}</h3>
         </div>
       </div>
-      <DetailSheet item={author} open={isSheetOpen} onOpenChange={setIsSheetOpen} />
+      <DetailSheet
+        item={author}
+        open={isSheetOpen}
+        onOpenChange={setIsSheetOpen}
+      />
     </>
-  )
+  );
 }
-

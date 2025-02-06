@@ -13,6 +13,5 @@ export function BookIcon({ className }: { className?: string }) {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 }
-

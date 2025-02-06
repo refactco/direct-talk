@@ -1,38 +1,38 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import type { Resource } from "@/types/resources"
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext"
-import { ArrowUpRight } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { DetailSheet } from "@/components/ResourceSheet"
+import { useState } from "react";
+import type { Resource } from "@/types/resources";
+import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
+import { ArrowUpRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { DetailSheet } from "@/components/ResourceSheet";
 
 export function ResourceCard({ resource }: { resource: Resource }) {
-  const { addResource, removeResource, isSelected } = useSelectedResources()
-  const [isSheetOpen, setIsSheetOpen] = useState(false)
-  const selected = isSelected(resource.id)
+  const { addResource, removeResource, isSelected } = useSelectedResources();
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const selected = isSelected(resource.id);
 
   const handleCardClick = (e: React.MouseEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (selected) {
-      removeResource(resource.id)
+      removeResource(resource.id);
     } else {
-      addResource(resource)
+      addResource(resource);
     }
-  }
+  };
 
   const handleIconClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    setIsSheetOpen(true)
-  }
+    e.stopPropagation();
+    setIsSheetOpen(true);
+  };
 
   const getResourceIcon = (type: string) => {
     return (
       <div className="w-8 h-8 bg-[#343330] rounded-full flex items-center justify-center text-white">
         {type[0].toUpperCase()}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -44,14 +44,16 @@ export function ResourceCard({ resource }: { resource: Resource }) {
           {getResourceIcon(resource.type)}
         </div>
         <div className="w-full pl-2 pt-4">
-          <h3 className="text-[16px] font-bold text-white text-left truncate">{resource.title}</h3>
+          <h3 className="text-[16px] font-bold text-white text-left truncate">
+            {resource.title}
+          </h3>
           <p className="text-[14px] text-white mt-1">{resource.type}</p>
         </div>
         <div className="absolute top-2 right-2 flex items-center space-x-2">
           <div
             className={cn(
               "w-6 h-6 rounded-full transition-colors",
-              selected ? "bg-green-500" : "bg-white bg-opacity-20",
+              selected ? "bg-green-500" : "bg-white bg-opacity-20"
             )}
           />
         </div>
@@ -63,8 +65,11 @@ export function ResourceCard({ resource }: { resource: Resource }) {
         </div>
       </div>
 
-      <DetailSheet item={resource} open={isSheetOpen} onOpenChange={setIsSheetOpen} />
+      <DetailSheet
+        item={resource}
+        open={isSheetOpen}
+        onOpenChange={setIsSheetOpen}
+      />
     </>
-  )
+  );
 }
-

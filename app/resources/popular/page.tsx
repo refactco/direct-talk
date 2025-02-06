@@ -1,8 +1,8 @@
-import { getResources } from "@/lib/api"
-import { ResourceCard } from "@/components/ResourceCard"
+import { getResources } from "@/lib/api";
+import { ResourceCard } from "@/components/ResourceCard";
 
 export default async function PopularResourcesPage() {
-  const resources = await getResources({ sort: "popular" })
+  const resources = await getResources({ sort: "popular" });
 
   return (
     <div className="container mx-auto p-6">
@@ -13,6 +13,5 @@ export default async function PopularResourcesPage() {
         ))}
       </div>
     </div>
-  )
+  );
 }
-

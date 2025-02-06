@@ -1,30 +1,30 @@
-"use client"
+"use client";
 
-import { Sheet, SheetContent } from "@/components/ui/sheet"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { X, Plus, Check, ExternalLink } from "lucide-react"
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext"
-import type { Resource, Author } from "@/types/resources"
-import Image from "next/image"
-import Link from "next/link"
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { X, Plus, Check, ExternalLink } from "lucide-react";
+import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
+import type { Resource, Author } from "@/types/resources";
+import Image from "next/image";
+import Link from "next/link";
 
 interface DetailSheetProps {
-  item: Resource | Author | null
-  open: boolean
-  onOpenChange: (open: boolean) => void
+  item: Resource | Author | null;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
 export function DetailSheet({ item, open, onOpenChange }: DetailSheetProps) {
-  const { addResource, removeResource, isSelected } = useSelectedResources()
+  const { addResource, removeResource, isSelected } = useSelectedResources();
 
-  if (!item) return null
+  if (!item) return null;
 
-  const isResource = "type" in item
-  const isAuthor = "bio" in item
+  const isResource = "type" in item;
+  const isAuthor = "bio" in item;
 
-  const isResourceSelected = isResource ? isSelected(item.id) : false
+  const isResourceSelected = isResource ? isSelected(item.id) : false;
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -43,12 +43,25 @@ export function DetailSheet({ item, open, onOpenChange }: DetailSheetProps) {
                 size="icon"
                 variant={isResourceSelected ? "default" : "secondary"}
                 className="rounded-full w-8 h-8"
-                onClick={() => (isResourceSelected ? removeResource(item.id) : addResource(item))}
+                onClick={() =>
+                  isResourceSelected
+                    ? removeResource(item.id)
+                    : addResource(item)
+                }
               >
-                {isResourceSelected ? <Check className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+                {isResourceSelected ? (
+                  <Check className="h-4 w-4" />
+                ) : (
+                  <Plus className="h-4 w-4" />
+                )}
               </Button>
             )}
-            <Button size="icon" variant="ghost" className="rounded-full w-8 h-8" onClick={() => onOpenChange(false)}>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="rounded-full w-8 h-8"
+              onClick={() => onOpenChange(false)}
+            >
               <X className="h-4 w-4" />
             </Button>
           </div>
@@ -58,14 +71,18 @@ export function DetailSheet({ item, open, onOpenChange }: DetailSheetProps) {
                 {item.type} • By {item.authorId}
               </p>
             )}
-            <h2 className="text-2xl font-bold text-white">{item.name || item.title}</h2>
+            <h2 className="text-2xl font-bold text-white">
+              {item.name || item.title}
+            </h2>
           </div>
         </div>
         <ScrollArea className="h-[calc(100vh-200px)] p-6 transition-transform duration-300 ease-in-out">
           <div className="space-y-6">
             <div>
               <h3 className="font-semibold text-foreground">About</h3>
-              <p className="text-sm text-muted-foreground">{isResource ? item.description : item.bio}</p>
+              <p className="text-sm text-muted-foreground">
+                {isResource ? item.description : item.bio}
+              </p>
             </div>
             {isResource && (
               <div className="flex flex-wrap gap-2">
@@ -83,7 +100,9 @@ export function DetailSheet({ item, open, onOpenChange }: DetailSheetProps) {
             {isResource && item.content && (
               <div>
                 <h3 className="font-semibold text-foreground">Content</h3>
-                <div className="text-sm text-muted-foreground">{item.content}</div>
+                <div className="text-sm text-muted-foreground">
+                  {item.content}
+                </div>
               </div>
             )}
             {isAuthor && (
@@ -108,6 +127,5 @@ export function DetailSheet({ item, open, onOpenChange }: DetailSheetProps) {
         </ScrollArea>
       </SheetContent>
     </Sheet>
-  )
+  );
 }
-

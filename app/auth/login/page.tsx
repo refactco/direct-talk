@@ -1,23 +1,23 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Icons } from "@/components/icons"
-import { ArrowLeft } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { useState } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Icons } from "@/components/icons";
+import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault()
-    setIsLoading(true)
+    event.preventDefault();
+    setIsLoading(true);
 
     setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
+      setIsLoading(false);
+    }, 3000);
   }
 
   return (
@@ -28,7 +28,12 @@ export default function LoginPage() {
         <p className="text-sm text-muted-foreground">Sign in to your account</p>
       </div>
       <div className="grid gap-4">
-        <Button variant="outline" type="button" disabled={isLoading} className="border-white">
+        <Button
+          variant="outline"
+          type="button"
+          disabled={isLoading}
+          className="border-white"
+        >
           {isLoading ? (
             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
           ) : (
@@ -36,7 +41,12 @@ export default function LoginPage() {
           )}{" "}
           Google
         </Button>
-        <Button variant="outline" type="button" disabled={isLoading} className="border-white">
+        <Button
+          variant="outline"
+          type="button"
+          disabled={isLoading}
+          className="border-white"
+        >
           {isLoading ? (
             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
           ) : (
@@ -47,17 +57,23 @@ export default function LoginPage() {
       </div>
       <p className="px-8 text-center text-sm text-muted-foreground">
         Don&apos;t have an account?{" "}
-        <Link href="/auth/signup" className="hover:text-brand underline underline-offset-4">
+        <Link
+          href="/auth/signup"
+          className="hover:text-brand underline underline-offset-4"
+        >
           Sign up
         </Link>
       </p>
       <div className="flex justify-center">
-        <Button variant="ghost" onClick={() => router.back()} className="text-sm">
+        <Button
+          variant="ghost"
+          onClick={() => router.back()}
+          className="text-sm"
+        >
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back
         </Button>
       </div>
     </div>
-  )
+  );
 }
-

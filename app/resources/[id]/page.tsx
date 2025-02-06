@@ -1,15 +1,15 @@
-import { getResource, getResources } from "@/lib/api"
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { ResourceCard } from "@/components/ResourceCard"
-import { ResourceContent } from "@/components/ResourceContent"
+import { getResource, getResources } from "@/lib/api";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { ResourceCard } from "@/components/ResourceCard";
+import { ResourceContent } from "@/components/ResourceContent";
 
 export default async function ResourcePage({
-  params,
+  params
 }: {
-  params: { id: string }
+  params: { id: string };
 }) {
-  const resource = await getResource(params.id)
-  const relatedResources = await getResources()
+  const resource = await getResource(params.id);
+  const relatedResources = await getResources();
 
   return (
     <div className="flex flex-col">
@@ -27,15 +27,22 @@ export default async function ResourcePage({
             />
           </div>
           <div className="flex flex-col gap-2 pb-2">
-            <div className="text-sm font-medium uppercase text-muted-foreground">{resource.type}</div>
+            <div className="text-sm font-medium uppercase text-muted-foreground">
+              {resource.type}
+            </div>
             <h1 className="text-4xl font-bold">{resource.title}</h1>
-            <div className="text-lg text-muted-foreground">By {resource.authorId}</div>
+            <div className="text-lg text-muted-foreground">
+              By {resource.authorId}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <ResourceContent resource={resource} relatedResources={relatedResources} />
+      <ResourceContent
+        resource={resource}
+        relatedResources={relatedResources}
+      />
 
       {/* Popular Resources */}
       <div className="border-t">
@@ -52,6 +59,5 @@ export default async function ResourcePage({
         </div>
       </div>
     </div>
-  )
+  );
 }
-

@@ -1,23 +1,23 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { getResources, getAuthors } from "@/lib/api"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { ChevronRight, Search } from "lucide-react"
-import Link from "next/link"
-import { ResourceCard } from "@/components/ResourceCard"
-import { AuthorCard } from "@/components/AuthorCard"
-import { useRouter } from "next/navigation"
-import { useSearch } from "@/contexts/SearchContext"
+import { useState, useEffect } from "react";
+import { getResources, getAuthors } from "@/lib/api";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { ChevronRight, Search } from "lucide-react";
+import Link from "next/link";
+import { ResourceCard } from "@/components/ResourceCard";
+import { AuthorCard } from "@/components/AuthorCard";
+import { useRouter } from "next/navigation";
+import { useSearch } from "@/contexts/SearchContext";
 
 export default function ExplorePage() {
-  const [recentResources, setRecentResources] = useState([])
-  const [popularResources, setPopularResources] = useState([])
-  const [authors, setAuthors] = useState([])
-  const router = useRouter()
-  const { query, setQuery } = useSearch()
+  const [recentResources, setRecentResources] = useState([]);
+  const [popularResources, setPopularResources] = useState([]);
+  const [authors, setAuthors] = useState([]);
+  const router = useRouter();
+  const { query, setQuery } = useSearch();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,23 +25,23 @@ export default function ExplorePage() {
         getResources({ sort: "latest", limit: 10 }).catch(() => []),
         getResources({ sort: "popular", limit: 10 }).catch(() => []),
         getAuthors({ limit: 10 }).catch((error) => {
-          console.error("Error fetching authors:", error)
-          return []
-        }),
-      ])
-      setRecentResources(recent)
-      setPopularResources(popular)
-      setAuthors(authorList)
-    }
-    fetchData()
-  }, [])
+          console.error("Error fetching authors:", error);
+          return [];
+        })
+      ]);
+      setRecentResources(recent);
+      setPopularResources(popular);
+      setAuthors(authorList);
+    };
+    fetchData();
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (query.trim()) {
-      router.push(`/search/${encodeURIComponent(query)}`)
+      router.push(`/search/${encodeURIComponent(query)}`);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col gap-6 p-6 min-h-full">
@@ -69,7 +69,10 @@ export default function ExplorePage() {
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold">Popular Resources</h2>
           <Button variant="link" asChild>
-            <Link href="/resources/popular" className="text-sm text-muted-foreground">
+            <Link
+              href="/resources/popular"
+              className="text-sm text-muted-foreground"
+            >
               Show all
               <ChevronRight className="ml-1 h-4 w-4" />
             </Link>
@@ -89,7 +92,10 @@ export default function ExplorePage() {
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold">Latest Resources</h2>
           <Button variant="link" asChild>
-            <Link href="/resources/latest" className="text-sm text-muted-foreground">
+            <Link
+              href="/resources/latest"
+              className="text-sm text-muted-foreground"
+            >
               Show all
               <ChevronRight className="ml-1 h-4 w-4" />
             </Link>
@@ -125,6 +131,5 @@ export default function ExplorePage() {
         </ScrollArea>
       </section>
     </div>
-  )
+  );
 }
-

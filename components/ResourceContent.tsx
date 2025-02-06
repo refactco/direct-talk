@@ -1,19 +1,22 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { MoreHorizontal, Plus, Check } from "lucide-react"
-import Link from "next/link"
-import { formatDate } from "@/lib/utils"
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext"
-import type { Resource } from "@/types/resources"
+import { Button } from "@/components/ui/button";
+import { MoreHorizontal, Plus, Check } from "lucide-react";
+import Link from "next/link";
+import { formatDate } from "@/lib/utils";
+import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
+import type { Resource } from "@/types/resources";
 
 type ResourceContentProps = {
-  resource: Resource
-  relatedResources: Resource[]
-}
+  resource: Resource;
+  relatedResources: Resource[];
+};
 
-export function ResourceContent({ resource, relatedResources }: ResourceContentProps) {
-  const { addResource, removeResource, isSelected } = useSelectedResources()
+export function ResourceContent({
+  resource,
+  relatedResources
+}: ResourceContentProps) {
+  const { addResource, removeResource, isSelected } = useSelectedResources();
 
   return (
     <>
@@ -36,16 +39,28 @@ export function ResourceContent({ resource, relatedResources }: ResourceContentP
                         size="icon"
                         variant="secondary"
                         className="h-10 w-10"
-                        onClick={() => (isSelected(resource.id) ? removeResource(resource.id) : addResource(resource))}
+                        onClick={() =>
+                          isSelected(resource.id)
+                            ? removeResource(resource.id)
+                            : addResource(resource)
+                        }
                       >
-                        {isSelected(resource.id) ? <Check className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
+                        {isSelected(resource.id) ? (
+                          <Check className="h-5 w-5" />
+                        ) : (
+                          <Plus className="h-5 w-5" />
+                        )}
                       </Button>
                       <div>
                         <div className="font-medium">Chapter 1</div>
-                        <div className="text-sm text-muted-foreground">Introduction</div>
+                        <div className="text-sm text-muted-foreground">
+                          Introduction
+                        </div>
                       </div>
                     </div>
-                    <div className="text-sm text-muted-foreground">{formatDate(resource.publishedAt)}</div>
+                    <div className="text-sm text-muted-foreground">
+                      {formatDate(resource.publishedAt)}
+                    </div>
                   </div>
                 </div>
               )}
@@ -89,7 +104,9 @@ export function ResourceContent({ resource, relatedResources }: ResourceContentP
                 </div>
                 <div>
                   <div className="font-medium">{relatedResource.title}</div>
-                  <div className="text-sm text-muted-foreground">{relatedResource.type}</div>
+                  <div className="text-sm text-muted-foreground">
+                    {relatedResource.type}
+                  </div>
                 </div>
               </Link>
             ))}
@@ -97,6 +114,5 @@ export function ResourceContent({ resource, relatedResources }: ResourceContentP
         </div>
       </div>
     </>
-  )
+  );
 }
-

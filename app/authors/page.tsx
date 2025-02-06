@@ -1,8 +1,8 @@
-import { getAuthors } from "@/lib/api"
-import { AuthorCard } from "@/components/AuthorCard"
+import { getAuthors } from "@/lib/api";
+import { AuthorCard } from "@/components/AuthorCard";
 
 export default async function AllAuthorsPage() {
-  const authors = await getAuthors()
+  const authors = await getAuthors();
 
   return (
     <div className="container mx-auto p-6">
@@ -13,6 +13,5 @@ export default async function AllAuthorsPage() {
         ))}
       </div>
     </div>
-  )
+  );
 }
-

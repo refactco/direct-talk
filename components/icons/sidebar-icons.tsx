@@ -8,11 +8,19 @@ export function Logo() {
       fill="none"
       className="text-foreground"
     >
-      <path opacity="0.2" d="M12.5 10L25 18L12.5 26L0 18L12.5 10Z" fill="currentColor" />
-      <path opacity="0.5" d="M12.5 5L25 13L12.5 21L0 13L12.5 5Z" fill="currentColor" />
+      <path
+        opacity="0.2"
+        d="M12.5 10L25 18L12.5 26L0 18L12.5 10Z"
+        fill="currentColor"
+      />
+      <path
+        opacity="0.5"
+        d="M12.5 5L25 13L12.5 21L0 13L12.5 5Z"
+        fill="currentColor"
+      />
       <path d="M12.5 0L25 8L12.5 16L0 8L12.5 0Z" fill="currentColor" />
     </svg>
-  )
+  );
 }
 
 export function CollapseIcon() {
@@ -30,7 +38,7 @@ export function CollapseIcon() {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 }
 
 export function HistoryIcon() {
@@ -48,6 +56,5 @@ export function HistoryIcon() {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 }
-

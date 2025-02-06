@@ -1,23 +1,23 @@
-"use client"
+"use client";
 
-import { useEffect } from "react"
-import { useSearch } from "@/contexts/SearchContext"
-import { SearchResultSection } from "@/components/search/SearchResultSection"
-import { TopResult } from "@/components/search/TopResult"
-import { ResourceCard } from "@/components/ResourceCard"
-import { AuthorCard } from "@/components/AuthorCard"
-import Link from "next/link"
-import { Search } from "lucide-react"
+import { useEffect } from "react";
+import { useSearch } from "@/contexts/SearchContext";
+import { SearchResultSection } from "@/components/search/SearchResultSection";
+import { TopResult } from "@/components/search/TopResult";
+import { ResourceCard } from "@/components/ResourceCard";
+import { AuthorCard } from "@/components/AuthorCard";
+import Link from "next/link";
+import { Search } from "lucide-react";
 
 export default function SearchPage({ params }: { params: { query: string } }) {
-  const { query, setQuery, results } = useSearch()
-  const decodedQuery = decodeURIComponent(params.query)
+  const { query, setQuery, results } = useSearch();
+  const decodedQuery = decodeURIComponent(params.query);
 
   useEffect(() => {
     if (decodedQuery !== query) {
-      setQuery(decodedQuery)
+      setQuery(decodedQuery);
     }
-  }, [decodedQuery, query, setQuery])
+  }, [decodedQuery, query, setQuery]);
 
   if (!query || query.trim() === "") {
     return (
@@ -25,13 +25,14 @@ export default function SearchPage({ params }: { params: { query: string } }) {
         <Search className="w-16 h-16 mb-4 text-muted-foreground" />
         <h2 className="text-2xl font-bold mb-2">Start your search</h2>
         <p className="text-muted-foreground">
-          Enter a keyword in the search bar above to find resources, authors, and topics.
+          Enter a keyword in the search bar above to find resources, authors,
+          and topics.
         </p>
       </div>
-    )
+    );
   }
 
-  const topResult = results.resources[0]
+  const topResult = results.resources[0];
 
   return (
     <div className="flex flex-col gap-6 p-6">
@@ -104,7 +105,9 @@ export default function SearchPage({ params }: { params: { query: string } }) {
                 </div>
                 <div>
                   <div className="font-medium">{topic.name}</div>
-                  <div className="text-sm text-muted-foreground">{topic.resourceCount} resources</div>
+                  <div className="text-sm text-muted-foreground">
+                    {topic.resourceCount} resources
+                  </div>
                 </div>
               </Link>
             ))}
@@ -112,6 +115,5 @@ export default function SearchPage({ params }: { params: { query: string } }) {
         </section>
       )}
     </div>
-  )
+  );
 }
-

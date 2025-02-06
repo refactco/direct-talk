@@ -1,37 +1,44 @@
-"use client"
+"use client";
 
-import type { Resource } from "@/types/resources"
-import { useSelectedResources, addResource, removeResource } from "@/contexts/SelectedResourcesContext"
-import { Button } from "@/components/ui/button"
-import { Plus, Check } from "lucide-react"
-import { useState } from "react"
-import { DetailSheet } from "@/components/DetailSheet"
-import Image from "next/image"
+import type { Resource } from "@/types/resources";
+import {
+  useSelectedResources,
+  addResource,
+  removeResource
+} from "@/contexts/SelectedResourcesContext";
+import { Button } from "@/components/ui/button";
+import { Plus, Check } from "lucide-react";
+import { useState } from "react";
+import { DetailSheet } from "@/components/DetailSheet";
+import Image from "next/image";
 
 interface ChatResourceCardProps {
-  resource: Resource
-  onSelect: () => void
+  resource: Resource;
+  onSelect: () => void;
 }
 
-export function ChatResourceCard({ resource, onSelect }: ChatResourceCardProps) {
-  const { isSelected } = useSelectedResources()
-  const selected = isSelected(resource.id)
-  const [isSheetOpen, setIsSheetOpen] = useState(false)
+export function ChatResourceCard({
+  resource,
+  onSelect
+}: ChatResourceCardProps) {
+  const { isSelected } = useSelectedResources();
+  const selected = isSelected(resource.id);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const handleToggleResource = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
+    e.preventDefault();
+    e.stopPropagation();
     if (isSelected(resource.id)) {
-      removeResource(resource.id)
+      removeResource(resource.id);
     } else {
-      addResource(resource)
+      addResource(resource);
     }
-  }
+  };
 
   const handleOpenSheet = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    setIsSheetOpen(true)
-  }
+    e.stopPropagation();
+    setIsSheetOpen(true);
+  };
 
   return (
     <>
@@ -50,7 +57,9 @@ export function ChatResourceCard({ resource, onSelect }: ChatResourceCardProps) 
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-medium truncate">{resource.title}</p>
-          <p className="text-sm text-muted-foreground truncate">{resource.type}</p>
+          <p className="text-sm text-muted-foreground truncate">
+            {resource.type}
+          </p>
         </div>
         <div className="flex items-center space-x-2">
           <div
@@ -77,16 +86,25 @@ export function ChatResourceCard({ resource, onSelect }: ChatResourceCardProps) 
             size="icon"
             variant={selected ? "default" : "secondary"}
             className={`rounded-full w-8 h-8 p-0 transition-opacity ${
-              selected ? "bg-primary text-primary-foreground" : "bg-background-secondary"
+              selected
+                ? "bg-primary text-primary-foreground"
+                : "bg-background-secondary"
             }`}
             onClick={handleToggleResource}
           >
-            {selected ? <Check className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+            {selected ? (
+              <Check className="h-4 w-4" />
+            ) : (
+              <Plus className="h-4 w-4" />
+            )}
           </Button>
         </div>
       </div>
-      <DetailSheet item={resource} open={isSheetOpen} onOpenChange={setIsSheetOpen} />
+      <DetailSheet
+        item={resource}
+        open={isSheetOpen}
+        onOpenChange={setIsSheetOpen}
+      />
     </>
-  )
+  );
 }
-

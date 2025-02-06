@@ -1,31 +1,31 @@
-import { useState } from "react"
-import type { Resource } from "@/types/resources"
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext"
-import { Check, Info } from "lucide-react"
-import { DetailSheet } from "@/components/DetailSheet"
-import Image from "next/image"
+import { useState } from "react";
+import type { Resource } from "@/types/resources";
+import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
+import { Check, Info } from "lucide-react";
+import { DetailSheet } from "@/components/DetailSheet";
+import Image from "next/image";
 
 interface HomeResourceCardProps {
-  resource: Resource
+  resource: Resource;
 }
 
 export function HomeResourceCard({ resource }: HomeResourceCardProps) {
-  const { addResource, removeResource, isSelected } = useSelectedResources()
-  const [isResourceSheetOpen, setIsResourceSheetOpen] = useState(false)
-  const selected = isSelected(resource.id)
+  const { addResource, removeResource, isSelected } = useSelectedResources();
+  const [isResourceSheetOpen, setIsResourceSheetOpen] = useState(false);
+  const selected = isSelected(resource.id);
 
   const handleCardClick = () => {
     if (selected) {
-      removeResource(resource.id)
+      removeResource(resource.id);
     } else {
-      addResource(resource)
+      addResource(resource);
     }
-  }
+  };
 
   const handleViewDetails = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    setIsResourceSheetOpen(true)
-  }
+    e.stopPropagation();
+    setIsResourceSheetOpen(true);
+  };
 
   return (
     <>
@@ -54,8 +54,12 @@ export function HomeResourceCard({ resource }: HomeResourceCardProps) {
           </div>
         </div>
         <div className="w-full px-1 sm:px-2">
-          <h3 className="text-sm sm:text-base font-bold text-foreground text-left truncate">{resource.title}</h3>
-          <p className="text-xs sm:text-sm text-muted-foreground">{resource.type}</p>
+          <h3 className="text-sm sm:text-base font-bold text-foreground text-left truncate">
+            {resource.title}
+          </h3>
+          <p className="text-xs sm:text-sm text-muted-foreground">
+            {resource.type}
+          </p>
         </div>
         <div className="absolute top-2 right-2 flex items-center space-x-2">
           {selected && (
@@ -66,8 +70,11 @@ export function HomeResourceCard({ resource }: HomeResourceCardProps) {
         </div>
       </div>
 
-      <DetailSheet item={resource} open={isResourceSheetOpen} onOpenChange={setIsResourceSheetOpen} />
+      <DetailSheet
+        item={resource}
+        open={isResourceSheetOpen}
+        onOpenChange={setIsResourceSheetOpen}
+      />
     </>
-  )
+  );
 }
-

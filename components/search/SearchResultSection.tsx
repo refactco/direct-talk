@@ -1,16 +1,21 @@
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { Button } from "@/components/ui/button"
-import { ChevronRight } from "lucide-react"
-import Link from "next/link"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 interface SearchResultSectionProps {
-  title: string
-  viewAllHref?: string
-  children: React.ReactNode
-  className?: string
+  title: string;
+  viewAllHref?: string;
+  children: React.ReactNode;
+  className?: string;
 }
 
-export function SearchResultSection({ title, viewAllHref, children, className = "" }: SearchResultSectionProps) {
+export function SearchResultSection({
+  title,
+  viewAllHref,
+  children,
+  className = ""
+}: SearchResultSectionProps) {
   return (
     <section className={className}>
       <div className="flex items-center justify-between mb-4">
@@ -29,6 +34,5 @@ export function SearchResultSection({ title, viewAllHref, children, className = 
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
     </section>
-  )
+  );
 }
-

@@ -14,3 +14,7 @@ coverage
 
 # Ignore node_modules
 node_modules
+
+public/
+.gitignore
+.husky/

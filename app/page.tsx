@@ -1,78 +1,81 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext"
-import { useRouter } from "next/navigation"
-import { getResources } from "@/lib/api"
-import { createNewChat } from "@/lib/history-storage"
-import type { Resource } from "@/types/resources"
-import type React from "react"
-import { DetailSheet } from "@/components/DetailSheet"
-import { HomeResourceCard } from "@/components/HomeResourceCard"
-import { ResourceSelector } from "@/components/ResourceSelector"
-import { AuthModal } from "@/components/AuthModal"
-import Image from "next/image"
+import { useState, useEffect } from "react";
+import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
+import { useRouter } from "next/navigation";
+import { getResources } from "@/lib/api";
+import { createNewChat } from "@/lib/history-storage";
+import type { Resource } from "@/types/resources";
+import type React from "react";
+import { DetailSheet } from "@/components/DetailSheet";
+import { HomeResourceCard } from "@/components/HomeResourceCard";
+import { ResourceSelector } from "@/components/ResourceSelector";
+import { AuthModal } from "@/components/AuthModal";
+import Image from "next/image";
 
 export default function HomePage() {
-  const [message, setMessage] = useState("")
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [showWarning, setShowWarning] = useState(false)
-  const [popularResources, setPopularResources] = useState<Resource[]>([])
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const [isResourceSheetOpen, setIsResourceSheetOpen] = useState(false)
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
-  const { selectedResources, removeResource, addResource, isSelected } = useSelectedResources()
-  const router = useRouter()
+  const [message, setMessage] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showWarning, setShowWarning] = useState(false);
+  const [popularResources, setPopularResources] = useState<Resource[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isResourceSheetOpen, setIsResourceSheetOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const { selectedResources, removeResource, addResource, isSelected } =
+    useSelectedResources();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchPopularResources = async () => {
       try {
-        const resources = await getResources({ sort: "popular", limit: 4 })
-        setPopularResources(resources)
+        const resources = await getResources({ sort: "popular", limit: 4 });
+        setPopularResources(resources);
       } catch (error) {
-        console.error("Error fetching popular resources:", error)
+        console.error("Error fetching popular resources:", error);
       }
-    }
-    fetchPopularResources()
-  }, [])
+    };
+    fetchPopularResources();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setErrorMessage(null)
+    e.preventDefault();
+    setErrorMessage(null);
     if (message.trim()) {
       if (selectedResources.length > 0) {
-        console.log("Attempting to open AuthModal") // Debug log
-        setIsAuthModalOpen(true)
+        console.log("Attempting to open AuthModal"); // Debug log
+        setIsAuthModalOpen(true);
       } else {
-        setIsModalOpen(true)
-        setShowWarning(true)
+        setIsModalOpen(true);
+        setShowWarning(true);
       }
     }
-  }
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault()
-      handleSubmit(e as unknown as React.FormEvent)
+      e.preventDefault();
+      handleSubmit(e as unknown as React.FormEvent);
     }
-  }
+  };
 
   const handleAuthenticated = async () => {
-    setIsAuthModalOpen(false)
-    setIsLoading(true)
+    setIsAuthModalOpen(false);
+    setIsLoading(true);
     try {
-      const chatId = await createNewChat(selectedResources[0].id, message)
-      router.push(`/chat/conversation?id=${chatId}`)
+      const chatId = await createNewChat(selectedResources[0].id, message);
+      router.push(`/chat/conversation?id=${chatId}`);
     } catch (error) {
-      console.error("Error creating new chat:", error)
-      setErrorMessage(`Failed to create a new chat: ${error instanceof Error ? error.message : "Unknown error"}`)
+      console.error("Error creating new chat:", error);
+      setErrorMessage(
+        `Failed to create a new chat: ${error instanceof Error ? error.message : "Unknown error"}`
+      );
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
-  console.log("AuthModal open state:", isAuthModalOpen) // Debug log
+  console.log("AuthModal open state:", isAuthModalOpen); // Debug log
 
   return (
     <div className="flex flex-col items-center justify-between min-h-[calc(100vh-4rem)] p-4 sm:p-6">
@@ -119,13 +122,17 @@ export default function HomePage() {
                     />
                   </div>
                   <div className="flex flex-col flex-grow min-w-0 pr-6">
-                    <span className="text-xs sm:text-sm font-bold leading-tight truncate">{resource.title}</span>
-                    <span className="text-xs leading-tight">{resource.type}</span>
+                    <span className="text-xs sm:text-sm font-bold leading-tight truncate">
+                      {resource.title}
+                    </span>
+                    <span className="text-xs leading-tight">
+                      {resource.type}
+                    </span>
                   </div>
                   <button
                     onClick={(e) => {
-                      e.preventDefault()
-                      removeResource(resource.id)
+                      e.preventDefault();
+                      removeResource(resource.id);
                     }}
                     className="absolute top-1 right-1 sm:top-2 sm:right-2 hover:text-muted-foreground"
                   >
@@ -223,24 +230,27 @@ export default function HomePage() {
         </div>
       </div>
 
-      <DetailSheet item={selectedResources[0]} open={isResourceSheetOpen} onOpenChange={setIsResourceSheetOpen} />
+      <DetailSheet
+        item={selectedResources[0]}
+        open={isResourceSheetOpen}
+        onOpenChange={setIsResourceSheetOpen}
+      />
       <ResourceSelector
         open={isModalOpen}
         onOpenChange={(open) => {
-          setIsModalOpen(open)
-          if (!open) setShowWarning(false)
+          setIsModalOpen(open);
+          if (!open) setShowWarning(false);
         }}
         showWarning={showWarning}
       />
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => {
-          console.log("Closing AuthModal") // Debug log
-          setIsAuthModalOpen(false)
+          console.log("Closing AuthModal"); // Debug log
+          setIsAuthModalOpen(false);
         }}
         onAuthenticated={handleAuthenticated}
       />
     </div>
-  )
+  );
 }
-

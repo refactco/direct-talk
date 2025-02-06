@@ -1,11 +1,11 @@
-import type { Resource } from "@/types/resources"
-import { Button } from "@/components/ui/button"
-import { Plus } from "lucide-react"
-import Link from "next/link"
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext"
+import type { Resource } from "@/types/resources";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import Link from "next/link";
+import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
 
 export function TopResult({ resource }: { resource: Resource }) {
-  const { addResource, isSelected } = useSelectedResources()
+  const { addResource, isSelected } = useSelectedResources();
   return (
     <Link
       href={`/resources/${resource.id}`}
@@ -28,13 +28,12 @@ export function TopResult({ resource }: { resource: Resource }) {
         size="icon"
         className="absolute bottom-6 right-6 h-12 w-12 rounded-full opacity-0 transition-opacity group-hover:opacity-100"
         onClick={(e) => {
-          e.preventDefault()
-          addResource(resource)
+          e.preventDefault();
+          addResource(resource);
         }}
       >
         <Plus className="h-6 w-6" />
       </Button>
     </Link>
-  )
+  );
 }
-

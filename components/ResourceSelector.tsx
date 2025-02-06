@@ -1,33 +1,39 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Search, X } from "lucide-react"
-import { resources, authors } from "@/lib/data"
-import type { Resource } from "@/types/resources"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext"
-import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { ResourceSheet } from "@/components/ResourceSheet"
-import { HomeResourceCard } from "@/components/HomeResourceCard"
-import { Check, Play, Users, BookOpen } from "lucide-react"
-import Image from "next/image"
+import { useState } from "react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Search, X } from "lucide-react";
+import { resources, authors } from "@/lib/data";
+import type { Resource } from "@/types/resources";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { ResourceSheet } from "@/components/ResourceSheet";
+import { HomeResourceCard } from "@/components/HomeResourceCard";
+import { Check, Play, Users, BookOpen } from "lucide-react";
+import Image from "next/image";
 
 interface ResourceSelectorProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  showWarning?: boolean
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  showWarning?: boolean;
 }
 
-export function ResourceSelector({ open, onOpenChange, showWarning = false }: ResourceSelectorProps) {
-  const [search, setSearch] = useState("")
-  const { addResource, removeResource, isSelected, selectedResources } = useSelectedResources()
-  const [selectedSheetResource, setSelectedSheetResource] = useState<Resource | null>(null)
+export function ResourceSelector({
+  open,
+  onOpenChange,
+  showWarning = false
+}: ResourceSelectorProps) {
+  const [search, setSearch] = useState("");
+  const { addResource, removeResource, isSelected, selectedResources } =
+    useSelectedResources();
+  const [selectedSheetResource, setSelectedSheetResource] =
+    useState<Resource | null>(null);
 
   // Get popular resources for initial view
-  const popularResources = resources.slice(0, 6)
+  const popularResources = resources.slice(0, 6);
 
   // Filter and categorize resources based on search
   const filteredResources =
@@ -37,13 +43,13 @@ export function ResourceSelector({ open, onOpenChange, showWarning = false }: Re
           return (
             resource.title.toLowerCase().includes(search.toLowerCase()) ||
             resource.description.toLowerCase().includes(search.toLowerCase())
-          )
-        })
+          );
+        });
 
   // Categorize filtered resources
-  const shows = filteredResources.filter((r) => r.type === "Podcast")
-  const books = filteredResources.filter((r) => r.type === "Book")
-  const people = filteredResources // In a real app, this would be authors
+  const shows = filteredResources.filter((r) => r.type === "Podcast");
+  const books = filteredResources.filter((r) => r.type === "Book");
+  const people = filteredResources; // In a real app, this would be authors
 
   const filteredAuthors =
     search.trim() === ""
@@ -51,8 +57,8 @@ export function ResourceSelector({ open, onOpenChange, showWarning = false }: Re
       : authors.filter(
           (author) =>
             author.name.toLowerCase().includes(search.toLowerCase()) ||
-            author.bio.toLowerCase().includes(search.toLowerCase()),
-        )
+            author.bio.toLowerCase().includes(search.toLowerCase())
+        );
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -69,7 +75,11 @@ export function ResourceSelector({ open, onOpenChange, showWarning = false }: Re
                   className="pl-9 pr-4 py-2 w-full bg-accent border-none"
                 />
               </div>
-              <Button variant="ghost" size="icon" onClick={() => onOpenChange(false)}>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => onOpenChange(false)}
+              >
                 <X className="h-4 w-4" />
                 <span className="sr-only">Close</span>
               </Button>
@@ -80,7 +90,10 @@ export function ResourceSelector({ open, onOpenChange, showWarning = false }: Re
             <div className="p-4">
               {showWarning && selectedResources.length === 0 && (
                 <Alert variant="warning" className="mb-4">
-                  <AlertDescription>You should select at least one resource to start search about</AlertDescription>
+                  <AlertDescription>
+                    You should select at least one resource to start search
+                    about
+                  </AlertDescription>
                 </Alert>
               )}
 
@@ -88,10 +101,15 @@ export function ResourceSelector({ open, onOpenChange, showWarning = false }: Re
                 // Show popular resources when no search
                 <div className="space-y-8">
                   <section>
-                    <h2 className="text-xl font-bold mb-4">Popular resources</h2>
+                    <h2 className="text-xl font-bold mb-4">
+                      Popular resources
+                    </h2>
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                       {popularResources.map((resource) => (
-                        <HomeResourceCard key={resource.id} resource={resource} />
+                        <HomeResourceCard
+                          key={resource.id}
+                          resource={resource}
+                        />
                       ))}
                     </div>
                   </section>
@@ -119,8 +137,12 @@ export function ResourceSelector({ open, onOpenChange, showWarning = false }: Re
                               <Play className="w-12 h-12 text-white" />
                             </div>
                             <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-                              <h3 className="text-white font-semibold truncate">{resource.title}</h3>
-                              <p className="text-white/70 text-sm">{resource.type}</p>
+                              <h3 className="text-white font-semibold truncate">
+                                {resource.title}
+                              </h3>
+                              <p className="text-white/70 text-sm">
+                                {resource.type}
+                              </p>
                             </div>
                             {isSelected(resource.id) && (
                               <div className="absolute top-2 right-2 w-8 h-8 rounded-full bg-primary flex items-center justify-center">
@@ -142,9 +164,11 @@ export function ResourceSelector({ open, onOpenChange, showWarning = false }: Re
                             key={author.id}
                             className="flex flex-col items-center gap-2 cursor-pointer"
                             onClick={() => {
-                              const authorResources = resources.filter((r) => r.authorId === author.id)
+                              const authorResources = resources.filter(
+                                (r) => r.authorId === author.id
+                              );
                               if (authorResources.length > 0) {
-                                addResource(authorResources[0])
+                                addResource(authorResources[0]);
                               }
                             }}
                           >
@@ -162,8 +186,12 @@ export function ResourceSelector({ open, onOpenChange, showWarning = false }: Re
                               )}
                             </div>
                             <div className="text-center">
-                              <p className="font-medium truncate max-w-[96px]">{author.name}</p>
-                              <p className="text-xs text-muted-foreground truncate max-w-[96px]">{author.bio}</p>
+                              <p className="font-medium truncate max-w-[96px]">
+                                {author.name}
+                              </p>
+                              <p className="text-xs text-muted-foreground truncate max-w-[96px]">
+                                {author.bio}
+                              </p>
                             </div>
                           </div>
                         ))}
@@ -191,8 +219,12 @@ export function ResourceSelector({ open, onOpenChange, showWarning = false }: Re
                               <BookOpen className="w-12 h-12 text-white" />
                             </div>
                             <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-                              <h3 className="text-white font-semibold truncate">{resource.title}</h3>
-                              <p className="text-white/70 text-sm">{resource.type}</p>
+                              <h3 className="text-white font-semibold truncate">
+                                {resource.title}
+                              </h3>
+                              <p className="text-white/70 text-sm">
+                                {resource.type}
+                              </p>
                             </div>
                             {isSelected(resource.id) && (
                               <div className="absolute top-2 right-2 w-8 h-8 rounded-full bg-primary flex items-center justify-center">
@@ -206,7 +238,9 @@ export function ResourceSelector({ open, onOpenChange, showWarning = false }: Re
                   )}
 
                   {filteredResources.length === 0 && (
-                    <div className="text-center text-muted-foreground py-8">No results found for "{search}"</div>
+                    <div className="text-center text-muted-foreground py-8">
+                      No results found for "{search}"
+                    </div>
                   )}
                 </div>
               )}
@@ -218,10 +252,9 @@ export function ResourceSelector({ open, onOpenChange, showWarning = false }: Re
         resource={selectedSheetResource}
         open={!!selectedSheetResource}
         onOpenChange={(open) => {
-          if (!open) setSelectedSheetResource(null)
+          if (!open) setSelectedSheetResource(null);
         }}
       />
     </Dialog>
-  )
+  );
 }
-

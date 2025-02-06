@@ -1,38 +1,41 @@
-import { useState, useCallback, useEffect } from "react"
+import { useState, useCallback, useEffect } from "react";
 
-export function useResizable(initialWidth: number, minWidth: number, maxWidth: number) {
-  const [width, setWidth] = useState(initialWidth)
-  const [isResizing, setIsResizing] = useState(false)
+export function useResizable(
+  initialWidth: number,
+  minWidth: number,
+  maxWidth: number
+) {
+  const [width, setWidth] = useState(initialWidth);
+  const [isResizing, setIsResizing] = useState(false);
 
   const startResizing = useCallback(() => {
-    setIsResizing(true)
-  }, [])
+    setIsResizing(true);
+  }, []);
 
   const stopResizing = useCallback(() => {
-    setIsResizing(false)
-  }, [])
+    setIsResizing(false);
+  }, []);
 
   const resize = useCallback(
     (mouseMoveEvent: MouseEvent) => {
       if (isResizing) {
-        const newWidth = mouseMoveEvent.clientX
+        const newWidth = mouseMoveEvent.clientX;
         if (newWidth >= minWidth && newWidth <= maxWidth) {
-          setWidth(newWidth)
+          setWidth(newWidth);
         }
       }
     },
-    [isResizing, minWidth, maxWidth],
-  )
+    [isResizing, minWidth, maxWidth]
+  );
 
   useEffect(() => {
-    window.addEventListener("mousemove", resize)
-    window.addEventListener("mouseup", stopResizing)
+    window.addEventListener("mousemove", resize);
+    window.addEventListener("mouseup", stopResizing);
     return () => {
-      window.removeEventListener("mousemove", resize)
-      window.removeEventListener("mouseup", stopResizing)
-    }
-  }, [resize, stopResizing])
+      window.removeEventListener("mousemove", resize);
+      window.removeEventListener("mouseup", stopResizing);
+    };
+  }, [resize, stopResizing]);
 
-  return { width, startResizing }
+  return { width, startResizing };
 }
-
