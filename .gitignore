@@ -1,2 +1,8 @@
 node_modules
 .next
+
+# Husky
+.husky/_
+
+# lint-staged
+.lint-staged.config.js
