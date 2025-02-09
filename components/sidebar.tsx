@@ -24,7 +24,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import {LogoutIcon} from "@/components/icons/LogoutIcon";
+import { LogoutIcon } from "@/components/icons/LogoutIcon";
 
 export function Sidebar() {
   const router = useRouter();
@@ -109,7 +109,9 @@ export function Sidebar() {
               </Button>
             ) : (
               <>
-                <span className="text-[11px] uppercase text-muted-foreground">History</span>
+                <span className="text-[11px] uppercase text-muted-foreground">
+                  History
+                </span>
               </>
             )}
           </div>
@@ -144,13 +146,14 @@ export function Sidebar() {
 
       {/* Account Section */}
       <Button
-          variant="outline"
-          className={cn("justify-start ml-5 w-max border-white/10 bg-transparent", isCollapsed && "px-2.5 ml-2.5")}
+        variant="outline"
+        className={cn(
+          "justify-start ml-5 w-max border-white/10 bg-transparent",
+          isCollapsed && "px-2.5 ml-2.5"
+        )}
       >
-          <LogoutIcon className="h-4 w-4" />
-          {!isCollapsed && (
-              <span className="text-base font-bold">Logout</span>
-          )}
+        <LogoutIcon className="h-4 w-4" />
+        {!isCollapsed && <span className="text-base font-bold">Logout</span>}
       </Button>
     </div>
   );

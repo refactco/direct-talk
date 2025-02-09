@@ -11,8 +11,8 @@ import { HomeResourceCard } from "@/components/HomeResourceCard";
 import { ResourceSelector } from "@/components/ResourceSelector";
 import { AuthModal } from "@/components/AuthModal";
 import { ChatInput } from "@/components/ChatInput";
-import {cn} from "@/lib/utils";
-import {ThemeToggle} from "@/components/ThemeToggle";
+import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -47,7 +47,7 @@ export default function HomePage() {
         console.log("Attempting to open AuthModal");
         setIsAuthModalOpen(true);
       } else {
-       // setIsModalOpen(true);
+        // setIsModalOpen(true);
         setShowWarning(true);
       }
     }
