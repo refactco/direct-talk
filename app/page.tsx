@@ -11,6 +11,8 @@ import { HomeResourceCard } from "@/components/HomeResourceCard";
 import { ResourceSelector } from "@/components/ResourceSelector";
 import { AuthModal } from "@/components/AuthModal";
 import { ChatInput } from "@/components/ChatInput";
+import {cn} from "@/lib/utils";
+import {ThemeToggle} from "@/components/ThemeToggle";
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,7 +47,7 @@ export default function HomePage() {
         console.log("Attempting to open AuthModal");
         setIsAuthModalOpen(true);
       } else {
-        setIsModalOpen(true);
+       // setIsModalOpen(true);
         setShowWarning(true);
       }
     }
@@ -72,8 +74,10 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col items-center justify-between min-h-[calc(100vh-4rem)] p-4 sm:p-6">
+      {/* Theme Toggle */}
+      <ThemeToggle />
       <div className="w-full max-w-3xl flex-grow flex flex-col justify-center items-center">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-white mb-4 sm:mb-6">
+        <h1 className="text-3xl sm:text-3xl md:text-[2rem] font-semibold text-center text-white mb-4 sm:mb-6">
           What do you want to know?
         </h1>
         <div className="w-full">
@@ -98,8 +102,8 @@ export default function HomePage() {
         )}
       </div>
 
-      <div className="w-full max-w-3xl mt-6 sm:mt-8">
-        <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-4 sm:mb-6 text-center text-foreground">
+      <div className="w-full max-w-3xl mt-6 sm:mt-16">
+        <h2 className="text-lg sm:text-xl md:text-xl font-semibold mb-6 text-center text-foreground">
           Popular resources
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 md:gap-[22px]">

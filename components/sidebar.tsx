@@ -24,6 +24,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
+import {LogoutIcon} from "@/components/icons/LogoutIcon";
 
 export function Sidebar() {
   const router = useRouter();
@@ -51,14 +52,14 @@ export function Sidebar() {
   return (
     <div
       className={cn(
-        "flex h-full flex-col bg-background relative transition-all duration-300 ease-in-out border-r border-border",
+        "flex h-full pb-5 flex-col bg-accent relative transition-all duration-300 ease-in-out border-r border-white/10",
         isCollapsed ? "w-[64px]" : "w-[243px]"
       )}
     >
       {/* Logo Section */}
       <div
         className={cn(
-          "flex items-center p-4 border-b border-border",
+          "flex items-center p-4 border-b border-white/10",
           isCollapsed ? "justify-center" : "justify-between"
         )}
       >
@@ -108,8 +109,7 @@ export function Sidebar() {
               </Button>
             ) : (
               <>
-                <HistoryIcon />
-                <span className="text-base font-bold">History</span>
+                <span className="text-[11px] uppercase text-muted-foreground">History</span>
               </>
             )}
           </div>
@@ -123,8 +123,8 @@ export function Sidebar() {
                       key={chat.id}
                       href={`/chat/conversation?id=${chat.id}`}
                       className={cn(
-                        "flex items-center py-2 px-3 text-sm rounded-lg transition-colors",
-                        "hover:bg-accent",
+                        "flex items-center py-[6px] text-sm rounded-sm transition-all",
+                        "hover:bg-white/10 hover:px-2",
                         pathname?.includes(chat.id) && "bg-accent"
                       )}
                     >
@@ -142,52 +142,16 @@ export function Sidebar() {
         </div>
       </div>
 
-      {/* Theme Toggle */}
-      <div className={cn("p-2", isCollapsed && "flex justify-center")}>
-        <ThemeToggle />
-      </div>
-
       {/* Account Section */}
-      <div className={cn("p-2", isCollapsed && "flex justify-center")}>
-        <DropdownMenu direction="top">
-          <DropdownMenuTrigger
-            asChild
-            onClick={() => console.log("Dropdown trigger clicked")}
-          >
-            <Button
-              variant="ghost"
-              className={cn("w-full justify-start", isCollapsed && "w-12 px-0")}
-            >
-              <div
-                className={cn(
-                  "flex items-center gap-3",
-                  isCollapsed && "flex-col gap-1"
-                )}
-              >
-                <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center">
-                  <User className="h-4 w-4" />
-                </div>
-                {!isCollapsed && (
-                  <span className="text-base font-bold">Account</span>
-                )}
-              </div>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="center"
-            className="w-56 bg-popover text-popover-foreground border border-border shadow-md"
-          >
-            <DropdownMenuItem>
-              <User className="mr-2 h-4 w-4" />
-              <span>Profile</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => router.push("/auth/login")}>
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Logout</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+      <Button
+          variant="outline"
+          className={cn("justify-start ml-5 w-max border-white/10 bg-transparent", isCollapsed && "px-2.5 ml-2.5")}
+      >
+          <LogoutIcon className="h-4 w-4" />
+          {!isCollapsed && (
+              <span className="text-base font-bold">Logout</span>
+          )}
+      </Button>
     </div>
   );
 }

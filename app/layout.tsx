@@ -11,7 +11,7 @@ import type React from "react";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Carrot - Your Knowledge Hub",
+  title: "Direct Talk - Talk to you favorite resources",
   description:
     "Discover and engage with curated resources through AI-powered conversations"
 };
