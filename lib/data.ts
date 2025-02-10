@@ -48,6 +48,39 @@ export const resources: Resource[] = [
     authorId: "diana-wynne-jones",
     topics: ["fantasy", "magic"],
     publishedAt: "1986-04-14"
+  },
+  {
+    id: "ted-radio-hour",
+    title: "TED Radio Hour",
+    description:
+      "A journey through fascinating ideas, astonishing inventions, and new ways to think and create.",
+    type: "Podcast",
+    imageUrl: "/placeholder.svg?text=TRH",
+    authorId: "npr",
+    topics: ["technology", "science", "culture"],
+    publishedAt: "2012-04-27"
+  },
+  {
+    id: "hardcore-history",
+    title: "Hardcore History",
+    description:
+      "In-depth, long-form podcasts about history's most dramatic events.",
+    type: "Podcast",
+    imageUrl: "/placeholder.svg?text=HH",
+    authorId: "dan-carlin",
+    topics: ["history", "war", "politics"],
+    publishedAt: "2006-10-30"
+  },
+  {
+    id: "radiolab",
+    title: "Radiolab",
+    description:
+      "A show about curiosity. Where sound illuminates ideas, and the boundaries blur between science, philosophy, and human experience.",
+    type: "Podcast",
+    imageUrl: "/placeholder.svg?text=RL",
+    authorId: "wnyc-studios",
+    topics: ["science", "philosophy", "human experience"],
+    publishedAt: "2002-05-24"
   }
 ];
 
@@ -79,5 +112,26 @@ export const authors: Author[] = [
     bio: "British author of fantasy novels, including 'Howl's Moving Castle'",
     imageUrl: "/placeholder.svg?text=DWJ",
     resources: ["howls"]
+  },
+  {
+    id: "npr",
+    name: "NPR",
+    bio: "National Public Radio, producer of various podcasts including TED Radio Hour",
+    imageUrl: "/placeholder.svg?text=NPR",
+    resources: ["ted-radio-hour"]
+  },
+  {
+    id: "dan-carlin",
+    name: "Dan Carlin",
+    bio: "American podcaster and political commentator, known for Hardcore History",
+    imageUrl: "/placeholder.svg?text=DC",
+    resources: ["hardcore-history"]
+  },
+  {
+    id: "wnyc-studios",
+    name: "WNYC Studios",
+    bio: "New York Public Radio's podcast production arm, creators of Radiolab",
+    imageUrl: "/placeholder.svg?text=WNYC",
+    resources: ["radiolab"]
   }
 ];

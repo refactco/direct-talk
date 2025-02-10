@@ -1,35 +1,26 @@
-export type ResourceType = "Article" | "Book" | "Podcast";
+export type ResourceType = "book" | "show" | "episode";
 
 export interface Author {
-  id: string;
+  id: number | string;
+  ref_id: number;
   name: string;
-  bio: string;
-  imageUrl: string;
-  resources: string[]; // Resource IDs
+  description: string;
+  image_url: string;
 }
 
 export interface Resource {
-  id: string;
+  id: number | string;
+  ref_id: number;
   title: string;
-  description: string;
   type: ResourceType;
-  imageUrl: string;
-  authorId: string;
-  topics: string[];
-  publishedAt: string;
-  content?: string;
-  duration?: number; // For podcasts/videos
-  url?: string; // External link if applicable
+  description: string;
+  image_url: string;
 }
 
 export interface Topic {
-  id: string;
+  id: number;
   name: string;
+  slug: string;
   description: string;
-  resourceCount: number;
-}
-
-export interface Message {
-  role: "user" | "assistant";
-  content: string;
+  count: number;
 }

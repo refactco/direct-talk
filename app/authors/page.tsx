@@ -1,5 +1,5 @@
 import { getAuthors } from "@/lib/api";
-import { AuthorCard } from "@/components/AuthorCard";
+import { AuthorCard } from "@/components/PeopleCard";
 
 export default async function AllAuthorsPage() {
   const authors = await getAuthors();

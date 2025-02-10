@@ -5,7 +5,7 @@ import { Book } from "lucide-react";
 import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ResourceSelector } from "@/components/ResourceSelector";
+import { SearchModal } from "@/components/search-modal/search-modal";
 import {
   createNewChat,
   addMessageToChat,
@@ -314,7 +314,7 @@ export default function ChatConversationPage() {
         </div>
       </div>
 
-      <ResourceSelector
+      <SearchModal
         open={isResourceSelectorOpen}
         onOpenChange={setIsResourceSelectorOpen}
       />

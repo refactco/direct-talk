@@ -5,7 +5,7 @@ import { useSearch } from "@/contexts/SearchContext";
 import { SearchResultSection } from "@/components/search/SearchResultSection";
 import { TopResult } from "@/components/search/TopResult";
 import { ResourceCard } from "@/components/ResourceCard";
-import { AuthorCard } from "@/components/AuthorCard";
+import { AuthorCard } from "@/components/PeopleCard";
 import Link from "next/link";
 import { Search } from "lucide-react";
 

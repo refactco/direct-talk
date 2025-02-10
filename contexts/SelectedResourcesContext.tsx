@@ -7,9 +7,9 @@ import type { Resource } from "@/types/resources";
 type SelectedResourcesContextType = {
   selectedResources: Resource[];
   addResource: (resource: Resource) => void;
-  removeResource: (resourceId: string) => void;
+  removeResource: (resourceId: string | number) => void;
   resetSelectedResources: () => void;
-  isSelected: (resourceId: string) => boolean;
+  isSelected: (resourceId: string | number) => boolean;
 };
 
 const SelectedResourcesContext = createContext<

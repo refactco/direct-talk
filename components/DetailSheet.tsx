@@ -86,7 +86,7 @@ export function DetailSheet({ item, open, onOpenChange }: DetailSheetProps) {
             </div>
             {isResource && (
               <div className="flex flex-wrap gap-2">
-                {item.topics.map((topic) => (
+                {item?.topics?.map((topic) => (
                   <Badge
                     key={topic}
                     variant="secondary"

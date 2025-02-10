@@ -8,7 +8,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ChevronRight, Search } from "lucide-react";
 import Link from "next/link";
 import { ResourceCard } from "@/components/ResourceCard";
-import { AuthorCard } from "@/components/AuthorCard";
+import { AuthorCard } from "@/components/PeopleCard";
 import { useRouter } from "next/navigation";
 import { useSearch } from "@/contexts/SearchContext";
 

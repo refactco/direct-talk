@@ -7,19 +7,18 @@ import { getResources } from "@/lib/api";
 import { createNewChat } from "@/lib/history-storage";
 import type { Resource } from "@/types/resources";
 import { DetailSheet } from "@/components/DetailSheet";
-import { HomeResourceCard } from "@/components/HomeResourceCard";
-import { ResourceSelector } from "@/components/ResourceSelector";
+import { ResourceCard } from "@/components/resource-card/ResourceCard";
+import { SearchModal } from "@/components/search-modal/search-modal";
 import { AuthModal } from "@/components/AuthModal";
 import { ChatInput } from "@/components/ChatInput";
-import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
-  const [popularResources, setPopularResources] = useState<Resource[]>([]);
+  const [popularResources, setPopularResources] = useState<Resource[]>(Array.from({ length: 5 }) as any);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isResourceSheetOpen, setIsResourceSheetOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [currentMessage, setCurrentMessage] = useState(""); // Added state for current message
@@ -29,11 +28,14 @@ export default function HomePage() {
 
   useEffect(() => {
     const fetchPopularResources = async () => {
+      setIsLoading(true);
       try {
-        const resources = await getResources({ sort: "popular", limit: 4 });
-        setPopularResources(resources);
+        const resources = await getResources({ sort: "popular", limit: 5 });
+        setPopularResources(resources?.resources);
       } catch (error) {
         console.error("Error fetching popular resources:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchPopularResources();
@@ -71,7 +73,6 @@ export default function HomePage() {
       setIsLoading(false);
     }
   };
-
   return (
     <div className="flex flex-col items-center justify-between min-h-[calc(100vh-4rem)] p-4 sm:p-6">
       {/* Theme Toggle */}
@@ -106,9 +107,9 @@ export default function HomePage() {
         <h2 className="text-lg sm:text-xl md:text-xl font-semibold mb-6 text-center text-foreground">
           Popular resources
         </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 md:gap-[22px]">
-          {popularResources.map((resource) => (
-            <HomeResourceCard key={resource.id} resource={resource} />
+        <div className="grid grid-cols-5 gap-[22px]">
+          {popularResources?.map((resource, index: number) => (
+            <ResourceCard key={index} resource={resource} isLoading={isLoading}/>
           ))}
         </div>
       </div>
@@ -118,7 +119,7 @@ export default function HomePage() {
         open={isResourceSheetOpen}
         onOpenChange={setIsResourceSheetOpen}
       />
-      <ResourceSelector
+      <SearchModal
         open={isModalOpen}
         onOpenChange={(open) => {
           setIsModalOpen(open);

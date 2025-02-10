@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, ArrowRight, BookOpen, X, Loader2 } from "lucide-react";
 import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
-import { ResourceSelector } from "@/components/ResourceSelector";
+import { SearchModal } from "@/components/search-modal/search-modal";
 import {
   Tooltip,
   TooltipContent,
@@ -171,7 +171,7 @@ export default function ChatPage() {
         {errorMessage && <p className="text-red-500">{errorMessage}</p>}
       </div>
 
-      <ResourceSelector
+      <SearchModal
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
         showWarning={showWarning}
