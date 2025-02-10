@@ -13,7 +13,7 @@ import { CloseIcon } from "@/components/icons/CloseIcon";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { ResourceSelectorProps, SearchResults } from "./search-modal-types";
-import {ResourceCard} from "@/components/resource-card/ResourceCard";
+import { ResourceCard } from "@/components/resource-card/ResourceCard";
 
 export function SearchModal({
   open,
@@ -166,25 +166,25 @@ export function SearchModal({
 
                 {/* Episode Section */}
                 {searchResults.episodes.length > 0 && (
-                    <>
-                      <h2 className="text-xl font-bold text-white mb-6 mt-12">
-                        {search ? "Episodes" : "Popular Episodes"}
-                      </h2>
-                      <div className="relative w-full">
-                        <Swiper spaceBetween={22} slidesPerView={5}>
-                          {searchResults.episodes.map((resource) => (
-                              <SwiperSlide key={resource.id}>
-                                <ResourceCard
-                                    key={resource.id}
-                                    resource={resource}
-                                    showDetails={false}
-                                    hideType={true}
-                                />
-                              </SwiperSlide>
-                          ))}
-                        </Swiper>
-                      </div>
-                    </>
+                  <>
+                    <h2 className="text-xl font-bold text-white mb-6 mt-12">
+                      {search ? "Episodes" : "Popular Episodes"}
+                    </h2>
+                    <div className="relative w-full">
+                      <Swiper spaceBetween={22} slidesPerView={5}>
+                        {searchResults.episodes.map((resource) => (
+                          <SwiperSlide key={resource.id}>
+                            <ResourceCard
+                              key={resource.id}
+                              resource={resource}
+                              showDetails={false}
+                              hideType={true}
+                            />
+                          </SwiperSlide>
+                        ))}
+                      </Swiper>
+                    </div>
+                  </>
                 )}
 
                 {/* Book Section */}
@@ -196,14 +196,14 @@ export function SearchModal({
                     <div className="relative w-full">
                       <Swiper spaceBetween={22} slidesPerView={5}>
                         {searchResults.books.map((resource) => (
-                            <SwiperSlide key={resource.id}>
-                          <ResourceCard
-                            key={resource.id}
-                            resource={resource}
-                            showDetails={false}
-                            hideType={true}
-                          />
-                            </SwiperSlide>
+                          <SwiperSlide key={resource.id}>
+                            <ResourceCard
+                              key={resource.id}
+                              resource={resource}
+                              showDetails={false}
+                              hideType={true}
+                            />
+                          </SwiperSlide>
                         ))}
                       </Swiper>
                     </div>

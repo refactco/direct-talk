@@ -77,6 +77,6 @@ export async function searchAll(query: string): Promise<{
     books: data.books,
     people: data.people ?? [],
     shows: data.shows ?? [],
-    episodes: data.episodes ?? [],
+    episodes: data.episodes ?? []
   };
 }

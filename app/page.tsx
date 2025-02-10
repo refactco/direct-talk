@@ -16,7 +16,9 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
-  const [popularResources, setPopularResources] = useState<Resource[]>(Array.from({ length: 5 }) as any);
+  const [popularResources, setPopularResources] = useState<Resource[]>(
+    Array.from({ length: 5 }) as any
+  );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isResourceSheetOpen, setIsResourceSheetOpen] = useState(false);
@@ -109,7 +111,11 @@ export default function HomePage() {
         </h2>
         <div className="grid grid-cols-5 gap-[22px]">
           {popularResources?.map((resource, index: number) => (
-            <ResourceCard key={index} resource={resource} isLoading={isLoading}/>
+            <ResourceCard
+              key={index}
+              resource={resource}
+              isLoading={isLoading}
+            />
           ))}
         </div>
       </div>
