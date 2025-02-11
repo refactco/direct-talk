@@ -1,5 +1,4 @@
-import type { Resource } from "@/types/resources";
-import type { Author } from "@/types/resources";
+import type { Author, Resource } from "@/types/resources";
 
 export const resources: Resource[] = [
   {
@@ -133,5 +132,12 @@ export const authors: Author[] = [
     bio: "New York Public Radio's podcast production arm, creators of Radiolab",
     imageUrl: "/placeholder.svg?text=WNYC",
     resources: ["radiolab"]
+  }
+];
+
+export const topics = [
+  {
+    name: "",
+    description: ""
   }
 ];

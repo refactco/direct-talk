@@ -1,16 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { getResources, getAuthors } from "@/lib/api";
+import { PeopleCard } from "@/components/PeopleCard";
+import { ResourceCard } from "@/components/resource-card/ResourceCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useSearch } from "@/contexts/SearchContext";
+import { getAuthors, getResources } from "@/lib/api";
 import { ChevronRight, Search } from "lucide-react";
 import Link from "next/link";
-import { ResourceCard } from "@/components/ResourceCard";
-import { AuthorCard } from "@/components/PeopleCard";
 import { useRouter } from "next/navigation";
-import { useSearch } from "@/contexts/SearchContext";
+import { useEffect, useState } from "react";
 
 export default function ExplorePage() {
   const [recentResources, setRecentResources] = useState([]);
@@ -124,7 +124,7 @@ export default function ExplorePage() {
         <ScrollArea className="w-full">
           <div className="flex gap-4 py-4">
             {authors.map((author) => (
-              <AuthorCard key={author.id} author={author} />
+              <PeopleCard key={author.id} people={author} />
             ))}
           </div>
           <ScrollBar orientation="horizontal" />

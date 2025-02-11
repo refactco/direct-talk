@@ -1,20 +1,20 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { Book } from "lucide-react";
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { SearchModal } from "@/components/search-modal/search-modal";
-import {
-  createNewChat,
-  addMessageToChat,
-  addChatToHistory
-} from "@/lib/history-storage";
-import { getResource } from "@/lib/api";
 import { AuthModal } from "@/components/AuthModal";
 import { ChatInput } from "@/components/ChatInput";
+import { SearchModal } from "@/components/search-modal/search-modal";
+import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
+import { getResource } from "@/lib/api";
+import {
+  addChatToHistory,
+  addMessageToChat,
+  createNewChat
+} from "@/lib/history-storage";
+import { Book } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useCallback, useEffect, useState } from "react";
 
 interface Message {
   role: "user" | "assistant";
@@ -57,7 +57,7 @@ const sendMessage = async (
   }
 };
 
-export default function ChatConversationPage() {
+function ChatConversationPage() {
   const {
     selectedResources,
     addResource,
@@ -326,3 +326,11 @@ export default function ChatConversationPage() {
     </div>
   );
 }
+
+const WrappedChatConversationPage = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <ChatConversationPage />
+  </Suspense>
+);
+
+export default WrappedChatConversationPage;

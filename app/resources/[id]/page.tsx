@@ -1,7 +1,7 @@
-import { getResource, getResources } from "@/lib/api";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { ResourceCard } from "@/components/ResourceCard";
+import { ResourceCard } from "@/components/resource-card/ResourceCard";
 import { ResourceContent } from "@/components/ResourceContent";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { getResource, getResources } from "@/lib/api";
 
 export default async function ResourcePage({
   params
