@@ -17,7 +17,7 @@ import {
   HistoryIcon
 } from "@/components/icons/sidebar-icons";
 import { LogoutIcon } from "@/components/icons/LogoutIcon";
-import {useAuth} from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -45,7 +45,7 @@ export function Sidebar() {
     } else {
       openAuthModal();
     }
-  }
+  };
 
   return (
     <div
@@ -152,7 +152,11 @@ export function Sidebar() {
         onClick={handleAuth}
       >
         <LogoutIcon className="h-4 w-4" />
-        {!isCollapsed && <span className="text-base font-bold">{isAuthenticated ? 'Logout' : 'Login'}</span>}
+        {!isCollapsed && (
+          <span className="text-base font-bold">
+            {isAuthenticated ? "Logout" : "Login"}
+          </span>
+        )}
       </Button>
     </div>
   );

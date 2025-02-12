@@ -7,8 +7,8 @@ import { SearchProvider } from "@/contexts/SearchContext";
 import { Providers } from "@/components/providers";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import type React from "react";
-import {AuthProvider} from "@/contexts/AuthContext";
-import {ChatProvider} from "@/contexts/ChatContext";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { ChatProvider } from "@/contexts/ChatContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,18 +34,18 @@ export default function RootLayout({
         >
           <Providers>
             <AuthProvider>
-            <SearchProvider>
-              <SelectedResourcesProvider>
-                <ChatProvider>
-                <div className="flex h-screen">
-                  <Sidebar />
-                  <main className="flex-1 overflow-y-auto pb-0 px-6 pt-6">
-                    {children}
-                  </main>
-                </div>
-                </ChatProvider>
-              </SelectedResourcesProvider>
-            </SearchProvider>
+              <SearchProvider>
+                <SelectedResourcesProvider>
+                  <ChatProvider>
+                    <div className="flex h-screen">
+                      <Sidebar />
+                      <main className="flex-1 overflow-y-auto pb-0 px-6 pt-6">
+                        {children}
+                      </main>
+                    </div>
+                  </ChatProvider>
+                </SelectedResourcesProvider>
+              </SearchProvider>
             </AuthProvider>
           </Providers>
         </ThemeProvider>

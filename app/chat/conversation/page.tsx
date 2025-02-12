@@ -5,19 +5,16 @@ import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
 import { useSearchParams } from "next/navigation";
 import { SearchModal } from "@/components/search-modal/search-modal";
 import { ChatInput } from "@/components/ChatInput";
-import {useAuth} from "@/contexts/AuthContext";
-import {useChat} from "@/contexts/ChatContext";
-import {Logo} from "@/components/icons/Logo";
+import { useAuth } from "@/contexts/AuthContext";
+import { useChat } from "@/contexts/ChatContext";
+import { Logo } from "@/components/icons/Logo";
 import SelectedResourceCard from "@/components/SelectedResourceCard";
 import TextLoading from "@/components/TextLoading";
-import ReactMarkdown from 'react-markdown';
-import {Message} from "@/app/chat/conversation/types";
+import ReactMarkdown from "react-markdown";
+import { Message } from "@/app/chat/conversation/types";
 
 export default function ChatConversationPage() {
-  const {
-    selectedResources,
-    removeResource,
-  } = useSelectedResources();
+  const { selectedResources, removeResource } = useSelectedResources();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isResourceSelectorOpen, setIsResourceSelectorOpen] = useState(false);
@@ -28,15 +25,16 @@ export default function ChatConversationPage() {
   const [messageList, setMessageList] = useState<Message[] | null>(null);
 
   useEffect(() => {
-    setMessageList(messages)
+    setMessageList(messages);
   }, [messages]);
 
   useEffect(() => {
-    if (chatId) { // TODO
+    if (chatId) {
+      // TODO
       if (!isAuthenticated) {
         openAuthModal();
       }
-     fetchChat(chatId);
+      fetchChat(chatId);
     }
   }, [chatId]);
 
@@ -52,7 +50,6 @@ export default function ChatConversationPage() {
       const result = await doChat(message, contentId, chatId);
 
       addMessage({ role: "assistant", content: result?.message });
-
     } catch (error) {
       console.error("Error in handleSubmit:", error);
       setErrorMessage(
@@ -78,26 +75,29 @@ export default function ChatConversationPage() {
                 }`}
               >
                 <div className="flex flex-col items-start gap-[14px]">
-                  {message.role === "assistant" && (
-                      <Logo/>
-                  )}
+                  {message.role === "assistant" && <Logo />}
                   <div className="flex-1">
-                    <p className={`text-foreground ${message.role === "user" ? 'text-lg font-bold' : 'text-base'}`}>
-                      <ReactMarkdown>{message.content || message.message}</ReactMarkdown>
+                    <p
+                      className={`text-foreground ${message.role === "user" ? "text-lg font-bold" : "text-base"}`}
+                    >
+                      <ReactMarkdown>
+                        {message.content || message.message}
+                      </ReactMarkdown>
                     </p>
                   </div>
                 </div>
                 {message.role === "assistant" && selectedResources[0] && (
-                    <div className="mt-6 flex flex-col gap-[14px] max-w-max">
-                      <p className="text-sm font-bold">Resources</p>
-                      <SelectedResourceCard hideRemove resource={selectedResources[0]}/>
+                  <div className="mt-6 flex flex-col gap-[14px] max-w-max">
+                    <p className="text-sm font-bold">Resources</p>
+                    <SelectedResourceCard
+                      hideRemove
+                      resource={selectedResources[0]}
+                    />
                   </div>
                 )}
               </div>
             ))}
-            {isLoading && (
-                <TextLoading/>
-            )}
+            {isLoading && <TextLoading />}
             {errorMessage && (
               <div className="text-red-500 text-xs sm:text-sm">
                 {errorMessage}

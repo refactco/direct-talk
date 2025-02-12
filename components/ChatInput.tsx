@@ -2,7 +2,7 @@
 
 import type React from "react";
 import { useState } from "react";
-import {Loader2, X} from "lucide-react";
+import { Loader2, X } from "lucide-react";
 import Image from "next/image";
 import type { Resource } from "@/types/resources";
 import { PlusIcon } from "@/components/icons/PlusIcon";
@@ -51,7 +51,10 @@ export function ChatInput({
         {selectedResources.length > 0 ? (
           <div className="flex flex-wrap items-center gap-2 p-2 border-b border-border">
             {selectedResources.map((resource) => (
-                <SelectedResourceCard resource={resource} onRemoveResource={onRemoveResource}/>
+              <SelectedResourceCard
+                resource={resource}
+                onRemoveResource={onRemoveResource}
+              />
             ))}
           </div>
         ) : null}
@@ -81,12 +84,13 @@ export function ChatInput({
               disabled={isLoading || !input.trim()}
               className="w-6 h-6 sm:w-10 sm:h-10 rounded-full bg-primary flex items-center justify-center shrink-0 disabled:bg-accent disabled:cursor-not-allowed"
             >
-              {
-                  isLoading ?  <Loader2 className="animate-spin" /> : <ArrowRightIcon fill={ !input.trim()
-                        ? "rgba(161, 161, 161, 1)"
-                        : "#052E16"
-                  } />
-              }
+              {isLoading ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                <ArrowRightIcon
+                  fill={!input.trim() ? "rgba(161, 161, 161, 1)" : "#052E16"}
+                />
+              )}
             </button>
           </div>
         </div>
