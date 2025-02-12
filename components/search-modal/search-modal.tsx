@@ -81,7 +81,7 @@ export function SearchModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[1299px] p-0 gap-0 bg-background">
+      <DialogContent className="max-w-[1299px] p-0 gap-0 bg-background ring-0">
         <ScrollArea>
           <Button
             variant="ghost"
@@ -89,7 +89,7 @@ export function SearchModal({
             onClick={() => onOpenChange(false)}
             className="rounded-full border border-white/10 absolute right-4 top-4"
           >
-            <CloseIcon className="h-5 w-5" />
+            <CloseIcon className="h-5 w-5 fill-white" />
           </Button>
           <div className="flex flex-col h-[85vh] max-w-[730px] m-auto">
             <div className="flex items-center gap-1 pt-11">
@@ -145,7 +145,7 @@ export function SearchModal({
                 {searchResults?.shows?.length > 0 && (
                   <>
                     <h2 className="text-xl font-semibold text-white mb-6 mt-12">
-                      {search ? "Shows" : "Popular Shows"}
+                      {search ? "Shows" : "Popular Resources"}
                     </h2>
                     <div className="relative w-full">
                       <Swiper spaceBetween={22} slidesPerView={5}>
@@ -154,7 +154,7 @@ export function SearchModal({
                             <ResourceCard
                               key={show.id}
                               resource={show}
-                              showDetails={false}
+                              // showDetails={false}
                               hideType={true}
                             />
                           </SwiperSlide>
@@ -165,10 +165,10 @@ export function SearchModal({
                 )}
 
                 {/* Episode Section */}
-                {searchResults.episodes.length > 0 && (
+                {search && searchResults.episodes.length > 0 && (
                   <>
                     <h2 className="text-xl font-bold text-white mb-6 mt-12">
-                      {search ? "Episodes" : "Popular Episodes"}
+                      Episodes
                     </h2>
                     <div className="relative w-full">
                       <Swiper spaceBetween={22} slidesPerView={5}>
@@ -188,10 +188,10 @@ export function SearchModal({
                 )}
 
                 {/* Book Section */}
-                {searchResults.books.length > 0 && (
+                {search && searchResults.books.length > 0 && (
                   <>
                     <h2 className="text-xl font-bold text-white mb-6 mt-12">
-                      {search ? "Books" : "Popular Books"}
+                      Books
                     </h2>
                     <div className="relative w-full">
                       <Swiper spaceBetween={22} slidesPerView={5}>

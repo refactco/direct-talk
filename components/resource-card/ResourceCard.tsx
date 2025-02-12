@@ -60,8 +60,8 @@ export function ResourceCard({
       >
         <div className="relative bg-background rounded-[8px] w-full aspect-square overflow-hidden">
           <Image
-            src={resource.image_url || "/placeholder.svg"}
-            alt={resource.title}
+            src={resource?.image_url || "/placeholder.svg"}
+            alt={resource?.title}
             className="object-cover transition-transform group-hover:scale-105"
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
@@ -71,18 +71,18 @@ export function ResourceCard({
               className="absolute top-2 left-2 p-0 rounded-full bg-background opacity-0 group-hover:opacity-100 transition-opacity duration-300"
               onClick={handleViewDetails}
             >
-              <InfoIcon />
+              <InfoIcon/>
             </div>
           ) : null}
         </div>
         <div className="w-full pt-2 pb-1">
           {!hideType ? (
             <p className="text-[11px] font-semibold text-muted-foreground uppercase">
-              {resource.type}
+              {resource?.type}
             </p>
           ) : null}
           <h3 className="text-sm font-bold text-foreground text-left truncate max-w-[calc(100%-28px)] transition-all duration-300">
-            {resource.title}
+            {resource?.title}
           </h3>
         </div>
         <div

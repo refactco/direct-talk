@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -16,27 +16,18 @@ import {
   CollapseIcon,
   HistoryIcon
 } from "@/components/icons/sidebar-icons";
-import { User, LogOut } from "lucide-react";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
 import { LogoutIcon } from "@/components/icons/LogoutIcon";
+import {useAuth} from "@/contexts/AuthContext";
 
 export function Sidebar() {
-  const router = useRouter();
   const pathname = usePathname();
   const [chatHistory, setChatHistory] = useState<ChatHistoryItem[]>([]);
   const [isCollapsed, setIsCollapsed] = useState(false);
-
+  const { isAuthenticated, openAuthModal, logout } = useAuth();
   useEffect(() => {
     const updateChatHistory = () => {
       setChatHistory(getChatHistory());
     };
-
     updateChatHistory();
     window.addEventListener("chatHistoryUpdated", updateChatHistory);
     return () => {
@@ -48,6 +39,13 @@ export function Sidebar() {
     removeChatFromHistory(chatId);
     setChatHistory(getChatHistory());
   };
+  const handleAuth = () => {
+    if (isAuthenticated) {
+      logout();
+    } else {
+      openAuthModal();
+    }
+  }
 
   return (
     <div
@@ -151,9 +149,10 @@ export function Sidebar() {
           "justify-start ml-5 w-max border-white/10 bg-transparent",
           isCollapsed && "px-2.5 ml-2.5"
         )}
+        onClick={handleAuth}
       >
         <LogoutIcon className="h-4 w-4" />
-        {!isCollapsed && <span className="text-base font-bold">Logout</span>}
+        {!isCollapsed && <span className="text-base font-bold">{isAuthenticated ? 'Logout' : 'Login'}</span>}
       </Button>
     </div>
   );
