@@ -1,13 +1,15 @@
-import { useState } from "react";
-import type { Resource } from "@/types/resources";
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
+"use client";
+
 import { DetailSheet } from "@/components/DetailSheet";
-import Image from "next/image";
-import { PlusIcon } from "@/components/icons/PlusIcon";
-import { cn } from "@/lib/utils";
 import { CheckIcon } from "@/components/icons/CheckIcon";
 import { InfoIcon } from "@/components/icons/InfoIcon";
+import { PlusIcon } from "@/components/icons/PlusIcon";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
+import { cn } from "@/lib/utils";
+import type { Resource } from "@/types/resources";
+import Image from "next/image";
+import { useState } from "react";
 
 interface HomeResourceCardProps {
   resource: Resource;

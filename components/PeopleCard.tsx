@@ -1,12 +1,12 @@
+import { UserIcon } from "@/components/icons/UserIcon";
 import type { Author } from "@/types/resources";
 import Image from "next/image";
-import { UserIcon } from "@/components/icons/UserIcon";
 
 interface PeopleCardProps {
   people: Author;
 }
 
-function PeopleCard({ people }: PeopleCardProps) {
+export function PeopleCard({ people }: PeopleCardProps) {
   return (
     <div className="group relative w-32 aspect-square cursor-pointer px-2">
       <div className="relative w-full aspect-square rounded-full overflow-hidden bg-accent">
@@ -29,5 +29,3 @@ function PeopleCard({ people }: PeopleCardProps) {
     </div>
   );
 }
-
-export default PeopleCard;

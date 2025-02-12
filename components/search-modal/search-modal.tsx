@@ -1,19 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Search, Loader2 } from "lucide-react";
+import { PeopleCard } from "@/components/PeopleCard";
+import { CloseIcon } from "@/components/icons/CloseIcon";
+import { ResourceCard } from "@/components/resource-card/ResourceCard";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { searchAll, getAuthors, getResources } from "@/lib/api";
-import PeopleCard from "@/components/PeopleCard";
-import { CloseIcon } from "@/components/icons/CloseIcon";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { getAuthors, getResources, searchAll } from "@/lib/api";
+import { Loader2, Search } from "lucide-react";
+import { useEffect, useState } from "react";
 import "swiper/css";
+import { Swiper, SwiperSlide } from "swiper/react";
 import { ResourceSelectorProps, SearchResults } from "./search-modal-types";
-import { ResourceCard } from "@/components/resource-card/ResourceCard";
 
 export function SearchModal({
   open,

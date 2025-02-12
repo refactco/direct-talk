@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
-import { useSearch } from "@/contexts/SearchContext";
+import { PeopleCard } from "@/components/PeopleCard";
+import { ResourceCard } from "@/components/resource-card/ResourceCard";
 import { SearchResultSection } from "@/components/search/SearchResultSection";
 import { TopResult } from "@/components/search/TopResult";
-import { ResourceCard } from "@/components/ResourceCard";
-import { AuthorCard } from "@/components/PeopleCard";
-import Link from "next/link";
+import { useSearch } from "@/contexts/SearchContext";
 import { Search } from "lucide-react";
+import Link from "next/link";
+import { useEffect } from "react";
 
 export default function SearchPage({ params }: { params: { query: string } }) {
   const { query, setQuery, results } = useSearch();
@@ -77,7 +77,7 @@ export default function SearchPage({ params }: { params: { query: string } }) {
       {results.authors.length > 0 && (
         <SearchResultSection title="Authors" viewAllHref="/authors">
           {results.authors.map((author) => (
-            <AuthorCard key={author.id} author={author} />
+            <PeopleCard key={author.id} people={author} />
           ))}
         </SearchResultSection>
       )}
