@@ -2,18 +2,14 @@ import { DetailSheet } from "@/components/detail-sheet/DetailSheet";
 import { Providers } from "@/components/providers";
 import { Sidebar } from "@/components/sidebar";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { ResourceDetailProvider } from "@/contexts/ResourceDetailContext";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { ChatProvider } from "@/contexts/ChatContext";
 import { SearchProvider } from "@/contexts/SearchContext";
 import { SelectedResourcesProvider } from "@/contexts/SelectedResourcesContext";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type React from "react";
-<<<<<<< HEAD
-import { AuthProvider } from "@/contexts/AuthContext";
-import { ChatProvider } from "@/contexts/ChatContext";
-=======
 import "./globals.css";
->>>>>>> 7faab81 (detail drawer changes)
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -47,6 +43,7 @@ export default function RootLayout({
                       <main className="flex-1 overflow-y-auto pb-0 px-6 pt-6">
                         {children}
                       </main>
+                      <DetailSheet />
                     </div>
                   </ChatProvider>
                 </SelectedResourcesProvider>
