@@ -63,7 +63,7 @@ export default function ChatConversationPage() {
   return (
     <div className="relative flex flex-col min-h-screen bg-background animate-in fade-in duration-500">
       <div className="flex-1 overflow-y-auto min-h-[calc(100vh-10rem)]">
-        <div className="max-w-[680px] mx-auto px-4 sm:px-6">
+        <div className="max-w-[732px] mx-auto pr-[52px]">
           <div className="mb-6 py-6">
             {messageList?.map((message, index) => (
               <div
@@ -111,7 +111,7 @@ export default function ChatConversationPage() {
         </div>
       </div>
       <div className="sticky bottom-0 w-full bg-background pb-4 sm:pb-6 pt-2 sm:pt-4">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+        <div className="max-w-[732px] mx-auto px-4 sm:px-6">
           <ChatInput
             onSubmit={handleSubmit}
             onAddResource={() => setIsResourceSelectorOpen(true)}
