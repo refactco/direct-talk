@@ -4,6 +4,7 @@ import { Sidebar } from "@/components/sidebar";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ChatProvider } from "@/contexts/ChatContext";
+import { ResourceDetailProvider } from "@/contexts/ResourceDetailContext";
 import { SearchProvider } from "@/contexts/SearchContext";
 import { SelectedResourcesProvider } from "@/contexts/SelectedResourcesContext";
 import type { Metadata } from "next";
@@ -37,15 +38,17 @@ export default function RootLayout({
             <AuthProvider>
               <SearchProvider>
                 <SelectedResourcesProvider>
-                  <ChatProvider>
-                    <div className="flex h-screen">
-                      <Sidebar />
-                      <main className="flex-1 overflow-y-auto pb-0 px-6 pt-6">
-                        {children}
-                      </main>
-                      <DetailSheet />
-                    </div>
-                  </ChatProvider>
+                  <ResourceDetailProvider>
+                    <ChatProvider>
+                      <div className="flex h-screen">
+                        <Sidebar />
+                        <main className="flex-1 overflow-y-auto pb-0 px-6 pt-6">
+                          {children}
+                        </main>
+                        <DetailSheet />
+                      </div>
+                    </ChatProvider>
+                  </ResourceDetailProvider>
                 </SelectedResourcesProvider>
               </SearchProvider>
             </AuthProvider>
