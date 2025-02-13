@@ -1,23 +1,22 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
-import { useRouter } from "next/navigation";
-import { getResources } from "@/lib/api";
-import type { Resource } from "@/types/resources";
-import { DetailSheet } from "@/components/DetailSheet";
+import { ChatInput } from "@/components/ChatInput";
 import { ResourceCard } from "@/components/resource-card/ResourceCard";
 import { SearchModal } from "@/components/search-modal/search-modal";
-import { ChatInput } from "@/components/ChatInput";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { useChat } from "@/contexts/ChatContext";
+import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
+import { getResources } from "@/lib/api";
+import type { IResource } from "@/types/resources";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
-  const [popularResources, setPopularResources] = useState<Resource[]>(
-    Array.from({ length: 5 }).fill(null) as any
+  const [popularResources, setPopularResources] = useState<IResource[]>(
+    Array.from({ length: 5 }) as any
   );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -125,11 +124,11 @@ export default function HomePage() {
         </div>
       </div>
 
-      <DetailSheet
+      {/* <DetailSheet
         item={selectedResources[0]}
         open={isResourceSheetOpen}
         onOpenChange={setIsResourceSheetOpen}
-      />
+      /> */}
       <SearchModal
         open={isModalOpen}
         onOpenChange={(open) => {

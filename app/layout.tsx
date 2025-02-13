@@ -1,14 +1,19 @@
+import { DetailSheet } from "@/components/detail-sheet/DetailSheet";
+import { Providers } from "@/components/providers";
+import { Sidebar } from "@/components/sidebar";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { ResourceDetailProvider } from "@/contexts/ResourceDetailContext";
+import { SearchProvider } from "@/contexts/SearchContext";
+import { SelectedResourcesProvider } from "@/contexts/SelectedResourcesContext";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
-import { Sidebar } from "@/components/sidebar";
-import { SelectedResourcesProvider } from "@/contexts/SelectedResourcesContext";
-import { SearchProvider } from "@/contexts/SearchContext";
-import { Providers } from "@/components/providers";
-import { ThemeProvider } from "@/components/ThemeProvider";
 import type React from "react";
+<<<<<<< HEAD
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ChatProvider } from "@/contexts/ChatContext";
+=======
+import "./globals.css";
+>>>>>>> 7faab81 (detail drawer changes)
 
 const inter = Inter({ subsets: ["latin"] });
 

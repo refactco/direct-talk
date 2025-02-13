@@ -1,4 +1,4 @@
-import type { Author, Resource } from "@/types/resources";
+import type { IAuthor, IResource } from "@/types/resources";
 
 export interface ResourceSelectorProps {
   open: boolean;
@@ -7,8 +7,8 @@ export interface ResourceSelectorProps {
 }
 
 export interface SearchResults {
-  books: Resource[];
-  people: Author[];
-  shows: Resource[];
-  episodes: Resource[];
+  books: IResource[];
+  people: IAuthor[];
+  shows: IResource[];
+  episodes: IResource[];
 }

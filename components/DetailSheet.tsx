@@ -1,17 +1,15 @@
 "use client";
 
-import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { X, Plus, Check, ExternalLink } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Sheet, SheetClose, SheetContent } from "@/components/ui/sheet";
 import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
-import type { Resource, Author } from "@/types/resources";
+import type { IAuthor, Resource } from "@/types/resources";
+import { Check, Plus, X } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 
 interface DetailSheetProps {
-  item: Resource | Author | null;
+  item: Resource | IAuthor | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
@@ -21,110 +19,93 @@ export function DetailSheet({ item, open, onOpenChange }: DetailSheetProps) {
 
   if (!item) return null;
 
+  console.log({ item });
+
   const isResource = "type" in item;
   const isAuthor = "bio" in item;
-
   const isResourceSelected = isResource ? isSelected(item.id) : false;
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-[369px] p-0 bg-background border-l border-border data-[state=open]:animate-in data-[state=open]:slide-in-from-right data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right duration-300 ease-in-out">
-        <div className="relative h-[200px] w-full overflow-hidden transition-transform duration-300 ease-in-out">
-          <Image
-            src={item.imageUrl || "/placeholder.svg"}
-            alt={item.name || item.title}
-            fill
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
-          <div className="absolute top-0 right-0 p-4 flex gap-2">
-            {isResource && (
+      <SheetContent
+        side="right"
+        className="w-[369px] p-0 bg-[#121212] border-l border-[#282828] text-white"
+      >
+        <div className="relative flex flex-col h-full">
+          {/* Header with close button */}
+          <div className="absolute top-4 right-4 z-10">
+            <SheetClose asChild>
               <Button
+                variant="ghost"
                 size="icon"
-                variant={isResourceSelected ? "default" : "secondary"}
-                className="rounded-full w-8 h-8"
-                onClick={() =>
-                  isResourceSelected
-                    ? removeResource(item.id)
-                    : addResource(item)
-                }
+                className="h-6 w-6 rounded-full bg-black/40 hover:bg-black/60"
               >
-                {isResourceSelected ? (
-                  <Check className="h-4 w-4" />
-                ) : (
-                  <Plus className="h-4 w-4" />
-                )}
+                <X className="h-4 w-4" />
               </Button>
-            )}
-            <Button
-              size="icon"
-              variant="ghost"
-              className="rounded-full w-8 h-8"
-              onClick={() => onOpenChange(false)}
-            >
-              <X className="h-4 w-4" />
-            </Button>
+            </SheetClose>
           </div>
-          <div className="absolute bottom-0 left-0 right-0 p-6 text-shadow">
-            {isResource && (
-              <p className="text-sm text-white/90 mb-2">
-                {item.type} • By {item.authorId}
-              </p>
-            )}
-            <h2 className="text-2xl font-bold text-white">
-              {item.name || item.title}
-            </h2>
-          </div>
-        </div>
-        <ScrollArea className="h-[calc(100vh-200px)] p-6 transition-transform duration-300 ease-in-out">
-          <div className="space-y-6">
-            <div>
-              <h3 className="font-semibold text-foreground">About</h3>
-              <p className="text-sm text-muted-foreground">
-                {isResource ? item.description : item.bio}
-              </p>
+
+          {/* Cover Image and Info */}
+          <div className="p-4">
+            <div className="relative aspect-square w-36 h-36 overflow-hidden">
+              <Image
+                src={item.imageUrl || "/placeholder.svg"}
+                alt={isResource ? item.title : item.name}
+                fill
+                className="object-cover w-36 h-36"
+                priority
+              />
             </div>
-            {isResource && (
-              <div className="flex flex-wrap gap-2">
-                {item?.topics?.map((topic) => (
-                  <Badge
-                    key={topic}
-                    variant="secondary"
-                    className="bg-secondary text-secondary-foreground text-base px-3 py-1"
-                  >
-                    {topic}
-                  </Badge>
-                ))}
-              </div>
-            )}
-            {isResource && item.content && (
-              <div>
-                <h3 className="font-semibold text-foreground">Content</h3>
-                <div className="text-sm text-muted-foreground">
-                  {item.content}
+          </div>
+
+          <div className="flex flex-col px-4 pb-5">
+            {/* Resource/Author Info */}
+            <div className="flex justify-between items-start mb-6">
+              <div className="flex-1">
+                <div className="text-xs font-medium text-[#A7A7A7] uppercase tracking-wider mb-1">
+                  {isResource ? item.type : "Author"}
+                </div>
+                <h2 className="text-2xl font-bold mb-1">
+                  {isResource ? item.title : item.name}
+                </h2>
+                <div className="text-sm text-[#A7A7A7]">
+                  JK rowling
+                  {isResource
+                    ? item.authorId
+                    : `${item.resources.length} resources`}
                 </div>
               </div>
-            )}
-            {isAuthor && (
-              <div>
-                <h3 className="font-semibold text-foreground">Resources</h3>
-                <ul className="mt-2 space-y-2">
-                  {item.resources.map((resourceId) => (
-                    <li key={resourceId}>
-                      <Link
-                        href={`/resources/${resourceId}`}
-                        className="text-sm text-primary hover:underline flex items-center"
-                      >
-                        <ExternalLink className="h-4 w-4 mr-1" />
-                        {resourceId}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+              {isResource && (
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="h-8 w-8 rounded-full bg-white text-black hover:bg-white/90 hover:scale-105 transition-transform"
+                  onClick={() =>
+                    isResourceSelected
+                      ? removeResource(item.id)
+                      : addResource(item)
+                  }
+                >
+                  {isResourceSelected ? (
+                    <Check className="h-4 w-4" />
+                  ) : (
+                    <Plus className="h-4 w-4" />
+                  )}
+                </Button>
+              )}
+            </div>
+
+            {/* Description */}
+            <div className="space-y-1">
+              <h3 className="text-[#f2f2f2] text-base font-normal">About</h3>
+              <ScrollArea className="h-[calc(100vh-400px)]">
+                <p className="text-sm leading-relaxed text-[#A7A7A7]">
+                  {isResource ? item.description : item.bio}
+                </p>
+              </ScrollArea>
+            </div>
           </div>
-        </ScrollArea>
+        </div>
       </SheetContent>
     </Sheet>
   );

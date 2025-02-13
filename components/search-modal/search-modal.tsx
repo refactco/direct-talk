@@ -154,7 +154,6 @@ export function SearchModal({
                             <ResourceCard
                               key={show.id}
                               resource={show}
-                              // showDetails={false}
                               hideType={true}
                             />
                           </SwiperSlide>
@@ -177,7 +176,6 @@ export function SearchModal({
                             <ResourceCard
                               key={resource.id}
                               resource={resource}
-                              showDetails={false}
                               hideType={true}
                             />
                           </SwiperSlide>
@@ -200,8 +198,8 @@ export function SearchModal({
                             <ResourceCard
                               key={resource.id}
                               resource={resource}
-                              showDetails={false}
                               hideType={true}
+                              showDetails
                             />
                           </SwiperSlide>
                         ))}

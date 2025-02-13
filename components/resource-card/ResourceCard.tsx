@@ -1,18 +1,18 @@
 "use client";
 
-import { DetailSheet } from "@/components/DetailSheet";
 import { CheckIcon } from "@/components/icons/CheckIcon";
 import { InfoIcon } from "@/components/icons/InfoIcon";
 import { PlusIcon } from "@/components/icons/PlusIcon";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useResourceDetail } from "@/contexts/ResourceDetailContext";
 import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
 import { cn } from "@/lib/utils";
-import type { Resource } from "@/types/resources";
+import type { IResource } from "@/types/resources";
 import Image from "next/image";
 import { useState } from "react";
 
 interface HomeResourceCardProps {
-  resource: Resource;
+  resource: IResource;
   showDetails?: boolean;
   hideType?: boolean;
   isLoading?: boolean;
@@ -27,6 +27,7 @@ export function ResourceCard({
   const { addResource, removeResource, isSelected } = useSelectedResources();
   const [isResourceSheetOpen, setIsResourceSheetOpen] = useState(false);
   const selected = isSelected(resource?.id);
+  const { setSelectedDetailItems } = useResourceDetail();
 
   const handleCardClick = () => {
     if (selected) {
@@ -38,7 +39,10 @@ export function ResourceCard({
 
   const handleViewDetails = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsResourceSheetOpen(true);
+    console.log("here");
+    // setOpenSheet(true);
+    setSelectedDetailItems([resource]);
+    // setIsResourceSheetOpen(true);
   };
   if (isLoading) {
     return (
@@ -111,13 +115,13 @@ export function ResourceCard({
           )}
         </div>
       </div>
-      {showDetails ? (
+      {/* {showDetails ? (
         <DetailSheet
           item={resource}
           open={isResourceSheetOpen}
           onOpenChange={setIsResourceSheetOpen}
         />
-      ) : null}
+      ) : null} */}
     </>
   );
 }

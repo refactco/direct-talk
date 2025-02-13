@@ -1,6 +1,6 @@
-import type { Author, Resource } from "@/types/resources";
+import type { IAuthor, IResource } from "@/types/resources";
 
-export const resources: Resource[] = [
+export const resources: IResource[] = [
   {
     id: "potter",
     title: "Harry Potter and the Goblet of Fire",
@@ -83,7 +83,7 @@ export const resources: Resource[] = [
   }
 ];
 
-export const authors: Author[] = [
+export const authors: IAuthor[] = [
   {
     id: "jk-rowling",
     name: "J.K. Rowling",

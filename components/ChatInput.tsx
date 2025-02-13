@@ -1,20 +1,18 @@
 "use client";
 
+import { ArrowRightIcon } from "@/components/icons/ArrowRightIcon";
+import { PlusIcon } from "@/components/icons/PlusIcon";
+import SelectedResourceCard from "@/components/SelectedResourceCard";
+import type { IResource } from "@/types/resources";
+import { Loader2 } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
-import { Loader2, X } from "lucide-react";
-import Image from "next/image";
-import type { Resource } from "@/types/resources";
-import { PlusIcon } from "@/components/icons/PlusIcon";
-import { ArrowRightIcon } from "@/components/icons/ArrowRightIcon";
-import { CloseIcon } from "@/components/icons/CloseIcon";
-import SelectedResourceCard from "@/components/SelectedResourceCard";
 
 interface ChatInputProps {
   onSubmit: (message: string) => void;
   onAddResource: () => void;
   onRemoveResource: (resourceId: string) => void;
-  selectedResources: Resource[];
+  selectedResources: IResource[];
   isLoading: boolean;
   placeholder?: string;
 }

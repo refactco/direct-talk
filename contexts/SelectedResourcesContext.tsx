@@ -1,12 +1,12 @@
 "use client";
 
+import type { IResource } from "@/types/resources";
 import type React from "react";
-import { createContext, useContext, useState, useEffect } from "react";
-import type { Resource } from "@/types/resources";
+import { createContext, useContext, useEffect, useState } from "react";
 
 type SelectedResourcesContextType = {
-  selectedResources: Resource[];
-  addResource: (resource: Resource) => void;
+  selectedResources: IResource[];
+  addResource: (resource: IResource) => void;
   removeResource: (resourceId: string | number) => void;
   resetSelectedResources: () => void;
   isSelected: (resourceId: string | number) => boolean;
@@ -21,13 +21,13 @@ export function SelectedResourcesProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [selectedResources, setSelectedResources] = useState<Resource[]>([]);
+  const [selectedResources, setSelectedResources] = useState<IResource[]>([]);
 
   useEffect(() => {
     console.log("SelectedResourcesProvider mounted");
   }, []);
 
-  const addResource = (resource: Resource) => {
+  const addResource = (resource: IResource) => {
     console.log("Adding resource:", resource);
     setSelectedResources((prev) => {
       if (!prev.some((r) => r.id === resource.id)) {
