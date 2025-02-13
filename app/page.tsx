@@ -10,7 +10,7 @@ import { getResources } from "@/lib/api";
 import type { IResource } from "@/types/resources";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import {HistoryItem, useHistory} from "@/contexts/HistoryContext";
+import { HistoryItem, useHistory } from "@/contexts/HistoryContext";
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -74,7 +74,12 @@ export default function HomePage() {
         message,
         selectedResources[0]?.id?.toString()
       );
-      const historyItem: HistoryItem = { id: chatData.session_id, title: message, createdAt: new Date().toISOString(), contentId: selectedResources[0]?.id?.toString() };
+      const historyItem: HistoryItem = {
+        id: chatData.session_id,
+        title: message,
+        createdAt: new Date().toISOString(),
+        contentId: selectedResources[0]?.id?.toString()
+      };
       addHistoryItem(historyItem);
       router.push(`/chat/conversation?id=${chatData.session_id}`);
     } catch (error) {

@@ -2,18 +2,18 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import {usePathname, useRouter} from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { LogoutIcon } from "@/components/icons/LogoutIcon";
 import { useAuth } from "@/contexts/AuthContext";
-import {useHistory} from "@/contexts/HistoryContext";
-import {TrashIcon} from "@/components/icons/TrashIcon";
-import {SearchIcon} from "@/components/icons/SearchIcon";
-import {CollapseIcon} from "@/components/icons/CollapseIcon";
-import {Logo} from "@/components/icons/Logo";
-import {HistoryIcon} from "@/components/icons/HistoryIcon";
+import { useHistory } from "@/contexts/HistoryContext";
+import { TrashIcon } from "@/components/icons/TrashIcon";
+import { SearchIcon } from "@/components/icons/SearchIcon";
+import { CollapseIcon } from "@/components/icons/CollapseIcon";
+import { Logo } from "@/components/icons/Logo";
+import { HistoryIcon } from "@/components/icons/HistoryIcon";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -21,7 +21,7 @@ export function Sidebar() {
   const { isAuthenticated, openAuthModal, logout } = useAuth();
   const { historyItems, removeHistoryItem } = useHistory();
   const router = useRouter();
-  const isConversationPage =  pathname?.includes('conversation');
+  const isConversationPage = pathname?.includes("conversation");
 
   const handleAuth = () => {
     if (isAuthenticated) {
@@ -57,7 +57,9 @@ export function Sidebar() {
         >
           <Logo />
           {!isCollapsed && (
-            <span className="text-lg font-semibold whitespace-nowrap">Direct Talk</span>
+            <span className="text-lg font-semibold whitespace-nowrap">
+              Direct Talk
+            </span>
           )}
         </Link>
         {!isCollapsed && (
@@ -75,16 +77,16 @@ export function Sidebar() {
       <div className="flex-1 overflow-hidden">
         <div className="space-y-3 p-5">
           {/* History Section */}
-          {
-            !isCollapsed && isConversationPage ? <Button
-                variant="default"
-                onClick={() => router.push('/')}
-                className="bg-white w-full mb-3 font-semibold"
+          {!isCollapsed && isConversationPage ? (
+            <Button
+              variant="default"
+              onClick={() => router.push("/")}
+              className="bg-white w-full mb-3 font-semibold"
             >
-              <SearchIcon/>
+              <SearchIcon />
               Start Search
-            </Button> : null
-          }
+            </Button>
+          ) : null}
           <div
             className={cn(
               "flex items-center gap-2 mb-3",
@@ -109,27 +111,34 @@ export function Sidebar() {
           </div>
 
           {!isCollapsed && (
-            <ScrollArea className={`h-[calc(100vh-${ isConversationPage ? '264px' : '212px'})] border-white`}>
-                {historyItems.length > 0 ? (
-                    historyItems.map((chat) => (
-                    <Link
-                      key={chat.id}
-                      href={`/chat/conversation?id=${chat.id}`}
-                      className={cn(
-                        "flex items-center justify-between group py-2 text-sm rounded-sm transition-all",
-                        "hover:bg-white/10 hover:px-2",
-                        pathname?.includes(chat.id) && "bg-accent"
-                      )}
-                    >
-                      <span className="truncate max-w-40 text-sm">{chat.title}</span>
-                      <TrashIcon onClick={() => removeHistoryItem(chat.id)} className="opacity-0 group-hover:opacity-100 transition-opacity"/>
-                    </Link>
-                  ))
-                ) : (
-                  <div className="text-sm text-muted-foreground pb-2">
-                    No history records.
-                  </div>
-                )}
+            <ScrollArea
+              className={`h-[calc(100vh-${isConversationPage ? "264px" : "212px"})] border-white`}
+            >
+              {historyItems.length > 0 ? (
+                historyItems.map((chat) => (
+                  <Link
+                    key={chat.id}
+                    href={`/chat/conversation?id=${chat.id}`}
+                    className={cn(
+                      "flex items-center justify-between group py-2 text-sm rounded-sm transition-all",
+                      "hover:bg-white/10 hover:px-2",
+                      pathname?.includes(chat.id) && "bg-accent"
+                    )}
+                  >
+                    <span className="truncate max-w-40 text-sm">
+                      {chat.title}
+                    </span>
+                    <TrashIcon
+                      onClick={() => removeHistoryItem(chat.id)}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity"
+                    />
+                  </Link>
+                ))
+              ) : (
+                <div className="text-sm text-muted-foreground pb-2">
+                  No history records.
+                </div>
+              )}
             </ScrollArea>
           )}
         </div>
