@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
-import { useSearchParams } from "next/navigation";
-import { SearchModal } from "@/components/search-modal/search-modal";
+import { Message } from "@/app/chat/conversation/types";
 import { ChatInput } from "@/components/ChatInput";
-import { useAuth } from "@/contexts/AuthContext";
-import { useChat } from "@/contexts/ChatContext";
 import { Logo } from "@/components/icons/Logo";
+import { SearchModal } from "@/components/search-modal/search-modal";
 import SelectedResourceCard from "@/components/SelectedResourceCard";
 import TextLoading from "@/components/TextLoading";
+import { useAuth } from "@/contexts/AuthContext";
+import { useChat } from "@/contexts/ChatContext";
+import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react"; // Add Suspense
 import ReactMarkdown from "react-markdown";
-import { Message } from "@/app/chat/conversation/types";
 
 export default function ChatConversationPage() {
   const { selectedResources, removeResource } = useSelectedResources();
@@ -78,7 +78,11 @@ export default function ChatConversationPage() {
                   {message.role === "assistant" && <Logo />}
                   <div className="flex-1">
                     <p
-                      className={`text-foreground ${message.role === "user" ? "text-lg font-bold" : "text-base"}`}
+                      className={`text-foreground ${
+                        message.role === "user"
+                          ? "text-lg font-bold"
+                          : "text-base"
+                      }`}
                     >
                       <ReactMarkdown>
                         {message.content || message.message}
