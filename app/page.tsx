@@ -10,6 +10,7 @@ import { getResources } from "@/lib/api";
 import type { IResource } from "@/types/resources";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import {HistoryItem, useHistory} from "@/contexts/HistoryContext";
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,12 +21,12 @@ export default function HomePage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingPopular, setIsLoadingPopular] = useState(true);
-  const [isResourceSheetOpen, setIsResourceSheetOpen] = useState(false);
   const [currentMessage, setCurrentMessage] = useState(""); // Added state for current message
   const { selectedResources, removeResource } = useSelectedResources();
   const router = useRouter();
   const { isAuthenticated, openAuthModal } = useAuth();
   const { doChat } = useChat();
+  const { addHistoryItem } = useHistory();
 
   useEffect(() => {
     const fetchPopularResources = async () => {
@@ -73,6 +74,8 @@ export default function HomePage() {
         message,
         selectedResources[0]?.id?.toString()
       );
+      const historyItem: HistoryItem = { id: chatData.session_id, title: message, createdAt: new Date().toISOString(), contentId: selectedResources[0]?.id?.toString() };
+      addHistoryItem(historyItem);
       router.push(`/chat/conversation?id=${chatData.session_id}`);
     } catch (error) {
       console.error("Error creating new chat:", error);
@@ -84,8 +87,7 @@ export default function HomePage() {
     }
   };
   return (
-    <div className="flex flex-col items-center justify-between min-h-[calc(100vh-4rem)]">
-      {/* Theme Toggle */}
+    <div className="flex flex-col items-center justify-between min-h-[calc(100vh-4rem)] p-4 sm:p-6">
       <div className="w-full max-w-3xl flex-grow flex flex-col justify-center items-center">
         <h1 className="text-3xl sm:text-3xl md:text-[2rem] font-semibold text-center text-white mb-4 sm:mb-6 mt-16 md:mt-0">
           What do you want to know?
@@ -122,11 +124,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* <DetailSheet
-        item={selectedResources[0]}
-        open={isResourceSheetOpen}
-        onOpenChange={setIsResourceSheetOpen}
-      /> */}
       <SearchModal
         open={isModalOpen}
         onOpenChange={(open) => {

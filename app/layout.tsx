@@ -2,7 +2,6 @@ import { DetailSheet } from "@/components/detail-sheet/DetailSheet";
 import { Providers } from "@/components/providers";
 import { Sidebar } from "@/components/sidebar";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ChatProvider } from "@/contexts/ChatContext";
@@ -14,6 +13,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type React from "react";
 import "./globals.css";
+import {HistoryProvider} from "@/contexts/HistoryContext";
+import {ThemeToggle} from "@/components/ThemeToggle";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -39,6 +40,7 @@ export default function RootLayout({
         >
           <Providers>
             <AuthProvider>
+              <HistoryProvider>
               <SearchProvider>
                 <SelectedResourcesProvider>
                   <ResourceDetailProvider>
@@ -56,6 +58,8 @@ export default function RootLayout({
                           <span className="sr-only">Toggle theme</span>
                         </Button>
                         <main className="flex-1 overflow-y-auto pb-0 px-4 py-4 md:px-8 md:py-8">
+                          {/* Theme Toggle */}
+                          <ThemeToggle />
                           {children}
                         </main>
                         <DetailSheet />
@@ -64,6 +68,7 @@ export default function RootLayout({
                   </ResourceDetailProvider>
                 </SelectedResourcesProvider>
               </SearchProvider>
+              </HistoryProvider>
             </AuthProvider>
           </Providers>
         </ThemeProvider>
