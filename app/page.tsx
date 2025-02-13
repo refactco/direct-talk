@@ -3,7 +3,6 @@
 import { ChatInput } from "@/components/ChatInput";
 import { ResourceCard } from "@/components/resource-card/ResourceCard";
 import { SearchModal } from "@/components/search-modal/search-modal";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { useChat } from "@/contexts/ChatContext";
 import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
@@ -85,11 +84,10 @@ export default function HomePage() {
     }
   };
   return (
-    <div className="flex flex-col items-center justify-between min-h-[calc(100vh-4rem)] p-4 sm:p-6">
+    <div className="flex flex-col items-center justify-between min-h-[calc(100vh-4rem)]">
       {/* Theme Toggle */}
-      <ThemeToggle />
       <div className="w-full max-w-3xl flex-grow flex flex-col justify-center items-center">
-        <h1 className="text-3xl sm:text-3xl md:text-[2rem] font-semibold text-center text-white mb-4 sm:mb-6">
+        <h1 className="text-3xl sm:text-3xl md:text-[2rem] font-semibold text-center text-white mb-4 sm:mb-6 mt-16 md:mt-0">
           What do you want to know?
         </h1>
         <div className="w-full">
@@ -113,7 +111,7 @@ export default function HomePage() {
         <h2 className="text-lg sm:text-xl md:text-xl font-semibold mb-6 text-center text-foreground">
           Popular resources
         </h2>
-        <div className="grid grid-cols-5 gap-[22px]">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-[22px]">
           {popularResources?.map((resource, index: number) => (
             <ResourceCard
               key={index}

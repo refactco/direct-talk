@@ -1,4 +1,8 @@
 import type { IAuthor, IResource, ITopic } from "@/types/resources";
+import {
+  IGetResourceEpisodesParams,
+  IGetResourceEpisodesResponse
+} from "./api/api-type";
 
 const API_BASE_URL = "https://dt-api.refact.co/wp-json/direct-talk/v1";
 
@@ -33,8 +37,17 @@ export async function getResource(id: string): Promise<IResource> {
   return response.json();
 }
 
-export async function getResourceEpisodes(id: string): Promise<IResource[]> {
-  const response = await fetch(`${API_BASE_URL}/resources/${id}/episodes`);
+export async function getResourceEpisodes(
+  params: IGetResourceEpisodesParams
+): Promise<IGetResourceEpisodesResponse> {
+  const { resourceId, pageNum = 1, perPage = 10 } = params;
+  const searchParams = new URLSearchParams();
+  searchParams.set("page", pageNum.toString());
+  searchParams.set("per_page", perPage.toString());
+
+  const response = await fetch(
+    `${API_BASE_URL}/resources/${resourceId}/episodes?${searchParams}`
+  );
   if (!response.ok) throw new Error("Failed to fetch resource");
   return response.json();
 }

@@ -19,8 +19,6 @@ export function DetailSheet({ item, open, onOpenChange }: DetailSheetProps) {
 
   if (!item) return null;
 
-  console.log({ item });
-
   const isResource = "type" in item;
   const isAuthor = "bio" in item;
   const isResourceSelected = isResource ? isSelected(item.id) : false;

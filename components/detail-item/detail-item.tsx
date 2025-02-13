@@ -1,3 +1,4 @@
+import { useResourceDetail } from "@/contexts/ResourceDetailContext";
 import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
 import { Check, Plus } from "lucide-react";
 import Image from "next/image";
@@ -5,9 +6,10 @@ import { Button } from "../ui/button";
 import { IDetailItemProps } from "./detail-item-type";
 
 export function DetailItem(props: IDetailItemProps) {
-  const { resource, onClick, onAddClick } = props;
-  const { title, type, image_url, id, people } = resource;
+  const { resource, alternativeImageSource, onClick, onAddClick } = props;
+  const { title, image_url, id, people, type, description } = resource;
   const { addResource, removeResource, isSelected } = useSelectedResources();
+  const { pushDetailItem } = useResourceDetail();
 
   const isResourceSelected = isSelected(id);
   const className = isResourceSelected
@@ -16,22 +18,32 @@ export function DetailItem(props: IDetailItemProps) {
 
   return (
     <div className="flex items-center justify-between bg-[#1C1917] rounded-lg px-3 py-4 relative">
-      <div className="flex items-center gap-2" onClick={onClick}>
-        <div className="h-12 w-12 overflow-hidden flex-shrink-0">
+      <div
+        className="flex items-center gap-2 cursor-pointer"
+        onClick={() => {
+          pushDetailItem(resource);
+        }}
+      >
+        <div className="h-12 w-12 overflow-hidden flex-shrink-0 self-start">
           <Image
-            src={image_url ?? "/placeholder.svg"}
+            src={image_url ? image_url : alternativeImageSource}
             alt={title}
             width={24}
             height={24}
             className="h-full w-full object-cover"
           />
         </div>
-        <div className="flex flex-col gap-1 self-start">
-          <span className="text-xs leading-normal text-[#f2f2f2] font-semibold">
+        <div className="flex flex-col gap-1 self-start w-44">
+          <span className="text-xs leading-normal text-[#f2f2f2] font-semibold overflow-hidden text-ellipsis line-clamp-2">
             {title}
           </span>
-          {people ? (
-            <span className="text-xs leading-normal text-[#a1a1a1] font-normal">
+          {type === "episode" && description ? (
+            <span className="text-xs leading-normal text-[#a1a1a1] font-normal overflow-hidden text-ellipsis line-clamp-1">
+              {description}
+            </span>
+          ) : null}
+          {type === "show" && people ? (
+            <span className="text-xs leading-normal text-[#a1a1a1] font-normal overflow-hidden text-ellipsis line-clamp-1">
               {people[0].name}
             </span>
           ) : null}

@@ -81,7 +81,7 @@ export function SearchModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[1299px] p-0 gap-0 bg-background ring-0">
+      <DialogContent className="w-full md:max-w-[1299px] h-full md:h-auto p-0 gap-0 bg-background ring-0">
         <ScrollArea>
           <Button
             variant="ghost"
@@ -91,7 +91,7 @@ export function SearchModal({
           >
             <CloseIcon className="h-5 w-5 fill-white" />
           </Button>
-          <div className="flex flex-col h-[85vh] max-w-[730px] m-auto">
+          <div className="flex flex-col h-full md:h-[85vh] w-full md:w-auto max-w-[730px] m-0 md:m-auto p-4 md:p-0">
             <div className="flex items-center gap-1 pt-11">
               <div className="relative flex-1">
                 <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />

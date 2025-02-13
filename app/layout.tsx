@@ -2,11 +2,14 @@ import { DetailSheet } from "@/components/detail-sheet/DetailSheet";
 import { Providers } from "@/components/providers";
 import { Sidebar } from "@/components/sidebar";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { Button } from "@/components/ui/button";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ChatProvider } from "@/contexts/ChatContext";
 import { ResourceDetailProvider } from "@/contexts/ResourceDetailContext";
 import { SearchProvider } from "@/contexts/SearchContext";
 import { SelectedResourcesProvider } from "@/contexts/SelectedResourcesContext";
+import { MenuIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type React from "react";
@@ -42,7 +45,17 @@ export default function RootLayout({
                     <ChatProvider>
                       <div className="flex h-screen">
                         <Sidebar />
-                        <main className="flex-1 overflow-y-auto pb-0 px-6 pt-6">
+                        <ThemeToggle />
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          // onClick={() => {}}
+                          className="flex md:hidden absolute top-4 md:top-8 left-4 md:left-8 z-50 border border-border rounded-full"
+                        >
+                          <MenuIcon className="absolute h-8 w-8 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                          <span className="sr-only">Toggle theme</span>
+                        </Button>
+                        <main className="flex-1 overflow-y-auto pb-0 px-4 py-4 md:px-8 md:py-8">
                           {children}
                         </main>
                         <DetailSheet />

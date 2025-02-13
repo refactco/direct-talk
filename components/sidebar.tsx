@@ -1,23 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { LogoutIcon } from "@/components/icons/LogoutIcon";
+import {
+  CollapseIcon,
+  HistoryIcon,
+  Logo
+} from "@/components/icons/sidebar-icons";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   getChatHistory,
   removeChatFromHistory,
   type ChatHistoryItem
 } from "@/lib/history-storage";
 import { cn } from "@/lib/utils";
-import {
-  Logo,
-  CollapseIcon,
-  HistoryIcon
-} from "@/components/icons/sidebar-icons";
-import { LogoutIcon } from "@/components/icons/LogoutIcon";
-import { useAuth } from "@/contexts/AuthContext";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -50,7 +50,7 @@ export function Sidebar() {
   return (
     <div
       className={cn(
-        "flex h-full pb-5 flex-col bg-accent relative transition-all duration-300 ease-in-out border-r border-white/10",
+        "hidden lg:flex h-full pb-5 flex-col bg-accent relative transition-all duration-300 ease-in-out border-r border-white/10",
         isCollapsed ? "w-[64px]" : "w-[243px]"
       )}
     >

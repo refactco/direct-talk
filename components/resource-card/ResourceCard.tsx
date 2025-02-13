@@ -39,10 +39,7 @@ export function ResourceCard({
 
   const handleViewDetails = (e: React.MouseEvent) => {
     e.stopPropagation();
-    console.log("here");
-    // setOpenSheet(true);
     setSelectedDetailItems([resource]);
-    // setIsResourceSheetOpen(true);
   };
   if (isLoading) {
     return (
@@ -74,7 +71,7 @@ export function ResourceCard({
           />
           {showDetails ? (
             <div
-              className="absolute top-2 left-2 p-0 rounded-full bg-background opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              className="absolute top-2 left-2 p-0 rounded-full bg-background opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300"
               onClick={handleViewDetails}
             >
               <InfoIcon />
@@ -93,7 +90,7 @@ export function ResourceCard({
         </div>
         <div
           className={cn(
-            "flex items-center space-x-2 absolute bottom-2 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300",
+            "flex items-center space-x-2 absolute bottom-2 right-0 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300",
             selected && "opacity-100",
             hideType && "bottom-1 right-0.5"
           )}
