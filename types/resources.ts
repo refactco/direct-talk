@@ -1,26 +1,35 @@
 export type ResourceType = "book" | "show" | "episode";
 
-export interface Author {
+export interface IBaseResourceItem {
   id: number | string;
   ref_id: number;
-  name: string;
   description: string;
   image_url: string;
 }
 
-export interface Resource {
-  id: number | string;
-  ref_id: number;
+export interface IResource extends IBaseResourceItem {
   title: string;
   type: ResourceType;
-  description: string;
-  image_url: string;
+  people?: IAuthor[];
+  topics?: ITopic[];
+  episodes: IResource[];
 }
 
-export interface Topic {
-  id: number;
+export interface IAuthorResources<T> {
+  books: T;
+  shows: T;
+  episodes: T;
+}
+
+export interface IAuthor extends IBaseResourceItem {
   name: string;
-  slug: string;
-  description: string;
-  count: number;
+  resources: {
+    items: IAuthorResources<IResource[]>;
+    total: IAuthorResources<number>;
+  };
+}
+
+export interface ITopic {
+  id: number;
+  term: string;
 }

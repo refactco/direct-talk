@@ -1,22 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
-import { useRouter } from "next/navigation";
-import { getResources } from "@/lib/api";
-import { createNewChat } from "@/lib/history-storage";
-import type { Resource } from "@/types/resources";
-import { DetailSheet } from "@/components/DetailSheet";
-import { ResourceCard } from "@/components/resource-card/ResourceCard";
-import { SearchModal } from "@/components/search-modal/search-modal";
 import { AuthModal } from "@/components/AuthModal";
 import { ChatInput } from "@/components/ChatInput";
+import { ResourceCard } from "@/components/resource-card/ResourceCard";
+import { SearchModal } from "@/components/search-modal/search-modal";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
+import { getResources } from "@/lib/api";
+import { createNewChat } from "@/lib/history-storage";
+import type { IResource } from "@/types/resources";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
-  const [popularResources, setPopularResources] = useState<Resource[]>(
+  const [popularResources, setPopularResources] = useState<IResource[]>(
     Array.from({ length: 5 }) as any
   );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -120,11 +119,11 @@ export default function HomePage() {
         </div>
       </div>
 
-      <DetailSheet
+      {/* <DetailSheet
         item={selectedResources[0]}
         open={isResourceSheetOpen}
         onOpenChange={setIsResourceSheetOpen}
-      />
+      /> */}
       <SearchModal
         open={isModalOpen}
         onOpenChange={(open) => {

@@ -1,10 +1,10 @@
-import type { Resource } from "@/types/resources";
 import { Button } from "@/components/ui/button";
+import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
+import type { IResource } from "@/types/resources";
 import { Plus } from "lucide-react";
 import Link from "next/link";
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
 
-export function TopResult({ resource }: { resource: Resource }) {
+export function TopResult({ resource }: { resource: IResource }) {
   const { addResource, isSelected } = useSelectedResources();
   return (
     <Link

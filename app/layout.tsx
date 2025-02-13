@@ -1,12 +1,14 @@
+import { DetailSheet } from "@/components/detail-sheet/DetailSheet";
+import { Providers } from "@/components/providers";
+import { Sidebar } from "@/components/sidebar";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { ResourceDetailProvider } from "@/contexts/ResourceDetailContext";
+import { SearchProvider } from "@/contexts/SearchContext";
+import { SelectedResourcesProvider } from "@/contexts/SelectedResourcesContext";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
-import { Sidebar } from "@/components/sidebar";
-import { SelectedResourcesProvider } from "@/contexts/SelectedResourcesContext";
-import { SearchProvider } from "@/contexts/SearchContext";
-import { Providers } from "@/components/providers";
-import { ThemeProvider } from "@/components/ThemeProvider";
 import type React from "react";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,16 +33,19 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Providers>
-            <SearchProvider>
-              <SelectedResourcesProvider>
-                <div className="flex h-screen">
-                  <Sidebar />
-                  <main className="flex-1 overflow-y-auto pb-0 px-6 pt-6">
-                    {children}
-                  </main>
-                </div>
-              </SelectedResourcesProvider>
-            </SearchProvider>
+            <ResourceDetailProvider>
+              <SearchProvider>
+                <SelectedResourcesProvider>
+                  <div className="flex h-screen">
+                    <Sidebar />
+                    <main className="flex-1 overflow-y-auto pb-0 px-6 pt-6">
+                      {children}
+                    </main>
+                    <DetailSheet />
+                  </div>
+                </SelectedResourcesProvider>
+              </SearchProvider>
+            </ResourceDetailProvider>
           </Providers>
         </ThemeProvider>
         <script

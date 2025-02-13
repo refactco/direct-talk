@@ -1,19 +1,18 @@
 "use client";
 
-import type { Resource } from "@/types/resources";
-import {
-  useSelectedResources,
-  addResource,
-  removeResource
-} from "@/contexts/SelectedResourcesContext";
 import { Button } from "@/components/ui/button";
-import { Plus, Check } from "lucide-react";
-import { useState } from "react";
-import { DetailSheet } from "@/components/DetailSheet";
+import {
+  addResource,
+  removeResource,
+  useSelectedResources
+} from "@/contexts/SelectedResourcesContext";
+import type { IResource } from "@/types/resources";
+import { Check, Plus } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 
 interface ChatResourceCardProps {
-  resource: Resource;
+  resource: IResource;
   onSelect: () => void;
 }
 
@@ -100,11 +99,11 @@ export function ChatResourceCard({
           </Button>
         </div>
       </div>
-      <DetailSheet
+      {/* <DetailSheet
         item={resource}
         open={isSheetOpen}
         onOpenChange={setIsSheetOpen}
-      />
+      /> */}
     </>
   );
 }

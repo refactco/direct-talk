@@ -1,21 +1,21 @@
 "use client";
 
+import { getAuthors, getResources, getTopics } from "@/lib/api";
+import type { IAuthor, IResource, ITopic } from "@/types/resources";
+import { usePathname, useRouter } from "next/navigation";
 import type React from "react";
 import {
   createContext,
-  useContext,
-  useState,
   useCallback,
-  useEffect
+  useContext,
+  useEffect,
+  useState
 } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { getResources, getAuthors, getTopics } from "@/lib/api";
-import type { Resource, Author, Topic } from "@/types/resources";
 
 interface SearchResults {
-  resources: Resource[];
-  authors: Author[];
-  topics: Topic[];
+  resources: IResource[];
+  authors: IAuthor[];
+  topics: ITopic[];
   isLoading: boolean;
 }
 

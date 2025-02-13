@@ -2,18 +2,18 @@
 
 import {
   Sheet,
-  SheetContent,
   SheetClose,
-  SheetTitle,
-  SheetDescription
+  SheetContent,
+  SheetDescription,
+  SheetTitle
 } from "@/components/ui/sheet";
-import { useState } from "react";
-import type { Resource, Author } from "@/types/resources";
-import Image from "next/image";
+import type { IAuthor, IResource } from "@/types/resources";
 import { X } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
 
 interface ResourceSheetProps {
-  resource: Resource | Author | null;
+  resource: IResource | IAuthor | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }

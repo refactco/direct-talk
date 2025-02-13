@@ -1,15 +1,15 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Plus, Check } from "lucide-react";
-import Link from "next/link";
-import { formatDate } from "@/lib/utils";
 import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
-import type { Resource } from "@/types/resources";
+import { formatDate } from "@/lib/utils";
+import type { IResource } from "@/types/resources";
+import { Check, MoreHorizontal, Plus } from "lucide-react";
+import Link from "next/link";
 
 type ResourceContentProps = {
-  resource: Resource;
-  relatedResources: Resource[];
+  resource: IResource;
+  relatedResources: IResource[];
 };
 
 export function ResourceContent({

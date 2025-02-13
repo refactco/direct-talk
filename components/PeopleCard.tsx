@@ -1,9 +1,9 @@
 import { UserIcon } from "@/components/icons/UserIcon";
-import type { Author } from "@/types/resources";
+import type { IAuthor } from "@/types/resources";
 import Image from "next/image";
 
 interface PeopleCardProps {
-  people: Author;
+  people: IAuthor;
 }
 
 export function PeopleCard({ people }: PeopleCardProps) {
