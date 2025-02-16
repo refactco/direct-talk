@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import type { IResource } from "@/types/resources";
-import type React from "react";
-import { createContext, useContext, useEffect, useState } from "react";
+import type { IResource } from '@/types/resources';
+import type React from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 type SelectedResourcesContextType = {
   selectedResources: IResource[];
@@ -24,11 +24,11 @@ export function SelectedResourcesProvider({
   const [selectedResources, setSelectedResources] = useState<IResource[]>([]);
 
   useEffect(() => {
-    console.log("SelectedResourcesProvider mounted");
+    console.log('SelectedResourcesProvider mounted');
   }, []);
 
   const addResource = (resource: IResource) => {
-    console.log("Adding resource:", resource);
+    console.log('Adding resource:', resource);
     setSelectedResources((prev) => {
       if (!prev.some((r) => r.id === resource.id)) {
         return [...prev, resource];
@@ -38,12 +38,12 @@ export function SelectedResourcesProvider({
   };
 
   const removeResource = (resourceId: string) => {
-    console.log("Removing resource:", resourceId);
+    console.log('Removing resource:', resourceId);
     setSelectedResources((prev) => prev.filter((r) => r.id !== resourceId));
   };
 
   const resetSelectedResources = () => {
-    console.log("Resetting selected resources");
+    console.log('Resetting selected resources');
     setSelectedResources([]);
   };
 
@@ -70,7 +70,7 @@ export function useSelectedResources() {
   const context = useContext(SelectedResourcesContext);
   if (context === undefined) {
     throw new Error(
-      "useSelectedResources must be used within a SelectedResourcesProvider"
+      'useSelectedResources must be used within a SelectedResourcesProvider'
     );
   }
   return context;

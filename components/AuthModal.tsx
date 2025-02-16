@@ -1,16 +1,16 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/icons";
-import { useAuth } from "@/contexts/AuthContext";
-import { GoogleIcon } from "@/components/icons/GoogleIcon";
-import { XIcon } from "@/components/icons/XIcon";
-import { CloseIcon } from "@/components/icons/CloseIcon";
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Icons } from '@/components/icons';
+import { useAuth } from '@/contexts/AuthContext';
+import { GoogleIcon } from '@/components/icons/GoogleIcon';
+import { XIcon } from '@/components/icons/XIcon';
+import { CloseIcon } from '@/components/icons/CloseIcon';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -23,28 +23,28 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const [isLoadingTwitter, setIsLoadingTwitter] = useState<boolean>(false);
 
   const handleAuth = async (provider: string) => {
-    if (provider === "google") {
+    if (provider === 'google') {
       setIsLoadingGoogle(true);
-    } else if (provider === "twitter") {
+    } else if (provider === 'twitter') {
       setIsLoadingTwitter(true);
     }
     try {
-      const response = await fetch("/api/auth", {
-        method: "POST",
+      const response = await fetch('/api/auth', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ provider })
       });
 
       if (!response.ok) {
-        throw new Error("Authentication failed");
+        throw new Error('Authentication failed');
       }
 
       const { token, user } = await response.json();
       login(token, user);
     } catch (error) {
-      console.error("Authentication error:", error);
+      console.error('Authentication error:', error);
     } finally {
       setIsLoadingGoogle(false);
       setIsLoadingTwitter(false);
@@ -74,7 +74,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           <Button
             variant="default"
             className="bg-white font-semibold"
-            onClick={() => handleAuth("google")}
+            onClick={() => handleAuth('google')}
             disabled={isLoadingGoogle}
           >
             {isLoadingGoogle ? (
@@ -87,7 +87,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           <Button
             variant="default"
             className="bg-white font-semibold"
-            onClick={() => handleAuth("twitter")}
+            onClick={() => handleAuth('twitter')}
             disabled={isLoadingTwitter}
           >
             {isLoadingTwitter ? (

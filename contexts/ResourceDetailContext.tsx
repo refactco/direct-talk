@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { IAuthor, IResource } from "@/types/resources";
-import { createContext, ReactNode, useContext, useState } from "react";
+import { IAuthor, IResource } from '@/types/resources';
+import { createContext, ReactNode, useContext, useState } from 'react';
 
 type TResourceDetailItem = IResource | IAuthor;
 
@@ -56,7 +56,7 @@ export function useResourceDetail() {
 
   if (context === undefined) {
     throw new Error(
-      "useResourceDetail must be used within a ResourceDetailProvider"
+      'useResourceDetail must be used within a ResourceDetailProvider'
     );
   }
 

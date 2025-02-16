@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import type React from "react";
-import { createContext, useContext, useState, useCallback } from "react";
+import type React from 'react';
+import { createContext, useContext, useState, useCallback } from 'react';
 
 interface Message {
-  role: "user" | "assistant";
+  role: 'user' | 'assistant';
   content: string;
 }
 
@@ -22,7 +22,7 @@ interface ChatContextType {
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
-const BASE_API_CHAT = "https://api-focus.sajjadrad.com/v1";
+const BASE_API_CHAT = 'https://api-focus.sajjadrad.com/v1';
 
 export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   children
@@ -39,30 +39,30 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
     ): Promise<string> => {
       setIsLoading(true);
       setError(null);
-      const formData: any = { prompt: prompt, content_ids: "potter" };
+      const formData: any = { prompt: prompt, content_ids: 'potter' };
       // const formData: any = { prompt: prompt , content_ids: contentIds }
       if (sessionId) {
-        formData["session_id"] = sessionId;
+        formData['session_id'] = sessionId;
       }
       try {
         const response = await fetch(`${BASE_API_CHAT}/search`, {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            Authorization: "Bearer TEST_API_KEY"
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: 'Bearer TEST_API_KEY'
           },
           body: new URLSearchParams(formData)
         });
 
         if (!response.ok) {
-          throw new Error("Failed to create chat");
+          throw new Error('Failed to create chat');
         }
 
         const data = await response.json();
         return data;
       } catch (err) {
         setError(
-          err instanceof Error ? err.message : "An unknown error occurred"
+          err instanceof Error ? err.message : 'An unknown error occurred'
         );
         throw err;
       } finally {
@@ -78,18 +78,18 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       const response = await fetch(`${BASE_API_CHAT}/search/${chatId}`, {
         headers: {
-          Authorization: "Bearer TEST_API_KEY"
+          Authorization: 'Bearer TEST_API_KEY'
         }
       });
       if (!response.ok) {
-        throw new Error("Failed to fetch chat");
+        throw new Error('Failed to fetch chat');
       }
 
       const data = await response.json();
       setMessages(data.results);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "An unknown error occurred"
+        err instanceof Error ? err.message : 'An unknown error occurred'
       );
     } finally {
       setIsLoading(false);
@@ -115,7 +115,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
 export const useChat = (): ChatContextType => {
   const context = useContext(ChatContext);
   if (context === undefined) {
-    throw new Error("useChat must be used within a ChatProvider");
+    throw new Error('useChat must be used within a ChatProvider');
   }
   return context;
 };

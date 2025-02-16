@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 
 // Mock user data
 const mockUsers = [
-  { id: 1, name: "John Doe", email: "john@example.com" },
-  { id: 2, name: "Jane Smith", email: "jane@example.com" }
+  { id: 1, name: 'John Doe', email: 'john@example.com' },
+  { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
 ];
 
 export async function POST(request: Request) {
@@ -22,13 +22,13 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
-  const authHeader = request.headers.get("Authorization");
+  const authHeader = request.headers.get('Authorization');
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const token = authHeader.split(" ")[1];
+  const token = authHeader.split(' ')[1];
 
   // In a real application, you would validate the token here
   // For this mock, we'll just check if it exists
@@ -38,6 +38,6 @@ export async function GET(request: Request) {
     const user = mockUsers[Math.floor(Math.random() * mockUsers.length)];
     return NextResponse.json({ user });
   } else {
-    return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
   }
 }

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { ArrowRightIcon } from "@/components/icons/ArrowRightIcon";
-import { PlusIcon } from "@/components/icons/PlusIcon";
-import SelectedResourceCard from "@/components/SelectedResourceCard";
-import type { IResource } from "@/types/resources";
-import { Loader2 } from "lucide-react";
-import type React from "react";
-import { useState } from "react";
+import { ArrowRightIcon } from '@/components/icons/ArrowRightIcon';
+import { PlusIcon } from '@/components/icons/PlusIcon';
+import SelectedResourceCard from '@/components/SelectedResourceCard';
+import type { IResource } from '@/types/resources';
+import { Loader2 } from 'lucide-react';
+import type React from 'react';
+import { useState } from 'react';
 
 interface ChatInputProps {
   onSubmit: (message: string) => void;
@@ -23,9 +23,9 @@ export function ChatInput({
   onRemoveResource,
   selectedResources,
   isLoading,
-  placeholder = "Ask AI anything..."
+  placeholder = 'Ask AI anything...'
 }: ChatInputProps) {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,7 +36,7 @@ export function ChatInput({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSubmit(e as unknown as React.FormEvent);
     }
@@ -86,7 +86,7 @@ export function ChatInput({
                 <Loader2 className="animate-spin" />
               ) : (
                 <ArrowRightIcon
-                  fill={!input.trim() ? "rgba(161, 161, 161, 1)" : "#052E16"}
+                  fill={!input.trim() ? 'rgba(161, 161, 161, 1)' : '#052E16'}
                 />
               )}
             </button>

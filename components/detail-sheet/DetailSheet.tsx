@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { useResourceDetail } from "@/contexts/ResourceDetailContext";
-import { DetailSheetBody } from "./detail-sheet-body";
+import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { useResourceDetail } from '@/contexts/ResourceDetailContext';
+import { DetailSheetBody } from './detail-sheet-body';
 
 export function DetailSheet() {
   const { selectedDetailItems, clearDetailItem } = useResourceDetail();

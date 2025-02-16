@@ -162,7 +162,7 @@
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.radix-dropdown-menu-content[data-side="top"] {
+.radix-dropdown-menu-content[data-side='top'] {
   animation-name: slideUp;
 }
 

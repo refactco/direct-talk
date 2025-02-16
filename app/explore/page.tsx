@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { PeopleCard } from "@/components/PeopleCard";
-import { ResourceCard } from "@/components/resource-card/ResourceCard";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { useSearch } from "@/contexts/SearchContext";
-import { getAuthors, getResources } from "@/lib/api";
-import { ChevronRight, Search } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { PeopleCard } from '@/components/PeopleCard';
+import { ResourceCard } from '@/components/resource-card/ResourceCard';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { useSearch } from '@/contexts/SearchContext';
+import { getAuthors, getResources } from '@/lib/api';
+import { ChevronRight, Search } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function ExplorePage() {
   const [recentResources, setRecentResources] = useState([]);
@@ -22,10 +22,10 @@ export default function ExplorePage() {
   useEffect(() => {
     const fetchData = async () => {
       const [recent, popular, authorList] = await Promise.all([
-        getResources({ sort: "latest", limit: 10 }).catch(() => []),
-        getResources({ sort: "popular", limit: 10 }).catch(() => []),
+        getResources({ sort: 'latest', limit: 10 }).catch(() => []),
+        getResources({ sort: 'popular', limit: 10 }).catch(() => []),
         getAuthors({ limit: 10 }).catch((error) => {
-          console.error("Error fetching authors:", error);
+          console.error('Error fetching authors:', error);
           return [];
         })
       ]);

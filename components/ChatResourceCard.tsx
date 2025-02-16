@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   addResource,
   removeResource,
   useSelectedResources
-} from "@/contexts/SelectedResourcesContext";
-import type { IResource } from "@/types/resources";
-import { Check, Plus } from "lucide-react";
-import Image from "next/image";
-import { useState } from "react";
+} from '@/contexts/SelectedResourcesContext';
+import type { IResource } from '@/types/resources';
+import { Check, Plus } from 'lucide-react';
+import Image from 'next/image';
+import { useState } from 'react';
 
 interface ChatResourceCardProps {
   resource: IResource;
@@ -47,7 +47,7 @@ export function ChatResourceCard({
       >
         <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-md">
           <Image
-            src={resource.imageUrl || "/placeholder.svg"}
+            src={resource.imageUrl || '/placeholder.svg'}
             alt={resource.title}
             width={48}
             height={48}
@@ -83,11 +83,11 @@ export function ChatResourceCard({
           </div>
           <Button
             size="icon"
-            variant={selected ? "default" : "secondary"}
+            variant={selected ? 'default' : 'secondary'}
             className={`rounded-full w-8 h-8 p-0 transition-opacity ${
               selected
-                ? "bg-primary text-primary-foreground"
-                : "bg-background-secondary"
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-background-secondary'
             }`}
             onClick={handleToggleResource}
           >

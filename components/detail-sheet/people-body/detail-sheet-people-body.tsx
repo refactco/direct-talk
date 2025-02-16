@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { DetailItemList } from "@/components/detail-item-list/detail-item-list";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { getAuthor } from "@/lib/api";
-import { toCapitalize } from "@/lib/text-modifier";
-import { IAuthor } from "@/types/resources";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { IDetailSheetPeopleBodyTypeProps } from "./detail-sheet-people-body-type";
+import { DetailItemList } from '@/components/detail-item-list/detail-item-list';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { getAuthor } from '@/lib/api';
+import { toCapitalize } from '@/lib/text-modifier';
+import { IAuthor } from '@/types/resources';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { IDetailSheetPeopleBodyTypeProps } from './detail-sheet-people-body-type';
 
 export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
   const { person } = props;
@@ -30,7 +30,7 @@ export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
 
       setDetailedPerson(fetchedPerson);
     } catch (error) {
-      console.error("Error fetching popular resources:", error);
+      console.error('Error fetching popular resources:', error);
     } finally {
       setIsLoading(false);
     }
@@ -47,7 +47,7 @@ export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
         <div className="p-0">
           <div className="relative aspect-square w-36 h-36 overflow-hidden rounded-full border border-[#27272A]">
             <Image
-              src={image_url ?? "/placeholder.svg"}
+              src={image_url ?? '/placeholder.svg'}
               alt={name}
               fill
               className="object-cover w-36 h-36"

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import type React from "react";
-import { createContext, useContext, useState, useEffect } from "react";
-import { AuthModal } from "@/components/AuthModal";
+import type React from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import { AuthModal } from '@/components/AuthModal';
 
 interface User {
   id: number;
@@ -27,8 +27,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const storedUser = localStorage.getItem("user");
+    const token = localStorage.getItem('token');
+    const storedUser = localStorage.getItem('user');
     if (token && storedUser) {
       setUser(JSON.parse(storedUser));
       setIsAuthenticated(true);
@@ -36,16 +36,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = (token: string, user: User) => {
-    localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
     setUser(user);
     setIsAuthenticated(true);
     closeAuthModal();
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     setUser(null);
     setIsAuthenticated(false);
   };
@@ -77,7 +77,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 }

@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { getAuthors, getResources, getTopics } from "@/lib/api";
-import type { IAuthor, IResource, ITopic } from "@/types/resources";
-import { usePathname, useRouter } from "next/navigation";
-import type React from "react";
+import { getAuthors, getResources, getTopics } from '@/lib/api';
+import type { IAuthor, IResource, ITopic } from '@/types/resources';
+import { usePathname, useRouter } from 'next/navigation';
+import type React from 'react';
 import {
   createContext,
   useCallback,
   useContext,
   useEffect,
   useState
-} from "react";
+} from 'react';
 
 interface SearchResults {
   resources: IResource[];
@@ -28,7 +28,7 @@ interface SearchContextType {
 const SearchContext = createContext<SearchContextType | undefined>(undefined);
 
 export function SearchProvider({ children }: { children: React.ReactNode }) {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResults>({
     resources: [],
     authors: [],
@@ -65,7 +65,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
         isLoading: false
       });
     } catch (error) {
-      console.error("Search error:", error);
+      console.error('Search error:', error);
       setResults((prev) => ({ ...prev, isLoading: false }));
     }
   }, []);
@@ -73,7 +73,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       performSearch(query);
-      if (pathname === "/search" || pathname?.startsWith("/search/")) {
+      if (pathname === '/search' || pathname?.startsWith('/search/')) {
         router.replace(`/search/${encodeURIComponent(query)}`, {
           scroll: false
         });
@@ -92,7 +92,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 export function useSearch() {
   const context = useContext(SearchContext);
   if (context === undefined) {
-    throw new Error("useSearch must be used within a SearchProvider");
+    throw new Error('useSearch must be used within a SearchProvider');
   }
   return context;
 }

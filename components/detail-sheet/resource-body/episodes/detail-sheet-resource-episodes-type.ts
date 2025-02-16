@@ -1,4 +1,4 @@
-import { IResource } from "@/types/resources";
+import { IResource } from '@/types/resources';
 
 export interface IDetailSheetResourceEpisodesProps {
   resource: IResource;

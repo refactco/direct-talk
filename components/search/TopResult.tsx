@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
-import type { IResource } from "@/types/resources";
-import { Plus } from "lucide-react";
-import Link from "next/link";
+import { Button } from '@/components/ui/button';
+import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
+import type { IResource } from '@/types/resources';
+import { Plus } from 'lucide-react';
+import Link from 'next/link';
 
 export function TopResult({ resource }: { resource: IResource }) {
   const { addResource, isSelected } = useSelectedResources();
@@ -13,7 +13,7 @@ export function TopResult({ resource }: { resource: IResource }) {
     >
       <div className="aspect-square w-48 overflow-hidden rounded-md">
         <img
-          src={resource.imageUrl || "/placeholder.svg"}
+          src={resource.imageUrl || '/placeholder.svg'}
           alt={resource.title}
           className="h-full w-full object-cover"
         />

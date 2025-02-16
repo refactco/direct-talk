@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { CheckIcon } from "@/components/icons/CheckIcon";
-import { InfoIcon } from "@/components/icons/InfoIcon";
-import { PlusIcon } from "@/components/icons/PlusIcon";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useResourceDetail } from "@/contexts/ResourceDetailContext";
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
-import { cn } from "@/lib/utils";
-import type { IResource } from "@/types/resources";
-import Image from "next/image";
-import { useState } from "react";
+import { CheckIcon } from '@/components/icons/CheckIcon';
+import { InfoIcon } from '@/components/icons/InfoIcon';
+import { PlusIcon } from '@/components/icons/PlusIcon';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useResourceDetail } from '@/contexts/ResourceDetailContext';
+import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
+import { cn } from '@/lib/utils';
+import type { IResource } from '@/types/resources';
+import Image from 'next/image';
+import { useState } from 'react';
 
 interface HomeResourceCardProps {
   resource: IResource;
@@ -63,7 +63,7 @@ export function ResourceCard({
       >
         <div className="relative bg-background rounded-[8px] w-full aspect-square overflow-hidden">
           <Image
-            src={resource?.image_url || "/placeholder.svg"}
+            src={resource?.image_url || '/placeholder.svg'}
             alt={resource?.title}
             className="object-cover transition-transform group-hover:scale-105"
             fill
@@ -90,9 +90,9 @@ export function ResourceCard({
         </div>
         <div
           className={cn(
-            "flex items-center space-x-2 absolute bottom-2 right-0 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300",
-            selected && "opacity-100",
-            hideType && "bottom-1 right-0.5"
+            'flex items-center space-x-2 absolute bottom-2 right-0 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300',
+            selected && 'opacity-100',
+            hideType && 'bottom-1 right-0.5'
           )}
         >
           {selected ? (

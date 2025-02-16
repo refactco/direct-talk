@@ -1,7 +1,7 @@
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Button } from "@/components/ui/button";
-import { ChevronRight } from "lucide-react";
-import Link from "next/link";
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { Button } from '@/components/ui/button';
+import { ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 
 interface SearchResultSectionProps {
   title: string;
@@ -14,7 +14,7 @@ export function SearchResultSection({
   title,
   viewAllHref,
   children,
-  className = ""
+  className = ''
 }: SearchResultSectionProps) {
   return (
     <section className={className}>

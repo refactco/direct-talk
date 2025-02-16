@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Plus, ArrowRight, BookOpen, X, Loader2 } from "lucide-react";
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
-import { SearchModal } from "@/components/search-modal/search-modal";
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Plus, ArrowRight, BookOpen, X, Loader2 } from 'lucide-react';
+import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
+import { SearchModal } from '@/components/search-modal/search-modal';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger
-} from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+} from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function ChatPage() {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -34,9 +34,9 @@ export default function ChatPage() {
           const chatId = await createNewChat(selectedResource.id, message);
           router.push(`/chat/conversation?id=${chatId}`);
         } catch (error) {
-          console.error("Error creating new chat:", error);
+          console.error('Error creating new chat:', error);
           setErrorMessage(
-            `Failed to create a new chat: ${error instanceof Error ? error.message : "Unknown error"}`
+            `Failed to create a new chat: ${error instanceof Error ? error.message : 'Unknown error'}`
           );
         } finally {
           setIsLoading(false);
@@ -49,7 +49,7 @@ export default function ChatPage() {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSubmit(e as unknown as React.FormEvent);
     }
@@ -60,10 +60,10 @@ export default function ChatPage() {
     prompt: string
   ): Promise<string> => {
     // Replace this with your actual API call
-    const response = await fetch("/api/chat", {
-      method: "POST",
+    const response = await fetch('/api/chat', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({ resourceId, prompt })
     });
@@ -99,7 +99,7 @@ export default function ChatPage() {
                               <img
                                 src={
                                   selectedResource.imageUrl ||
-                                  "/placeholder.svg"
+                                  '/placeholder.svg'
                                 }
                                 alt={selectedResource.title}
                                 className="h-full w-full object-cover"
@@ -147,9 +147,9 @@ export default function ChatPage() {
                 onKeyDown={handleKeyDown}
                 placeholder="Ask AI about your resource ..."
                 className={cn(
-                  "w-full min-h-[100px] p-4 pr-12 bg-[hsl(var(--background))] resize-none border-0",
-                  "text-sm text-foreground placeholder:text-muted-foreground",
-                  "focus:outline-none focus:ring-0"
+                  'w-full min-h-[100px] p-4 pr-12 bg-[hsl(var(--background))] resize-none border-0',
+                  'text-sm text-foreground placeholder:text-muted-foreground',
+                  'focus:outline-none focus:ring-0'
                 )}
               />
               <Button
