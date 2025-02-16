@@ -66,7 +66,7 @@ export function Sidebar() {
       </nav>
       <div
         className={cn(
-          'absolute md:relative w-full z-50 flex l- h-full pb-5 flex-col bg-accent transition-all duration-300 ease-in-out border-r border-white/10',
+          'absolute md:relative md:left-0 w-full z-50 flex l- h-full flex-col bg-accent transition-all duration-300 ease-in-out border-r border-white/10',
           isCollapsed ? 'md:w-[64px]' : 'md:w-[243px]',
           isMobileExpanded ? 'left-0' : '-left-full'
         )}
@@ -97,24 +97,24 @@ export function Sidebar() {
             <Button
               variant="ghost"
               size="icon"
-              className="w-10 h-10 rounded-full hidden md:flex items-center justify-center hover:bg-accent transition-colors duration-200"
+              className="w-5 h-5 rounded-full hidden md:flex items-center justify-center hover:bg-accent transition-colors duration-200"
               onClick={() => setIsCollapsed(!isCollapsed)}
             >
-              <CollapseIcon />
+              <CollapseIcon className="fill-muted-foreground h-4 w-4" />
             </Button>
           )}
           <Button
             variant="ghost"
             size="icon"
-            className="w-10 h-10 rounded-full flex md:hidden items-center justify-center hover:bg-accent transition-colors duration-200"
+            className="w-5 h-5 rounded-full flex md:hidden items-center justify-center hover:bg-accent transition-colors duration-200"
             onClick={() => setIsMobileExpanded(false)}
           >
             <CollapseIcon className="fill-muted-foreground" />
           </Button>
         </div>
 
-        <div className="flex-1 overflow-hidden">
-          <div className="space-y-3 p-5">
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <div className="space-y-3 p-5 flex-1">
             {/* History Section */}
             {!isCollapsed && isConversationPage ? (
               <Button
@@ -181,23 +181,25 @@ export function Sidebar() {
               </ScrollArea>
             )}
           </div>
+          <div className="p-5">
+            <Button
+              variant="outline"
+              className={cn(
+                'justify-start w-max border-white/10 bg-transparent',
+                isCollapsed && 'px-2.5 ml-2.5'
+              )}
+              onClick={handleAuth}
+            >
+              <LogoutIcon className="h-4 w-4" />
+              {!isCollapsed && (
+                <span className="text-sm font-bold">
+                  {isAuthenticated ? 'Logout' : 'Login'}
+                </span>
+              )}
+            </Button>
+          </div>
 
           {/* Account Section */}
-          <Button
-            variant="outline"
-            className={cn(
-              'justify-start ml-5 w-max border-white/10 bg-transparent',
-              isCollapsed && 'px-2.5 ml-2.5'
-            )}
-            onClick={handleAuth}
-          >
-            <LogoutIcon className="h-4 w-4" />
-            {!isCollapsed && (
-              <span className="text-sm font-bold">
-                {isAuthenticated ? 'Logout' : 'Login'}
-              </span>
-            )}
-          </Button>
         </div>
       </div>
     </>

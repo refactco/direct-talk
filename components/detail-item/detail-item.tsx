@@ -30,7 +30,7 @@ export function DetailItem(props: IDetailItemProps) {
             alt={title}
             width={24}
             height={24}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover rounded-md"
           />
         </div>
         <div className="flex flex-col gap-1 self-start w-44">

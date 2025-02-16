@@ -1,6 +1,11 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '@/components/ui/popover';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useResourceDetail } from '@/contexts/ResourceDetailContext';
 import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
@@ -50,6 +55,7 @@ export function DetailSheetResourceBody(
   }, [resource]);
 
   const isResourceSelected = isSelected(id);
+  const [firstPerson, ...rest] = people ?? [];
 
   return (
     <>
@@ -78,34 +84,71 @@ export function DetailSheetResourceBody(
             {isLoading ? (
               <Skeleton className="h-5 w-full" />
             ) : (
-              <div className="flex gap-2">
-                {people?.map((person: IAuthor, index: number) => {
-                  const { name, image_url } = person;
-
-                  return (
-                    <>
-                      <div
-                        className="inline-flex items-center gap-2 text-sm text-[#A7A7A7] cursor-pointer hover:text-white"
-                        onClick={() => {
-                          pushDetailItem(person);
-                        }}
-                      >
-                        {image_url ? (
-                          <div className="rounded-full w-6 h-6 relative aspect-square">
-                            <Image
-                              alt=""
-                              src={image_url}
-                              fill
-                              className="object-cover w-6 h-6 rounded-full"
-                            />
-                          </div>
-                        ) : null}
-                        <span>{name}</span>
+              <div className="flex gap-4">
+                {firstPerson ? (
+                  <div
+                    className="inline-flex items-center h-7 relative gap-2 border border-black text-sm text-[#A7A7A7] cursor-pointer hover:text-white"
+                    onClick={() => {
+                      pushDetailItem(firstPerson);
+                    }}
+                  >
+                    {firstPerson.image_url ? (
+                      <div className="rounded-full w-7 h-7 aspect-square absolute">
+                        <Image
+                          alt=""
+                          src={firstPerson.image_url}
+                          fill
+                          className="object-cover border border-[#27272A] rounded-full"
+                        />
                       </div>
-                      {index + 1 < people.length ? <span>,</span> : ''}
-                    </>
-                  );
-                })}
+                    ) : null}
+                    <span className="pl-9 leading-7">{firstPerson.name}</span>
+                  </div>
+                ) : null}
+                {people && people.length > 1 ? (
+                  <div className="flex gap-2">
+                    <div className="flex h-7 w-7 border border-[#27272A] rounded-full justify-center items-center">
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <span className="text-xs font-semibold">
+                            +{people.length - 1}
+                          </span>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto flex flex-col items-start gap-3">
+                          {rest?.map((person: IAuthor, index: number) => {
+                            const { name, image_url } = person;
+
+                            return (
+                              <>
+                                <div
+                                  className="inline-flex items-center h-7 relative gap-2 text-sm text-[#A7A7A7] cursor-pointer hover:text-white"
+                                  onClick={() => {
+                                    pushDetailItem(person);
+                                  }}
+                                >
+                                  {image_url ? (
+                                    <div className="rounded-full w-7 h-7 aspect-square absolute">
+                                      <Image
+                                        alt=""
+                                        src={image_url}
+                                        fill
+                                        className="object-cover rounded-full"
+                                      />
+                                    </div>
+                                  ) : null}
+                                  <span className="pl-9 leading-7">{name}</span>
+                                </div>
+                              </>
+                            );
+                          })}
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                    <span className="text-sm font-semibold leading-7">
+                      People
+                    </span>
+                  </div>
+                ) : null}
               </div>
             )}
           </div>
