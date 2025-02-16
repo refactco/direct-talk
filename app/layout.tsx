@@ -2,7 +2,6 @@ import { DetailSheet } from "@/components/detail-sheet/DetailSheet";
 import { Providers } from "@/components/providers";
 import { Sidebar } from "@/components/sidebar";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ChatProvider } from "@/contexts/ChatContext";
@@ -14,6 +13,10 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type React from "react";
 import "./globals.css";
+import { HistoryProvider } from "@/contexts/HistoryContext";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { Toaster } from "@/components/ui/toaster";
+import { ResourceProvider } from "@/contexts/ResourcesContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -39,13 +42,15 @@ export default function RootLayout({
         >
           <Providers>
             <AuthProvider>
-              <SearchProvider>
-                <SelectedResourcesProvider>
-                  <ResourceDetailProvider>
-                    <ChatProvider>
-                      <div className="flex h-screen">
-                        <Sidebar />
-                        <ThemeToggle />
+              <HistoryProvider>
+                <SearchProvider>
+                  <SelectedResourcesProvider>
+                    <ResourceDetailProvider>
+                      <ChatProvider>
+                        <ResourceProvider>
+                          <div className="flex h-screen">
+                            <Sidebar />
+                            <ThemeToggle />
                         <Button
                           variant="ghost"
                           size="icon"
@@ -56,14 +61,19 @@ export default function RootLayout({
                           <span className="sr-only">Toggle theme</span>
                         </Button>
                         <main className="flex-1 overflow-y-auto pb-0 px-4 py-4 md:px-8 md:py-8">
-                          {children}
-                        </main>
-                        <DetailSheet />
-                      </div>
-                    </ChatProvider>
-                  </ResourceDetailProvider>
-                </SelectedResourcesProvider>
-              </SearchProvider>
+                              {/* Theme Toggle */}
+                              <ThemeToggle />
+                              {children}
+                            </main>
+                            <Toaster />
+                            <DetailSheet />
+                          </div>
+                        </ResourceProvider>
+                      </ChatProvider>
+                    </ResourceDetailProvider>
+                  </SelectedResourcesProvider>
+                </SearchProvider>
+              </HistoryProvider>
             </AuthProvider>
           </Providers>
         </ThemeProvider>

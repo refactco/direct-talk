@@ -5,7 +5,7 @@ export interface Message {
 }
 
 export interface ChatData {
-  id: string;
-  content_id: string;
-  messages: Message[];
+  session_id: string;
+  content_ids: string[];
+  results: Message[];
 }

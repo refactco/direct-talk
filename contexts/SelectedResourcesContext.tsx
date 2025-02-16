@@ -2,7 +2,8 @@
 
 import type { IResource } from "@/types/resources";
 import type React from "react";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 type SelectedResourcesContextType = {
   selectedResources: IResource[];
@@ -22,14 +23,18 @@ export function SelectedResourcesProvider({
   children: React.ReactNode;
 }) {
   const [selectedResources, setSelectedResources] = useState<IResource[]>([]);
-
-  useEffect(() => {
-    console.log("SelectedResourcesProvider mounted");
-  }, []);
+  const { toast } = useToast();
 
   const addResource = (resource: IResource) => {
-    console.log("Adding resource:", resource);
     setSelectedResources((prev) => {
+      if (prev.length >= 10) {
+        toast({
+          variant: "destructive",
+          title: "Limit reached",
+          description: "You can only select up to 10 resources."
+        });
+        return prev; // Prevent adding more than 10 resources
+      }
       if (!prev.some((r) => r.id === resource.id)) {
         return [...prev, resource];
       }
@@ -37,17 +42,15 @@ export function SelectedResourcesProvider({
     });
   };
 
-  const removeResource = (resourceId: string) => {
-    console.log("Removing resource:", resourceId);
+  const removeResource = (resourceId: string | number) => {
     setSelectedResources((prev) => prev.filter((r) => r.id !== resourceId));
   };
 
   const resetSelectedResources = () => {
-    console.log("Resetting selected resources");
     setSelectedResources([]);
   };
 
-  const isSelected = (resourceId: string) => {
+  const isSelected = (resourceId: string | number) => {
     return selectedResources.some((r) => r.id === resourceId);
   };
 

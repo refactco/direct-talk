@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { ResourceSelectorProps, SearchResults } from "./search-modal-types";
+import { CardSlider } from "@/components/card-slider/card-slider";
 
 export function SearchModal({
   open,
@@ -129,15 +130,13 @@ export function SearchModal({
                     <h2 className="text-xl font-semibold text-white mb-6">
                       {search ? "Peoples" : "Popular Peoples"}
                     </h2>
-                    <div className="relative w-full">
-                      <Swiper spaceBetween={22} slidesPerView={5}>
-                        {searchResults.people.map((people) => (
-                          <SwiperSlide key={people.id}>
-                            <PeopleCard people={people} />
-                          </SwiperSlide>
-                        ))}
-                      </Swiper>
-                    </div>
+                    <CardSlider>
+                      {searchResults.people.map((people) => (
+                        <SwiperSlide key={people.id}>
+                          <PeopleCard people={people} />
+                        </SwiperSlide>
+                      ))}
+                    </CardSlider>
                   </div>
                 )}
 
@@ -147,19 +146,17 @@ export function SearchModal({
                     <h2 className="text-xl font-semibold text-white mb-6 mt-12">
                       {search ? "Shows" : "Popular Resources"}
                     </h2>
-                    <div className="relative w-full">
-                      <Swiper spaceBetween={22} slidesPerView={5}>
-                        {searchResults.shows.map((show) => (
-                          <SwiperSlide key={show.id}>
-                            <ResourceCard
-                              key={show.id}
-                              resource={show}
-                              hideType={true}
-                            />
-                          </SwiperSlide>
-                        ))}
-                      </Swiper>
-                    </div>
+                    <CardSlider>
+                      {searchResults.shows.map((show) => (
+                        <SwiperSlide key={show.id}>
+                          <ResourceCard
+                            key={show.id}
+                            resource={show}
+                            hideType={true}
+                          />
+                        </SwiperSlide>
+                      ))}
+                    </CardSlider>
                   </>
                 )}
 
@@ -170,7 +167,7 @@ export function SearchModal({
                       Episodes
                     </h2>
                     <div className="relative w-full">
-                      <Swiper spaceBetween={22} slidesPerView={5}>
+                      <CardSlider>
                         {searchResults.episodes.map((resource) => (
                           <SwiperSlide key={resource.id}>
                             <ResourceCard
@@ -180,7 +177,7 @@ export function SearchModal({
                             />
                           </SwiperSlide>
                         ))}
-                      </Swiper>
+                      </CardSlider>
                     </div>
                   </>
                 )}
@@ -192,7 +189,7 @@ export function SearchModal({
                       Books
                     </h2>
                     <div className="relative w-full">
-                      <Swiper spaceBetween={22} slidesPerView={5}>
+                      <CardSlider>
                         {searchResults.books.map((resource) => (
                           <SwiperSlide key={resource.id}>
                             <ResourceCard
@@ -203,7 +200,7 @@ export function SearchModal({
                             />
                           </SwiperSlide>
                         ))}
-                      </Swiper>
+                      </CardSlider>
                     </div>
                   </>
                 )}
