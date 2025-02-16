@@ -17,7 +17,7 @@ interface ChatContextType {
     contentId: string,
     sessionId?: string
   ) => Promise<any>;
-  fetchChat: (chatId: string) => Promise<void>;
+  fetchChat: (chatId: string) => Promise<any>;
   addMessage: (message: Message) => void;
 }
 
@@ -86,7 +86,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
       }
 
       const data = await response.json();
-      setMessages(data.results);
+      setMessages(data);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "An unknown error occurred"
