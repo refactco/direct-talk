@@ -1,11 +1,11 @@
-import { authors } from "@/lib/data";
-import { NextResponse } from "next/server";
+import { authors } from '@/lib/data';
+import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const query = searchParams.get("q")?.toLowerCase();
-  const limit = searchParams.get("limit")
-    ? Number.parseInt(searchParams.get("limit")!)
+  const query = searchParams.get('q')?.toLowerCase();
+  const limit = searchParams.get('limit')
+    ? Number.parseInt(searchParams.get('limit')!)
     : undefined;
 
   let filteredAuthors = [...authors];

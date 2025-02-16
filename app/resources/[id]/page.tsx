@@ -1,7 +1,7 @@
-import { ResourceCard } from "@/components/resource-card/ResourceCard";
-import { ResourceContent } from "@/components/ResourceContent";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { getResource, getResources } from "@/lib/api";
+import { ResourceCard } from '@/components/resource-card/ResourceCard';
+import { ResourceContent } from '@/components/ResourceContent';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { getResource, getResources } from '@/lib/api';
 
 export default async function ResourcePage({
   params
@@ -16,12 +16,12 @@ export default async function ResourcePage({
       {/* Hero Section */}
       <div
         className="relative flex items-end p-6 bg-gradient-to-b from-background-highlight to-background"
-        style={{ minHeight: "30vh" }}
+        style={{ minHeight: '30vh' }}
       >
         <div className="flex items-end gap-6">
           <div className="h-48 w-48 flex-shrink-0 overflow-hidden rounded-md shadow-lg">
             <img
-              src={resource.imageUrl || "/placeholder.svg"}
+              src={resource.imageUrl || '/placeholder.svg'}
               alt={resource.title}
               className="h-full w-full object-cover"
             />

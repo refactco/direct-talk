@@ -1,6 +1,6 @@
-import { UserIcon } from "@/components/icons/UserIcon";
-import type { IAuthor } from "@/types/resources";
-import Image from "next/image";
+import { UserIcon } from '@/components/icons/UserIcon';
+import type { IAuthor } from '@/types/resources';
+import Image from 'next/image';
 
 interface PeopleCardProps {
   people: IAuthor;
@@ -12,7 +12,7 @@ export function PeopleCard({ people }: PeopleCardProps) {
       <div className="relative w-full aspect-square rounded-full overflow-hidden bg-accent">
         {people.image_url ? (
           <Image
-            src={people.image_url || "/placeholder.svg"}
+            src={people.image_url || '/placeholder.svg'}
             alt={people.name}
             fill
             className="object-cover transition-all duration-300 group-hover:scale-105"

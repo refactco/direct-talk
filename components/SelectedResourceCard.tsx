@@ -1,5 +1,5 @@
-import { CloseIcon } from "@/components/icons/CloseIcon";
-import Image from "next/image";
+import { CloseIcon } from '@/components/icons/CloseIcon';
+import Image from 'next/image';
 
 interface SelectedResourceCardProps {
   resource: any;
@@ -21,7 +21,7 @@ function SelectedResourceCard({
     >
       <div className="h-6 w-6 overflow-hidden flex-shrink-0">
         <Image
-          src={image_url || "/placeholder.svg"}
+          src={image_url || '/placeholder.svg'}
           alt={title}
           width={24}
           height={24}

@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { cn } from "@/lib/utils";
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 interface CategoryCardProps {
   id: string;
@@ -20,7 +20,7 @@ export function CategoryCard({
     <Link
       href={`/categories/${id}`}
       className={cn(
-        "group relative aspect-square overflow-hidden rounded-lg transition-all hover:scale-105",
+        'group relative aspect-square overflow-hidden rounded-lg transition-all hover:scale-105',
         className
       )}
       style={{ backgroundColor: color }}
@@ -30,7 +30,7 @@ export function CategoryCard({
       </div>
       <div className="absolute bottom-0 right-0 w-[100px] h-[100px] rotate-[25deg] translate-x-[18%] translate-y-[5%]">
         <img
-          src={imageUrl || "/placeholder.svg"}
+          src={imageUrl || '/placeholder.svg'}
           alt=""
           className="w-full h-full object-cover rounded-lg shadow-lg"
         />

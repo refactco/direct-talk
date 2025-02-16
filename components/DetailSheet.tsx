@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Sheet, SheetClose, SheetContent } from "@/components/ui/sheet";
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
-import type { IAuthor, Resource } from "@/types/resources";
-import { Check, Plus, X } from "lucide-react";
-import Image from "next/image";
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Sheet, SheetClose, SheetContent } from '@/components/ui/sheet';
+import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
+import type { IAuthor, Resource } from '@/types/resources';
+import { Check, Plus, X } from 'lucide-react';
+import Image from 'next/image';
 
 interface DetailSheetProps {
   item: Resource | IAuthor | null;
@@ -19,8 +19,8 @@ export function DetailSheet({ item, open, onOpenChange }: DetailSheetProps) {
 
   if (!item) return null;
 
-  const isResource = "type" in item;
-  const isAuthor = "bio" in item;
+  const isResource = 'type' in item;
+  const isAuthor = 'bio' in item;
   const isResourceSelected = isResource ? isSelected(item.id) : false;
 
   return (
@@ -47,7 +47,7 @@ export function DetailSheet({ item, open, onOpenChange }: DetailSheetProps) {
           <div className="p-4">
             <div className="relative aspect-square w-36 h-36 overflow-hidden">
               <Image
-                src={item.imageUrl || "/placeholder.svg"}
+                src={item.imageUrl || '/placeholder.svg'}
                 alt={isResource ? item.title : item.name}
                 fill
                 className="object-cover w-36 h-36"
@@ -61,7 +61,7 @@ export function DetailSheet({ item, open, onOpenChange }: DetailSheetProps) {
             <div className="flex justify-between items-start mb-6">
               <div className="flex-1">
                 <div className="text-xs font-medium text-[#A7A7A7] uppercase tracking-wider mb-1">
-                  {isResource ? item.type : "Author"}
+                  {isResource ? item.type : 'Author'}
                 </div>
                 <h2 className="text-2xl font-bold mb-1">
                   {isResource ? item.title : item.name}

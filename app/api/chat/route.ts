@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
-import { v4 as uuidv4 } from "uuid";
+import { NextResponse } from 'next/server';
+import { v4 as uuidv4 } from 'uuid';
 
 interface Message {
-  role: "user" | "assistant";
+  role: 'user' | 'assistant';
   content: string;
 }
 
@@ -33,25 +33,25 @@ export async function POST(request: Request) {
   }
 
   // Add user message
-  chatSession.messages.push({ role: "user", content: prompt });
+  chatSession.messages.push({ role: 'user', content: prompt });
 
   // Generate mock AI response
   const aiResponse = `This is a mock response to: "${prompt}"`;
-  chatSession.messages.push({ role: "assistant", content: aiResponse });
+  chatSession.messages.push({ role: 'assistant', content: aiResponse });
 
   return NextResponse.json({
     id: chatSession.id,
-    messages: [{ role: "assistant", content: aiResponse }]
+    messages: [{ role: 'assistant', content: aiResponse }]
   });
 }
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const chatId = searchParams.get("id");
+  const chatId = searchParams.get('id');
 
   if (!chatId || !chatSessions[chatId]) {
     return NextResponse.json(
-      { error: "Chat session not found" },
+      { error: 'Chat session not found' },
       { status: 404 }
     );
   }

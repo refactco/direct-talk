@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/icons";
-import { ArrowLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useState } from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Icons } from '@/components/icons';
+import { ArrowLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -38,7 +38,7 @@ export default function LoginPage() {
             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
           ) : (
             <Icons.google className="mr-2 h-4 w-4" />
-          )}{" "}
+          )}{' '}
           Google
         </Button>
         <Button
@@ -51,12 +51,12 @@ export default function LoginPage() {
             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
           ) : (
             <Icons.twitter className="mr-2 h-4 w-4" />
-          )}{" "}
+          )}{' '}
           Twitter
         </Button>
       </div>
       <p className="px-8 text-center text-sm text-muted-foreground">
-        Don&apos;t have an account?{" "}
+        Don&apos;t have an account?{' '}
         <Link
           href="/auth/signup"
           className="hover:text-brand underline underline-offset-4"

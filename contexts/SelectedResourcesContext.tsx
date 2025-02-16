@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import type { IResource } from "@/types/resources";
-import type React from "react";
-import { createContext, useContext, useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import type { IResource } from '@/types/resources';
+import type React from 'react';
+import { createContext, useContext, useState } from 'react';
 
 type SelectedResourcesContextType = {
   selectedResources: IResource[];
@@ -29,9 +29,9 @@ export function SelectedResourcesProvider({
     setSelectedResources((prev) => {
       if (prev.length >= 10) {
         toast({
-          variant: "destructive",
-          title: "Limit reached",
-          description: "You can only select up to 10 resources."
+          variant: 'destructive',
+          title: 'Limit reached',
+          description: 'You can only select up to 10 resources.'
         });
         return prev; // Prevent adding more than 10 resources
       }
@@ -73,7 +73,7 @@ export function useSelectedResources() {
   const context = useContext(SelectedResourcesContext);
   if (context === undefined) {
     throw new Error(
-      "useSelectedResources must be used within a SelectedResourcesProvider"
+      'useSelectedResources must be used within a SelectedResourcesProvider'
     );
   }
   return context;

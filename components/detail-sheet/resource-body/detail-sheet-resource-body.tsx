@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useResourceDetail } from "@/contexts/ResourceDetailContext";
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
-import { getResource } from "@/lib/api";
-import { IAuthor, IResource } from "@/types/resources";
-import { Check, Plus } from "lucide-react";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { IDetailSheetResourceBodyTypeProps } from "./detail-sheet-resource-body-type";
-import { DetailSheetResourceEpisodes } from "./episodes/detail-sheet-resource-episodes";
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useResourceDetail } from '@/contexts/ResourceDetailContext';
+import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
+import { getResource } from '@/lib/api';
+import { IAuthor, IResource } from '@/types/resources';
+import { Check, Plus } from 'lucide-react';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { IDetailSheetResourceBodyTypeProps } from './detail-sheet-resource-body-type';
+import { DetailSheetResourceEpisodes } from './episodes/detail-sheet-resource-episodes';
 
 export function DetailSheetResourceBody(
   props: IDetailSheetResourceBodyTypeProps
@@ -40,7 +40,7 @@ export function DetailSheetResourceBody(
 
         setDetailedResource(fetchedResource);
       } catch (error) {
-        console.error("Error fetching popular resources:", error);
+        console.error('Error fetching popular resources:', error);
       } finally {
         setIsLoading(false);
       }
@@ -58,7 +58,7 @@ export function DetailSheetResourceBody(
         <div className="p-0">
           <div className="relative aspect-square w-36 h-36 overflow-hidden rounded-[0.5rem] border border-[#27272A]">
             <Image
-              src={image_url ?? "/placeholder.svg"}
+              src={image_url ?? '/placeholder.svg'}
               alt={title}
               fill
               className="object-cover w-36 h-36"
@@ -102,7 +102,7 @@ export function DetailSheetResourceBody(
                         ) : null}
                         <span>{name}</span>
                       </div>
-                      {index + 1 < people.length ? <span>,</span> : ""}
+                      {index + 1 < people.length ? <span>,</span> : ''}
                     </>
                   );
                 })}

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/icons";
-import { ArrowLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useState } from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Icons } from '@/components/icons';
+import { ArrowLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -42,7 +42,7 @@ export default function SignUpPage() {
             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
           ) : (
             <Icons.google className="mr-2 h-4 w-4" />
-          )}{" "}
+          )}{' '}
           Google
         </Button>
         <Button
@@ -55,19 +55,19 @@ export default function SignUpPage() {
             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
           ) : (
             <Icons.twitter className="mr-2 h-4 w-4" />
-          )}{" "}
+          )}{' '}
           Twitter
         </Button>
       </div>
       <p className="px-8 text-center text-sm text-muted-foreground">
-        By clicking continue, you agree to our{" "}
+        By clicking continue, you agree to our{' '}
         <Link
           href="/terms"
           className="hover:text-brand underline underline-offset-4"
         >
           Terms of Service
-        </Link>{" "}
-        and{" "}
+        </Link>{' '}
+        and{' '}
         <Link
           href="/privacy"
           className="hover:text-brand underline underline-offset-4"
@@ -77,7 +77,7 @@ export default function SignUpPage() {
         .
       </p>
       <p className="px-8 text-center text-sm text-muted-foreground">
-        Already have an account?{" "}
+        Already have an account?{' '}
         <Link
           href="/auth/login"
           className="hover:text-brand underline underline-offset-4"

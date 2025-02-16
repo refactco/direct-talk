@@ -1,4 +1,4 @@
-export type ResourceType = "book" | "show" | "episode";
+export type ResourceType = 'book' | 'show' | 'episode';
 
 export interface IBaseResourceItem {
   id: number | string;

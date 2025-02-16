@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { DetailItemList } from "@/components/detail-item-list/detail-item-list";
-import { getResourceEpisodes } from "@/lib/api";
-import { IGetResourceEpisodesResponse } from "@/lib/api/api-type";
-import { IResource } from "@/types/resources";
-import { useEffect, useState } from "react";
-import { IDetailSheetResourceEpisodesProps } from "./detail-sheet-resource-episodes-type";
+import { DetailItemList } from '@/components/detail-item-list/detail-item-list';
+import { getResourceEpisodes } from '@/lib/api';
+import { IGetResourceEpisodesResponse } from '@/lib/api/api-type';
+import { IResource } from '@/types/resources';
+import { useEffect, useState } from 'react';
+import { IDetailSheetResourceEpisodesProps } from './detail-sheet-resource-episodes-type';
 
 export function DetailSheetResourceEpisodes(
   props: IDetailSheetResourceEpisodesProps
@@ -16,7 +16,7 @@ export function DetailSheetResourceEpisodes(
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [episodes, setEpisodes] = useState<IResource[]>([]);
   const [episodesInfo, setEpisodesInfo] =
-    useState<Omit<IGetResourceEpisodesResponse, "resources">>();
+    useState<Omit<IGetResourceEpisodesResponse, 'resources'>>();
   const { type, image_url, id } = resource;
 
   useEffect(() => {
@@ -33,13 +33,13 @@ export function DetailSheetResourceEpisodes(
         setEpisodes(resources);
         setEpisodesInfo(rest);
       } catch (error) {
-        console.error("Error fetching episodes:", error);
+        console.error('Error fetching episodes:', error);
       } finally {
         setIsEpisodeLoading(false);
       }
     };
 
-    if (type === "show") {
+    if (type === 'show') {
       fetchEpisodes();
     }
   }, [id]);
@@ -57,7 +57,7 @@ export function DetailSheetResourceEpisodes(
         setEpisodes([...episodes, ...resources]);
         setEpisodesInfo(rest);
       } catch (error) {
-        console.error("Error fetching episodes:", error);
+        console.error('Error fetching episodes:', error);
       } finally {
         setIsLoadingMore(false);
       }
@@ -66,7 +66,7 @@ export function DetailSheetResourceEpisodes(
     fetchEpisodes();
   }, [currentPage]);
 
-  if (type !== "show") {
+  if (type !== 'show') {
     return null;
   }
 

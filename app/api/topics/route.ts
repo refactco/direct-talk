@@ -1,9 +1,9 @@
-import { topics } from "@/lib/data";
-import { NextResponse } from "next/server";
+import { topics } from '@/lib/data';
+import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const query = searchParams.get("q")?.toLowerCase();
+  const query = searchParams.get('q')?.toLowerCase();
 
   let filteredTopics = [...topics];
 

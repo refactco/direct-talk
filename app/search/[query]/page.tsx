@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { PeopleCard } from "@/components/PeopleCard";
-import { ResourceCard } from "@/components/resource-card/ResourceCard";
-import { SearchResultSection } from "@/components/search/SearchResultSection";
-import { TopResult } from "@/components/search/TopResult";
-import { useSearch } from "@/contexts/SearchContext";
-import { Search } from "lucide-react";
-import Link from "next/link";
-import { useEffect } from "react";
+import { PeopleCard } from '@/components/PeopleCard';
+import { ResourceCard } from '@/components/resource-card/ResourceCard';
+import { SearchResultSection } from '@/components/search/SearchResultSection';
+import { TopResult } from '@/components/search/TopResult';
+import { useSearch } from '@/contexts/SearchContext';
+import { Search } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect } from 'react';
 
 export default function SearchPage({ params }: { params: { query: string } }) {
   const { query, setQuery, results } = useSearch();
@@ -19,7 +19,7 @@ export default function SearchPage({ params }: { params: { query: string } }) {
     }
   }, [decodedQuery, query, setQuery]);
 
-  if (!query || query.trim() === "") {
+  if (!query || query.trim() === '') {
     return (
       <div className="flex flex-col items-center justify-center h-full p-6 text-center">
         <Search className="w-16 h-16 mb-4 text-muted-foreground" />
@@ -56,7 +56,7 @@ export default function SearchPage({ params }: { params: { query: string } }) {
                 >
                   <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded">
                     <img
-                      src={resource.imageUrl || "/placeholder.svg"}
+                      src={resource.imageUrl || '/placeholder.svg'}
                       alt={resource.title}
                       className="h-full w-full object-cover"
                     />

@@ -1,8 +1,8 @@
-import { IResource } from "@/types/resources";
-import { DetailItem } from "../detail-item/detail-item";
-import { Button } from "../ui/button";
-import { Skeleton } from "../ui/skeleton";
-import { IDetailItemListProps } from "./detail-item-list-type";
+import { IResource } from '@/types/resources';
+import { DetailItem } from '../detail-item/detail-item';
+import { Button } from '../ui/button';
+import { Skeleton } from '../ui/skeleton';
+import { IDetailItemListProps } from './detail-item-list-type';
 
 export function DetailItemList(props: IDetailItemListProps) {
   const {
@@ -52,7 +52,7 @@ export function DetailItemList(props: IDetailItemListProps) {
           }}
           disabled={isLoadingMore}
         >
-          {isLoadingMore ? "Loading..." : "Load More"}
+          {isLoadingMore ? 'Loading...' : 'Load More'}
         </Button>
       ) : null}
     </div>
