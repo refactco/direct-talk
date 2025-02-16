@@ -8,7 +8,7 @@ interface PeopleCardProps {
 
 export function PeopleCard({ people }: PeopleCardProps) {
   return (
-    <div className="group relative w-32 aspect-square cursor-pointer px-2">
+    <div className="group relative aspect-square cursor-pointer">
       <div className="relative w-full aspect-square rounded-full overflow-hidden bg-accent">
         {people.image_url ? (
           <Image

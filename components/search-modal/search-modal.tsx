@@ -1,7 +1,6 @@
 "use client";
 
 import { PeopleCard } from "@/components/PeopleCard";
-import { CloseIcon } from "@/components/icons/CloseIcon";
 import { ResourceCard } from "@/components/resource-card/ResourceCard";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -9,7 +8,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getAuthors, getResources, searchAll } from "@/lib/api";
-import { Loader2, Search } from "lucide-react";
+import { Loader2, Search, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -82,17 +81,18 @@ export function SearchModal({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-full md:max-w-[1299px] h-full md:h-auto p-0 gap-0 bg-background ring-0">
-        <ScrollArea>
+        <ScrollArea className="hello-world">
           <Button
             variant="ghost"
             size="icon"
             onClick={() => onOpenChange(false)}
-            className="rounded-full border border-white/10 absolute right-4 top-4"
+            className="rounded-full border border-white/10 absolute right-4 top-4 h-10 w-10"
           >
-            <CloseIcon className="h-5 w-5 fill-white" />
+            <X className="w-5 h-5" />
+            {/* <CloseIcon className="fill-white" /> */}
           </Button>
-          <div className="flex flex-col h-full md:h-[85vh] w-full md:w-auto max-w-[730px] m-0 md:m-auto p-4 md:p-0">
-            <div className="flex items-center gap-1 pt-11">
+          <div className="flex flex-col h-full md:h-[85vh] w-full md:w-auto max-w-[360px] md:max-w-[730px] m-auto">
+            <div className="flex items-center gap-1 mt-20 md:mt-11">
               <div className="relative flex-1">
                 <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
                 <Input
@@ -130,7 +130,22 @@ export function SearchModal({
                       {search ? "Peoples" : "Popular Peoples"}
                     </h2>
                     <div className="relative w-full">
-                      <Swiper spaceBetween={22} slidesPerView={5}>
+                      <Swiper
+                        breakpoints={{
+                          0: {
+                            slidesPerView: 2.2,
+                            spaceBetween: 5
+                          },
+                          360: {
+                            slidesPerView: 3.2,
+                            spaceBetween: 10
+                          },
+                          420: {
+                            slidesPerView: 5,
+                            spaceBetween: 22
+                          }
+                        }}
+                      >
                         {searchResults.people.map((people) => (
                           <SwiperSlide key={people.id}>
                             <PeopleCard people={people} />
@@ -148,7 +163,22 @@ export function SearchModal({
                       {search ? "Shows" : "Popular Resources"}
                     </h2>
                     <div className="relative w-full">
-                      <Swiper spaceBetween={22} slidesPerView={5}>
+                      <Swiper
+                        breakpoints={{
+                          0: {
+                            slidesPerView: 1.2,
+                            spaceBetween: 5
+                          },
+                          360: {
+                            slidesPerView: 2.2,
+                            spaceBetween: 16
+                          },
+                          420: {
+                            slidesPerView: 5,
+                            spaceBetween: 22
+                          }
+                        }}
+                      >
                         {searchResults.shows.map((show) => (
                           <SwiperSlide key={show.id}>
                             <ResourceCard

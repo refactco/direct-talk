@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { ChatInput } from "@/components/ChatInput";
-import { ResourceCard } from "@/components/resource-card/ResourceCard";
-import { SearchModal } from "@/components/search-modal/search-modal";
-import { useAuth } from "@/contexts/AuthContext";
-import { useChat } from "@/contexts/ChatContext";
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
-import { getResources } from "@/lib/api";
-import type { IResource } from "@/types/resources";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ChatInput } from '@/components/ChatInput';
+import { ResourceCard } from '@/components/resource-card/ResourceCard';
+import { SearchModal } from '@/components/search-modal/search-modal';
+import { useAuth } from '@/contexts/AuthContext';
+import { useChat } from '@/contexts/ChatContext';
+import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
+import { getResources } from '@/lib/api';
+import type { IResource } from '@/types/resources';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,7 +21,7 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingPopular, setIsLoadingPopular] = useState(true);
   const [isResourceSheetOpen, setIsResourceSheetOpen] = useState(false);
-  const [currentMessage, setCurrentMessage] = useState(""); // Added state for current message
+  const [currentMessage, setCurrentMessage] = useState(''); // Added state for current message
   const { selectedResources, removeResource } = useSelectedResources();
   const router = useRouter();
   const { isAuthenticated, openAuthModal } = useAuth();
@@ -31,10 +31,10 @@ export default function HomePage() {
     const fetchPopularResources = async () => {
       setIsLoadingPopular(true);
       try {
-        const resources = await getResources({ sort: "popular", limit: 5 });
+        const resources = await getResources({ sort: 'popular', limit: 5 });
         setPopularResources(resources?.resources);
       } catch (error) {
-        console.error("Error fetching popular resources:", error);
+        console.error('Error fetching popular resources:', error);
       } finally {
         setIsLoadingPopular(false);
       }
@@ -75,9 +75,9 @@ export default function HomePage() {
       );
       router.push(`/chat/conversation?id=${chatData.session_id}`);
     } catch (error) {
-      console.error("Error creating new chat:", error);
+      console.error('Error creating new chat:', error);
       setErrorMessage(
-        `Failed to create a new chat: ${error instanceof Error ? error.message : "Unknown error"}`
+        `Failed to create a new chat: ${error instanceof Error ? error.message : 'Unknown error'}`
       );
     } finally {
       setIsLoading(false);
@@ -87,7 +87,7 @@ export default function HomePage() {
     <div className="flex flex-col items-center justify-between min-h-[calc(100vh-4rem)]">
       {/* Theme Toggle */}
       <div className="w-full max-w-3xl flex-grow flex flex-col justify-center items-center">
-        <h1 className="text-3xl sm:text-3xl md:text-[2rem] font-semibold text-center text-white mb-4 sm:mb-6 mt-16 md:mt-0">
+        <h1 className="text-3xl sm:text-3xl md:text-[2rem] font-semibold text-center text-white mb-4 sm:mb-6 mt-20 md:mt-0">
           What do you want to know?
         </h1>
         <div className="w-full">
