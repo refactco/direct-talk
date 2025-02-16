@@ -1,9 +1,8 @@
-import { useState } from 'react';
-import { Swiper } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
-import { ReactNode } from 'react';
 import { ChevronLeftIcon } from '@/components/icons/ChevronLeft';
 import { ChevronRightIcon } from '@/components/icons/ChevronRight';
+import { ReactNode, useState } from 'react';
+import { Navigation } from 'swiper/modules';
+import { Swiper } from 'swiper/react';
 
 export function CardSlider({ children }: { children: ReactNode }) {
   const [swiperInstance, setSwiperInstance] = useState<any>(null);
@@ -35,6 +34,20 @@ export function CardSlider({ children }: { children: ReactNode }) {
             setShowPrev(!swiper.isBeginning);
             setShowNext(!swiper.isEnd);
           });
+        }}
+        breakpoints={{
+          0: {
+            slidesPerView: 2.2,
+            spaceBetween: 5
+          },
+          360: {
+            slidesPerView: 3.2,
+            spaceBetween: 10
+          },
+          420: {
+            slidesPerView: 5,
+            spaceBetween: 22
+          }
         }}
       >
         {children}
