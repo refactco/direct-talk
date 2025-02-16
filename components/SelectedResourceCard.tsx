@@ -15,13 +15,13 @@ function SelectedResourceCard({
 }: SelectedResourceCardProps) {
   return (
     <div
-      key={resource.id}
+      key={resource?.id}
       className="flex items-center gap-2 bg-accent rounded-lg px-2 py-1 h-9 relative"
     >
       <div className="h-6 w-6 overflow-hidden flex-shrink-0">
         <Image
-          src={resource.imageUrl || "/placeholder.svg"}
-          alt={resource.title}
+          src={resource?.image_url || "/placeholder.svg"}
+          alt={resource?.title}
           width={24}
           height={24}
           className="h-full w-full object-cover"
@@ -29,10 +29,10 @@ function SelectedResourceCard({
       </div>
       <div className="flex flex-col flex-grow min-w-0 pr-6">
         <span className="text-[10px] leading-normal text-muted-foreground uppercase">
-          {resource.type}
+          {resource?.type}
         </span>
         <span className="text-[13px]  font-bold leading-normal truncate max-w-40">
-          {resource.title}
+          {resource?.title}
         </span>
       </div>
       {!hideRemove ? (
@@ -40,7 +40,7 @@ function SelectedResourceCard({
           onClick={(e) => {
             e.preventDefault();
             if (onRemoveResource) {
-              onRemoveResource(resource.id);
+              onRemoveResource(resource?.id);
             }
           }}
           className="absolute top-1 right-1 hover:text-muted-foreground"

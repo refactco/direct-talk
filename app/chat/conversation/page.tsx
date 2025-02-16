@@ -1,6 +1,6 @@
 "use client";
 
-import { Message } from "@/app/chat/conversation/types";
+import { ChatData, Message } from "@/app/chat/conversation/types";
 import { ChatInput } from "@/components/ChatInput";
 import { Logo } from "@/components/icons/Logo";
 import { SearchModal } from "@/components/search-modal/search-modal";
@@ -12,6 +12,7 @@ import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react"; // Add Suspense
 import ReactMarkdown from "react-markdown";
+import { useResource } from "@/contexts/ResourcesContext";
 
 export default function ChatConversationPage() {
   const { selectedResources, removeResource } = useSelectedResources();
@@ -21,11 +22,10 @@ export default function ChatConversationPage() {
   const searchParams = useSearchParams();
   const chatId = searchParams.get("id");
   const { openAuthModal, isAuthenticated } = useAuth();
-  const { fetchChat, messages, addMessage, doChat } = useChat();
-  const [messageList, setMessageList] = useState<{ results: Message[] } | null>(
-    null
-  );
+  const { fetchChat, chatDatas, addMessage, doChat } = useChat();
+  const [chatData, setChatData] = useState<ChatData | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const { resources, fetchResource } = useResource();
 
   const scrollToLastMessage = () => {
     const scrollToBottom = () => {
@@ -38,9 +38,14 @@ export default function ChatConversationPage() {
     return () => clearTimeout(timeout);
   };
   useEffect(() => {
-    setMessageList(messages);
+    setChatData(chatDatas);
     scrollToLastMessage();
-  }, [messages]);
+    // const contentIds = messages?.content_ids || []
+    const contentIds = [11];
+    if (contentIds?.length) {
+      fetchResource(contentIds);
+    }
+  }, [chatDatas]);
 
   useEffect(() => {
     if (chatId) {
@@ -62,7 +67,7 @@ export default function ChatConversationPage() {
       addMessage({ role: "user", content: message });
       scrollToLastMessage();
       const contentId = selectedResources[0]?.id?.toString();
-      const result = await doChat(message, contentId, chatId);
+      const result = await doChat(message, contentId, chatId?.toString());
 
       addMessage({ role: "assistant", content: result?.message });
     } catch (error) {
@@ -80,7 +85,7 @@ export default function ChatConversationPage() {
       <div className="flex-1 overflow-y-auto min-h-[calc(100vh-10rem)]">
         <div className="max-w-[732px] mx-auto pr-[52px]">
           <div className="mb-6 py-6">
-            {messageList?.results?.map((message, index) => (
+            {chatData?.results?.map((message: Message, index: number) => (
               <div
                 key={index}
                 className={`p-4 rounded-lg ${
@@ -105,13 +110,17 @@ export default function ChatConversationPage() {
                     </p>
                   </div>
                 </div>
-                {message.role === "assistant" && selectedResources[0] && (
+                {message.role === "assistant" && (
                   <div className="mt-6 flex flex-col gap-[14px] max-w-max">
                     <p className="text-sm font-bold">Resources</p>
-                    <SelectedResourceCard
-                      hideRemove
-                      resource={selectedResources[0]}
-                    />
+                    {chatData?.content_ids?.map((id) => (
+                      <SelectedResourceCard
+                        key={id}
+                        hideRemove
+                        resource={resources[11]}
+                      />
+                      // <SelectedResourceCard key={id} hideRemove resource={resources[id]} />
+                    ))}
                   </div>
                 )}
               </div>

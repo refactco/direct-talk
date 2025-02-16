@@ -13,6 +13,8 @@ import type React from "react";
 import "./globals.css";
 import { HistoryProvider } from "@/contexts/HistoryContext";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Toaster } from "@/components/ui/toaster";
+import { ResourceProvider } from "@/contexts/ResourcesContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,15 +45,18 @@ export default function RootLayout({
                   <SelectedResourcesProvider>
                     <ResourceDetailProvider>
                       <ChatProvider>
-                        <div className="flex h-screen">
-                          <Sidebar />
-                          <main className="flex-1 overflow-y-auto pb-0 px-6 pt-6">
-                            {/* Theme Toggle */}
-                            <ThemeToggle />
-                            {children}
-                          </main>
-                          <DetailSheet />
-                        </div>
+                        <ResourceProvider>
+                          <div className="flex h-screen">
+                            <Sidebar />
+                            <main className="flex-1 overflow-y-auto pb-0 px-6 pt-6">
+                              {/* Theme Toggle */}
+                              <ThemeToggle />
+                              {children}
+                            </main>
+                            <Toaster />
+                            <DetailSheet />
+                          </div>
+                        </ResourceProvider>
                       </ChatProvider>
                     </ResourceDetailProvider>
                   </SelectedResourcesProvider>
