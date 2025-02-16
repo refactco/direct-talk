@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { Swiper } from "swiper/react";
-import { Navigation } from "swiper/modules";
-import { ReactNode } from "react";
-import { ChevronLeftIcon } from "@/components/icons/ChevronLeft";
-import { ChevronRightIcon } from "@/components/icons/ChevronRight";
+import { useState } from 'react';
+import { Swiper } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+import { ReactNode } from 'react';
+import { ChevronLeftIcon } from '@/components/icons/ChevronLeft';
+import { ChevronRightIcon } from '@/components/icons/ChevronRight';
 
 export function CardSlider({ children }: { children: ReactNode }) {
   const [swiperInstance, setSwiperInstance] = useState<any>(null);
@@ -14,7 +14,7 @@ export function CardSlider({ children }: { children: ReactNode }) {
     <div className="relative w-full group/slider">
       {/* Left Navigation Button */}
       <div
-        className={`${!showPrev && "hidden"} absolute left-[-1px] top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover/slider:opacity-100 transition-opacity flex justify-center w-[95px] h-[calc(100%+2px)] bg-[linear-gradient(-270deg,#09090B_-3.68%,rgba(9,9,11,0.25)_84.45%,rgba(9,9,11,0.00)_100%)]`}
+        className={`${!showPrev && 'hidden'} absolute left-[-1px] top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover/slider:opacity-100 transition-opacity flex justify-center w-[95px] h-[calc(100%+2px)] bg-[linear-gradient(-270deg,#09090B_-3.68%,rgba(9,9,11,0.25)_84.45%,rgba(9,9,11,0.00)_100%)]`}
       >
         <button
           onClick={() => swiperInstance?.slidePrev()}
@@ -31,7 +31,7 @@ export function CardSlider({ children }: { children: ReactNode }) {
           setSwiperInstance(swiper);
           setShowPrev(!swiper.isBeginning);
           setShowNext(!swiper.isEnd);
-          swiper.on("slideChange", () => {
+          swiper.on('slideChange', () => {
             setShowPrev(!swiper.isBeginning);
             setShowNext(!swiper.isEnd);
           });
@@ -42,7 +42,7 @@ export function CardSlider({ children }: { children: ReactNode }) {
 
       {/* Right Navigation Button */}
       <div
-        className={`${!showNext && "hidden"} absolute right-[-1px] top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover/slider:opacity-100 transition-opacity flex justify-end w-[95px] h-[calc(100%+2px)] bg-[linear-gradient(270deg,#0c0a09_-3.68%,rgba(9,9,11,0.25)_84.45%,rgba(9,9,11,0)_100%)]`}
+        className={`${!showNext && 'hidden'} absolute right-[-1px] top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover/slider:opacity-100 transition-opacity flex justify-end w-[95px] h-[calc(100%+2px)] bg-[linear-gradient(270deg,#0c0a09_-3.68%,rgba(9,9,11,0.25)_84.45%,rgba(9,9,11,0)_100%)]`}
       >
         <button
           onClick={() => swiperInstance?.slideNext()}

@@ -1,15 +1,15 @@
-import { resources } from "@/lib/data";
-import { NextResponse } from "next/server";
+import { resources } from '@/lib/data';
+import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const type = searchParams.get("type");
-  const topic = searchParams.get("topic");
-  const authorId = searchParams.get("authorId");
-  const query = searchParams.get("q")?.toLowerCase();
-  const sort = searchParams.get("sort");
-  const limit = searchParams.get("limit")
-    ? Number.parseInt(searchParams.get("limit")!)
+  const type = searchParams.get('type');
+  const topic = searchParams.get('topic');
+  const authorId = searchParams.get('authorId');
+  const query = searchParams.get('q')?.toLowerCase();
+  const sort = searchParams.get('sort');
+  const limit = searchParams.get('limit')
+    ? Number.parseInt(searchParams.get('limit')!)
     : undefined;
 
   let filteredResources = [...resources];
@@ -40,9 +40,9 @@ export async function GET(request: Request) {
     );
   }
 
-  if (sort === "popular") {
+  if (sort === 'popular') {
     filteredResources.sort((a, b) => b.id.localeCompare(a.id)); // This is a placeholder sorting logic
-  } else if (sort === "latest") {
+  } else if (sort === 'latest') {
     filteredResources.sort(
       (a, b) =>
         new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()

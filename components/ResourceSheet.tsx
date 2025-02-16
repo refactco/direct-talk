@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Sheet,
@@ -6,11 +6,11 @@ import {
   SheetContent,
   SheetDescription,
   SheetTitle
-} from "@/components/ui/sheet";
-import type { IAuthor, IResource } from "@/types/resources";
-import { X } from "lucide-react";
-import Image from "next/image";
-import { useState } from "react";
+} from '@/components/ui/sheet';
+import type { IAuthor, IResource } from '@/types/resources';
+import { X } from 'lucide-react';
+import Image from 'next/image';
+import { useState } from 'react';
 
 interface ResourceSheetProps {
   resource: IResource | IAuthor | null;
@@ -32,11 +32,11 @@ export function ResourceSheet({
       <SheetContent className="p-0 w-[369px] sm:max-w-[369px]">
         <div
           className="h-full flex flex-col"
-          data-state={open ? "open" : "closed"}
+          data-state={open ? 'open' : 'closed'}
         >
           <div className="relative h-[200px] w-full overflow-hidden">
             <Image
-              src={resource.imageUrl || "/placeholder.svg"}
+              src={resource.imageUrl || '/placeholder.svg'}
               alt={resource.name || resource.title}
               fill
               className="object-cover"

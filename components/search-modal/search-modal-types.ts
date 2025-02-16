@@ -1,4 +1,4 @@
-import type { IAuthor, IResource } from "@/types/resources";
+import type { IAuthor, IResource } from '@/types/resources';
 
 export interface ResourceSelectorProps {
   open: boolean;

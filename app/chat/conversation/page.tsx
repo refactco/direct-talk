@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { ChatData, Message } from "@/app/chat/conversation/types";
-import { ChatInput } from "@/components/ChatInput";
-import { Logo } from "@/components/icons/Logo";
-import { SearchModal } from "@/components/search-modal/search-modal";
-import SelectedResourceCard from "@/components/SelectedResourceCard";
-import TextLoading from "@/components/TextLoading";
-import { useAuth } from "@/contexts/AuthContext";
-import { useChat } from "@/contexts/ChatContext";
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react"; // Add Suspense
-import ReactMarkdown from "react-markdown";
-import { useResource } from "@/contexts/ResourcesContext";
+import { ChatData, Message } from '@/app/chat/conversation/types';
+import { ChatInput } from '@/components/ChatInput';
+import { Logo } from '@/components/icons/Logo';
+import { SearchModal } from '@/components/search-modal/search-modal';
+import SelectedResourceCard from '@/components/SelectedResourceCard';
+import TextLoading from '@/components/TextLoading';
+import { useAuth } from '@/contexts/AuthContext';
+import { useChat } from '@/contexts/ChatContext';
+import { useResource } from '@/contexts/ResourcesContext';
+import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react'; // Add Suspense
+import ReactMarkdown from 'react-markdown';
 
 export default function ChatConversationPage() {
   const { selectedResources, removeResource } = useSelectedResources();
@@ -20,7 +20,7 @@ export default function ChatConversationPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isResourceSelectorOpen, setIsResourceSelectorOpen] = useState(false);
   const searchParams = useSearchParams();
-  const chatId = searchParams.get("id");
+  const chatId = searchParams.get('id');
   const { openAuthModal, isAuthenticated } = useAuth();
   const { fetchChat, chatDatas, addMessage, doChat } = useChat();
   const [chatData, setChatData] = useState<ChatData | null>(null);
@@ -30,7 +30,7 @@ export default function ChatConversationPage() {
   const scrollToLastMessage = () => {
     const scrollToBottom = () => {
       if (messagesEndRef.current) {
-        messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
       }
     };
     // Delay scrolling to allow UI updates
@@ -64,16 +64,16 @@ export default function ChatConversationPage() {
     setErrorMessage(null);
 
     try {
-      addMessage({ role: "user", content: message });
+      addMessage({ role: 'user', content: message });
       scrollToLastMessage();
       const contentId = selectedResources[0]?.id?.toString();
       const result = await doChat(message, contentId, chatId?.toString());
 
-      addMessage({ role: "assistant", content: result?.message });
+      addMessage({ role: 'assistant', content: result?.message });
     } catch (error) {
-      console.error("Error in handleSubmit:", error);
+      console.error('Error in handleSubmit:', error);
       setErrorMessage(
-        `Failed to get response: ${error instanceof Error ? error.message : "Unknown error"}`
+        `Failed to get response: ${error instanceof Error ? error.message : 'Unknown error'}`
       );
     } finally {
       setIsLoading(false);
@@ -88,20 +88,20 @@ export default function ChatConversationPage() {
             {chatData?.results?.map((message: Message, index: number) => (
               <div
                 key={index}
-                className={`p-4 rounded-lg ${
-                  message.role === "user"
-                    ? "bg-background-secondary mt-10"
-                    : "bg-background-highlight"
+                className={`p-3 md:p-4 rounded-lg ${
+                  message.role === 'user'
+                    ? 'bg-background-secondary mt-16 md:mt-10'
+                    : 'bg-background-highlight'
                 }`}
               >
                 <div className="flex flex-col items-start gap-[14px]">
-                  {message.role === "assistant" && <Logo />}
+                  {message.role === 'assistant' && <Logo />}
                   <div className="flex-1">
                     <p
                       className={`text-foreground ${
-                        message.role === "user"
-                          ? "text-lg font-bold"
-                          : "text-base"
+                        message.role === 'user'
+                          ? 'text-lg font-bold'
+                          : 'text-base'
                       }`}
                     >
                       <ReactMarkdown>
@@ -110,7 +110,7 @@ export default function ChatConversationPage() {
                     </p>
                   </div>
                 </div>
-                {message.role === "assistant" && (
+                {message.role === 'assistant' && (
                   <div className="mt-6 flex flex-col gap-[14px] max-w-max">
                     <p className="text-sm font-bold">Resources</p>
                     {chatData?.content_ids?.map((id) => (

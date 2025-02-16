@@ -1,9 +1,9 @@
-import { useResourceDetail } from "@/contexts/ResourceDetailContext";
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
-import { Check, Plus } from "lucide-react";
-import Image from "next/image";
-import { Button } from "../ui/button";
-import { IDetailItemProps } from "./detail-item-type";
+import { useResourceDetail } from '@/contexts/ResourceDetailContext';
+import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
+import { Check, Plus } from 'lucide-react';
+import Image from 'next/image';
+import { Button } from '../ui/button';
+import { IDetailItemProps } from './detail-item-type';
 
 export function DetailItem(props: IDetailItemProps) {
   const { resource, alternativeImageSource, onClick, onAddClick } = props;
@@ -13,8 +13,8 @@ export function DetailItem(props: IDetailItemProps) {
 
   const isResourceSelected = isSelected(id);
   const className = isResourceSelected
-    ? "bg-primary hover:bg-primary/90"
-    : "bg-white hover:bg-white/90";
+    ? 'bg-primary hover:bg-primary/90'
+    : 'bg-white hover:bg-white/90';
 
   return (
     <div className="flex items-center justify-between bg-[#1C1917] rounded-lg px-3 py-4 relative">
@@ -37,12 +37,12 @@ export function DetailItem(props: IDetailItemProps) {
           <span className="text-xs leading-normal text-[#f2f2f2] font-semibold overflow-hidden text-ellipsis line-clamp-2">
             {title}
           </span>
-          {type === "episode" && description ? (
+          {type === 'episode' && description ? (
             <span className="text-xs leading-normal text-[#a1a1a1] font-normal overflow-hidden text-ellipsis line-clamp-1">
               {description}
             </span>
           ) : null}
-          {type === "show" && people ? (
+          {type === 'show' && people ? (
             <span className="text-xs leading-normal text-[#a1a1a1] font-normal overflow-hidden text-ellipsis line-clamp-1">
               {people[0].name}
             </span>

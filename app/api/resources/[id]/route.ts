@@ -1,5 +1,5 @@
-import { resources } from "@/lib/data";
-import { NextResponse } from "next/server";
+import { resources } from '@/lib/data';
+import { NextResponse } from 'next/server';
 
 export async function GET(
   request: Request,
@@ -8,7 +8,7 @@ export async function GET(
   const resource = resources.find((r) => r.id === params.id);
 
   if (!resource) {
-    return new NextResponse("Resource not found", { status: 404 });
+    return new NextResponse('Resource not found', { status: 404 });
   }
 
   return NextResponse.json(resource);

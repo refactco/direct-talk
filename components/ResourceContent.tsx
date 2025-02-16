@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { useSelectedResources } from "@/contexts/SelectedResourcesContext";
-import { formatDate } from "@/lib/utils";
-import type { IResource } from "@/types/resources";
-import { Check, MoreHorizontal, Plus } from "lucide-react";
-import Link from "next/link";
+import { Button } from '@/components/ui/button';
+import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
+import { formatDate } from '@/lib/utils';
+import type { IResource } from '@/types/resources';
+import { Check, MoreHorizontal, Plus } from 'lucide-react';
+import Link from 'next/link';
 
 type ResourceContentProps = {
   resource: IResource;
@@ -97,7 +97,7 @@ export function ResourceContent({
               >
                 <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md">
                   <img
-                    src={relatedResource.imageUrl || "/placeholder.svg"}
+                    src={relatedResource.imageUrl || '/placeholder.svg'}
                     alt={relatedResource.title}
                     className="h-full w-full object-cover"
                   />
