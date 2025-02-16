@@ -45,7 +45,7 @@ export function DetailItemList(props: IDetailItemListProps) {
       })}
       {showLoadMore ? (
         <Button
-          className="bg-accent text-white hover:bg-accent/90"
+          className="bg-transparent w-max self-center px-4 mt-2 border border-white text-white hover:bg-accent/90"
           size="sm"
           onClick={() => {
             onLoadMoreClick?.();
