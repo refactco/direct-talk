@@ -15,6 +15,8 @@ import type React from "react";
 import "./globals.css";
 import { HistoryProvider } from "@/contexts/HistoryContext";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Toaster } from "@/components/ui/toaster";
+import { ResourceProvider } from "@/contexts/ResourcesContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -45,9 +47,10 @@ export default function RootLayout({
                   <SelectedResourcesProvider>
                     <ResourceDetailProvider>
                       <ChatProvider>
-                        <div className="flex h-screen">
-                          <Sidebar />
-                          <ThemeToggle />
+                        <ResourceProvider>
+                          <div className="flex h-screen">
+                            <Sidebar />
+                            <ThemeToggle />
                         <Button
                           variant="ghost"
                           size="icon"
@@ -58,12 +61,14 @@ export default function RootLayout({
                           <span className="sr-only">Toggle theme</span>
                         </Button>
                         <main className="flex-1 overflow-y-auto pb-0 px-4 py-4 md:px-8 md:py-8">
-                            {/* Theme Toggle */}
-                            <ThemeToggle />
-                            {children}
-                          </main>
-                          <DetailSheet />
-                        </div>
+                              {/* Theme Toggle */}
+                              <ThemeToggle />
+                              {children}
+                            </main>
+                            <Toaster />
+                            <DetailSheet />
+                          </div>
+                        </ResourceProvider>
                       </ChatProvider>
                     </ResourceDetailProvider>
                   </SelectedResourcesProvider>

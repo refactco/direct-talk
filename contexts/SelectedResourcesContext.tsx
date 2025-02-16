@@ -3,6 +3,7 @@
 import type { IResource } from "@/types/resources";
 import type React from "react";
 import { createContext, useContext, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 type SelectedResourcesContextType = {
   selectedResources: IResource[];
@@ -22,9 +23,18 @@ export function SelectedResourcesProvider({
   children: React.ReactNode;
 }) {
   const [selectedResources, setSelectedResources] = useState<IResource[]>([]);
+  const { toast } = useToast();
 
   const addResource = (resource: IResource) => {
     setSelectedResources((prev) => {
+      if (prev.length >= 10) {
+        toast({
+          variant: "destructive",
+          title: "Limit reached",
+          description: "You can only select up to 10 resources."
+        });
+        return prev; // Prevent adding more than 10 resources
+      }
       if (!prev.some((r) => r.id === resource.id)) {
         return [...prev, resource];
       }
@@ -32,7 +42,7 @@ export function SelectedResourcesProvider({
     });
   };
 
-  const removeResource = (resourceId: string) => {
+  const removeResource = (resourceId: string | number) => {
     setSelectedResources((prev) => prev.filter((r) => r.id !== resourceId));
   };
 
@@ -40,7 +50,7 @@ export function SelectedResourcesProvider({
     setSelectedResources([]);
   };
 
-  const isSelected = (resourceId: string) => {
+  const isSelected = (resourceId: string | number) => {
     return selectedResources.some((r) => r.id === resourceId);
   };
 

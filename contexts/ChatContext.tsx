@@ -2,14 +2,10 @@
 
 import type React from "react";
 import { createContext, useContext, useState, useCallback } from "react";
-
-interface Message {
-  role: "user" | "assistant";
-  content: string;
-}
+import { ChatData, Message } from "@/app/chat/conversation/types";
 
 interface ChatContextType {
-  messages: Message[];
+  chatDatas: ChatData;
   isLoading: boolean;
   error: string | null;
   doChat: (
@@ -27,7 +23,7 @@ const BASE_API_CHAT = "https://api-focus.sajjadrad.com/v1";
 export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   children
 }) => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [chatDatas, setChatDatas] = useState<ChatData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -86,7 +82,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
       }
 
       const data = await response.json();
-      setMessages(data);
+      setChatDatas(data);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "An unknown error occurred"
@@ -97,11 +93,17 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const addMessage = (message: Message) => {
-    setMessages((prevMessages) => [...prevMessages, message]);
+    setChatDatas((prevChatData) => {
+      if (!prevChatData) return null;
+      return {
+        ...prevChatData,
+        results: [...prevChatData.results, message]
+      };
+    });
   };
 
   const value = {
-    messages,
+    chatDatas,
     isLoading,
     error,
     doChat,
