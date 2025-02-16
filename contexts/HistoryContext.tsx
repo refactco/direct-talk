@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import type React from "react";
+import type React from 'react';
 import {
   createContext,
   useContext,
   useState,
   useEffect,
   useCallback
-} from "react";
+} from 'react';
 
 export interface HistoryItem {
   id: string;
@@ -25,7 +25,7 @@ interface HistoryContextType {
 
 const HistoryContext = createContext<HistoryContextType | undefined>(undefined);
 
-const HISTORY_STORAGE_KEY = "chat_history";
+const HISTORY_STORAGE_KEY = 'chat_history';
 
 export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
   children
@@ -89,7 +89,7 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
 export const useHistory = (): HistoryContextType => {
   const context = useContext(HistoryContext);
   if (context === undefined) {
-    throw new Error("useHistory must be used within a HistoryProvider");
+    throw new Error('useHistory must be used within a HistoryProvider');
   }
   return context;
 };

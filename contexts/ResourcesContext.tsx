@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from 'react';
 
 interface ResourceData {
   [key: string]: any;
@@ -18,11 +18,11 @@ const ResourceContext = createContext<ResourceContextType | null>(null);
 export function useResource(): ResourceContextType {
   const context = useContext(ResourceContext);
   if (!context) {
-    throw new Error("useResource must be used within a ResourceProvider");
+    throw new Error('useResource must be used within a ResourceProvider');
   }
   return context;
 }
-const BASE_API_URL = "https://dt-api.refact.co/wp-json/direct-talk/v1";
+const BASE_API_URL = 'https://dt-api.refact.co/wp-json/direct-talk/v1';
 export function ResourceProvider({ children }: { children: React.ReactNode }) {
   const [resources, setResources] = useState<ResourceData>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -49,7 +49,7 @@ export function ResourceProvider({ children }: { children: React.ReactNode }) {
 
       setResources((prev) => ({ ...prev, ...resourceMap }));
     } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : "Unknown error");
+      setErrorMessage(error instanceof Error ? error.message : 'Unknown error');
     } finally {
       setIsLoading(false);
     }
