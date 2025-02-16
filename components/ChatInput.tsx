@@ -15,6 +15,7 @@ interface ChatInputProps {
   selectedResources: IResource[];
   isLoading: boolean;
   placeholder?: string;
+  resetAfterSubmit?: boolean;
 }
 
 export function ChatInput({
@@ -23,7 +24,8 @@ export function ChatInput({
   onRemoveResource,
   selectedResources,
   isLoading,
-  placeholder = "Ask AI anything..."
+  placeholder = "Ask AI anything...",
+  resetAfterSubmit = false
 }: ChatInputProps) {
   const [input, setInput] = useState("");
 
@@ -31,7 +33,9 @@ export function ChatInput({
     e.preventDefault();
     if (input.trim() && !isLoading) {
       onSubmit(input.trim());
-      // setInput("");
+      if (resetAfterSubmit) {
+        setInput("");
+      }
     }
   };
 
