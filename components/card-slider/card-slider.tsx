@@ -26,31 +26,29 @@ export function CardSlider({ children }: { children: ReactNode }) {
         modules={[Navigation]}
         spaceBetween={22}
         slidesPerView={5}
-        // mousewheel
-
-        // onSwiper={(swiper) => {
-        //   setSwiperInstance(swiper);
-        //   setShowPrev(!swiper.isBeginning);
-        //   setShowNext(!swiper.isEnd);
-        //   swiper.on('slideChange', () => {
-        //     setShowPrev(!swiper.isBeginning);
-        //     setShowNext(!swiper.isEnd);
-        //   });
-        // }}
-        // breakpoints={{
-        //   0: {
-        //     slidesPerView: 2.2,
-        //     spaceBetween: 5
-        //   },
-        //   360: {
-        //     slidesPerView: 3.2,
-        //     spaceBetween: 10
-        //   },
-        //   420: {
-        //     slidesPerView: 5,
-        //     spaceBetween: 22
-        //   }
-        // }}
+        onSwiper={(swiper) => {
+          setSwiperInstance(swiper);
+          setShowPrev(!swiper.isBeginning);
+          setShowNext(!swiper.isEnd);
+          swiper.on('slideChange', () => {
+            setShowPrev(!swiper.isBeginning);
+            setShowNext(!swiper.isEnd);
+          });
+        }}
+        breakpoints={{
+          0: {
+            slidesPerView: 2.2,
+            spaceBetween: 5
+          },
+          360: {
+            slidesPerView: 3.2,
+            spaceBetween: 10
+          },
+          420: {
+            slidesPerView: 5,
+            spaceBetween: 22
+          }
+        }}
       >
         {children}
       </Swiper>
