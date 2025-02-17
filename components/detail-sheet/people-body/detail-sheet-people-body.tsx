@@ -1,16 +1,20 @@
 'use client';
 
 import { DetailItemList } from '@/components/detail-item-list/detail-item-list';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { Button } from '@/components/ui/button';
+import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { getAuthor } from '@/lib/api';
 import { toCapitalize } from '@/lib/text-modifier';
+import { cn } from '@/lib/utils';
 import { IAuthor } from '@/types/resources';
+import { Check, Plus } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { IDetailSheetPeopleBodyTypeProps } from './detail-sheet-people-body-type';
 
 export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
   const { person } = props;
+  const { addResource, removeResource, isSelected } = useSelectedResources();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [detailedPerson, setDetailedPerson] = useState<IAuthor>(person);
   const {
@@ -22,6 +26,8 @@ export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
       items: { shows: [], books: [], episodes: [] }
     }
   } = detailedPerson;
+
+  console.log({ detailedPerson });
 
   const fetchDetailedPerson = async () => {
     setIsLoading(true);
@@ -39,6 +45,10 @@ export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
   useEffect(() => {
     fetchDetailedPerson();
   }, []);
+
+  const isResourceSelected = isSelected(id);
+
+  console.log({ isResourceSelected });
 
   return (
     <>
@@ -60,6 +70,23 @@ export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
           <div className="flex-1">
             <h2 className="text-2xl font-bold mb-1">{name}</h2>
           </div>
+          <Button
+            size="icon"
+            variant="ghost"
+            className={cn(
+              'h-8 w-8 rounded-full text-black hover:bg-white/90 hover:scale-105 transition-transform self-end',
+              isResourceSelected ? 'bg-primary' : 'bg-white'
+            )}
+            onClick={() =>
+              isResourceSelected ? removeResource(id) : addResource(person)
+            }
+          >
+            {isResourceSelected ? (
+              <Check className="h-4 w-4" />
+            ) : (
+              <Plus className="h-4 w-4" />
+            )}
+          </Button>
         </div>
       </div>
 
@@ -68,11 +95,9 @@ export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
           {/* Description */}
           <div className="space-y-1">
             <h3 className="text-[#f2f2f2] text-base font-normal">About</h3>
-            <ScrollArea className="h-[calc(100vh-400px)]">
-              <p className="text-sm leading-relaxed text-[#A7A7A7]">
-                {description}
-              </p>
-            </ScrollArea>
+            <p className="text-sm leading-relaxed text-[#A7A7A7]">
+              {description}
+            </p>
           </div>
         </div>
       ) : null}

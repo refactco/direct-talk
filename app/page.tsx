@@ -1,5 +1,6 @@
 'use client';
 
+import { CardSlider } from '@/components/card-slider/card-slider';
 import { ChatInput } from '@/components/ChatInput';
 import { ResourceCard } from '@/components/resource-card/ResourceCard';
 import { SearchModal } from '@/components/search-modal/search-modal';
@@ -11,22 +12,30 @@ import { getResources } from '@/lib/api';
 import type { IResource } from '@/types/resources';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { SwiperSlide } from 'swiper/react';
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
   const [popularResources, setPopularResources] = useState<IResource[]>(
-    Array.from({ length: 5 }) as any
+    new Array(5).fill(null)
   );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingPopular, setIsLoadingPopular] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
   const [currentMessage, setCurrentMessage] = useState(''); // Added state for current message
   const { selectedResources, removeResource } = useSelectedResources();
   const router = useRouter();
   const { isAuthenticated, openAuthModal } = useAuth();
   const { doChat } = useChat();
   const { addHistoryItem } = useHistory();
+
+  console.log({ popularResources });
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     const fetchPopularResources = async () => {
@@ -92,9 +101,9 @@ export default function HomePage() {
     }
   };
   return (
-    <div className="flex flex-col items-center justify-between min-h-[calc(100vh-4rem)] p-4 sm:p-6">
-      <div className="w-full max-w-3xl flex-grow flex flex-col justify-center items-center">
-        <h1 className="text-3xl sm:text-3xl md:text-[2rem] font-semibold text-center text-white mb-4 sm:mb-6 mt-20 md:mt-0">
+    <div className="flex flex-col items-center gap-16 md:gap-16 justify-normal md:justify-center min-h-[calc(100vh-4rem)] p-0 md:p-4">
+      <div className="w-full max-w-3xl flex flex-col justify-normal md:justify-center items-center">
+        <h1 className="text-2xl md:text-[2rem] font-semibold text-center text-white mb-4 sm:mb-6 mt-28 md:mt-0">
           What do you want to know?
         </h1>
         <div className="w-full">
@@ -114,19 +123,22 @@ export default function HomePage() {
         )}
       </div>
 
-      <div className="w-full max-w-3xl mt-6 sm:mt-16">
+      <div className="w-full max-w-3xl mt-0">
         <h2 className="text-lg sm:text-xl md:text-xl font-semibold mb-6 text-center text-foreground">
           Popular resources
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-[22px]">
-          {popularResources?.map((resource, index: number) => (
-            <ResourceCard
-              key={index}
-              resource={resource}
-              isLoading={isLoadingPopular}
-            />
-          ))}
-        </div>
+        {isMounted ? (
+          <CardSlider>
+            {popularResources.map((show, index) => (
+              <SwiperSlide
+                key={index}
+                className="flex justify-center items-center"
+              >
+                <ResourceCard resource={show} isLoading={isLoadingPopular} />
+              </SwiperSlide>
+            ))}
+          </CardSlider>
+        ) : null}
       </div>
 
       <SearchModal

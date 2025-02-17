@@ -54,19 +54,25 @@ export function Sidebar() {
           onClick={() => {
             setIsMobileExpanded(true);
           }}
-          className="border border-border rounded-full"
+          className="bg-[#1C1917] rounded-md w-8 h-8"
         >
-          <MenuIcon
-            size={20}
-            className="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
-          />
+          <MenuIcon className="absolute rotate-90 scale-0 w-5 h-5 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
         </Button>
         <ThemeToggle />
       </nav>
       <div
+        onClick={() => {
+          setIsMobileExpanded(false);
+        }}
         className={cn(
-          'absolute md:relative md:left-0 w-full z-50 flex l- h-full flex-col bg-accent transition-all duration-300 ease-in-out border-r border-white/10',
+          'fixed inset-0 z-50 bg-black/50 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+          isMobileExpanded ? 'block' : 'hidden'
+        )}
+      ></div>
+      <div
+        className={cn(
+          'absolute md:relative md:left-0 w-64 z-50 flex l- h-full flex-col bg-accent transition-all duration-300 ease-in-out border-r border-white/10',
           isCollapsed ? 'md:w-[64px]' : 'md:w-[243px]',
           isMobileExpanded ? 'left-0' : '-left-full'
         )}

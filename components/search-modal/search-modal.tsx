@@ -1,7 +1,6 @@
 'use client';
 
 import { CardSlider } from '@/components/card-slider/card-slider';
-import { PeopleCard } from '@/components/PeopleCard';
 import { ResourceCard } from '@/components/resource-card/ResourceCard';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -13,6 +12,7 @@ import { Loader2, Search, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import 'swiper/css';
 import { SwiperSlide } from 'swiper/react';
+import { PeopleCard } from '../people-card/PeopleCard';
 import { ResourceSelectorProps, SearchResults } from './search-modal-types';
 
 export function SearchModal({

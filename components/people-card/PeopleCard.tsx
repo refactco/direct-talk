@@ -1,49 +1,51 @@
-'use client';
-
-import { InfoIcon } from '@/components/icons/InfoIcon';
-import { PlusIcon } from '@/components/icons/PlusIcon';
-import { Skeleton } from '@/components/ui/skeleton';
 import { useResourceDetail } from '@/contexts/ResourceDetailContext';
 import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { cn } from '@/lib/utils';
-import type { IResource } from '@/types/resources';
-import { CheckIcon, MinusCircleIcon } from 'lucide-react';
+import type { IAuthor } from '@/types/resources';
+import {
+  CheckIcon,
+  InfoIcon,
+  MinusCircleIcon,
+  PlusIcon,
+  UserIcon
+} from 'lucide-react';
 import Image from 'next/image';
+import { Skeleton } from '../ui/skeleton';
 
-interface HomeResourceCardProps {
-  resource: IResource;
-  showDetails?: boolean;
-  hideType?: boolean;
+interface PeopleCardProps {
+  people: IAuthor;
   isLoading?: boolean;
+  showDetails?: boolean;
 }
 
-export function ResourceCard({
-  resource,
-  showDetails = true,
-  hideType = false,
-  isLoading = false
-}: HomeResourceCardProps) {
+export function PeopleCard({
+  people,
+  isLoading = false,
+  showDetails = true
+}: PeopleCardProps) {
+  const { id, image_url, name } = people;
   const { addResource, removeResource, isSelected } = useSelectedResources();
-  const selected = isSelected(resource?.id);
+  const selected = isSelected(id);
   const { setSelectedDetailItems } = useResourceDetail();
 
   const handleAddClick = () => {
     if (selected) {
-      removeResource(resource.id);
+      removeResource(id);
     } else {
-      addResource(resource);
+      addResource(people);
     }
   };
 
   const handleViewDetails = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setSelectedDetailItems([resource]);
+    setSelectedDetailItems([people]);
   };
+
   if (isLoading) {
     return (
       <>
         <div className="flex flex-col space-y-3">
-          <Skeleton className="aspect-square w-full rounded-[8px]" />
+          <Skeleton className="aspect-square w-full rounded-full" />
           <div className="space-y-2">
             <Skeleton className="h-2 w-[50%]" />
             <Skeleton className="h-4 w-full" />
@@ -56,20 +58,25 @@ export function ResourceCard({
   return (
     <>
       <div
-        className="relative w-full rounded-[8px] transition-colors group cursor-pointer"
+        className="relative w-full transition-colors group/people cursor-pointer"
         onClick={handleAddClick}
       >
-        <div className="relative bg-background rounded-[8px] w-full aspect-square overflow-hidden">
-          <Image
-            src={resource?.image_url || '/placeholder.svg'}
-            alt={resource?.title}
-            className="object-cover transition-transform group-hover:scale-105"
-            fill
-            sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
-          />
+        <div className="relative bg-background rounded-full w-full aspect-square overflow-hidden">
+          {people.image_url ? (
+            <Image
+              src={people.image_url || '/placeholder.svg'}
+              alt={people.name}
+              fill
+              className="object-cover transition-all duration-300 group-hover/people:scale-105"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-accent">
+              <UserIcon className="fill-muted-foreground" />
+            </div>
+          )}
           {showDetails ? (
             <div
-              className="absolute top-2 left-2 p-0 rounded-full bg-background opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              className="absolute top-5 left-5 p-0 rounded-full bg-background opacity-100 md:opacity-0 group-hover/people:opacity-100 transition-opacity duration-300"
               onClick={handleViewDetails}
             >
               <InfoIcon />
@@ -77,20 +84,14 @@ export function ResourceCard({
           ) : null}
         </div>
         <div className="w-full pt-2 pb-1">
-          {!hideType ? (
-            <p className="text-[11px] font-semibold text-muted-foreground uppercase">
-              {resource?.type}
-            </p>
-          ) : null}
           <h3 className="text-sm font-bold text-foreground text-left truncate max-w-[calc(100%-28px)] transition-all duration-300">
-            {resource?.title}
+            {name}
           </h3>
         </div>
         <div
           className={cn(
-            'flex items-center space-x-2 absolute bottom-2 right-0 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300',
-            selected && 'md:opacity-100',
-            hideType && 'bottom-1 right-0.5'
+            'flex items-center space-x-2 absolute bottom-2 right-0 opacity-100 md:opacity-0 group-hover/people:opacity-100 transition-opacity duration-300',
+            selected && 'md:opacity-100'
           )}
         >
           {selected ? (

@@ -12,7 +12,8 @@ function SelectedResourceCard({
   onRemoveResource,
   hideRemove = false
 }: SelectedResourceCardProps) {
-  const { id, image_url, title, type } = resource;
+  const { id, image_url, title, name, type } = resource;
+  const displayName = title ?? name;
 
   return (
     <div
@@ -21,8 +22,8 @@ function SelectedResourceCard({
     >
       <div className="h-6 w-6 overflow-hidden flex-shrink-0">
         <Image
-          src={image_url || '/placeholder.svg'}
-          alt={title}
+          src={image_url ?? '/placeholder.svg'}
+          alt={displayName}
           width={24}
           height={24}
           className="h-full w-full object-cover"
@@ -30,10 +31,10 @@ function SelectedResourceCard({
       </div>
       <div className="flex flex-col flex-grow min-w-0 pr-6">
         <span className="text-xxs leading-[normal] text-muted-foreground uppercase">
-          {type}
+          {type ?? 'Person'}
         </span>
         <span className="text-xsm font-semibold leading-[normal] truncate max-w-32">
-          {title}
+          {displayName}
         </span>
       </div>
       {!hideRemove ? (

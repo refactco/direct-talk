@@ -33,7 +33,7 @@ export function DetailItem(props: IDetailItemProps) {
             className="h-full w-full object-cover rounded-md"
           />
         </div>
-        <div className="flex flex-col gap-1 self-start w-44">
+        <div className="flex flex-col gap-1 self-start w-40 md:w-44">
           <span className="text-xs leading-normal text-[#f2f2f2] font-semibold overflow-hidden text-ellipsis line-clamp-2">
             {title}
           </span>

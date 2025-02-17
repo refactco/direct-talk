@@ -10,7 +10,7 @@ export function CardSlider({ children }: { children: ReactNode }) {
   const [showNext, setShowNext] = useState(false);
 
   return (
-    <div className="relative w-full group/slider">
+    <div className="group/slider">
       {/* Left Navigation Button */}
       <div
         className={`${!showPrev && 'hidden'} absolute left-[-1px] top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover/slider:opacity-100 transition-opacity flex justify-center w-[95px] h-[calc(100%+2px)] bg-[linear-gradient(-270deg,#09090B_-3.68%,rgba(9,9,11,0.25)_84.45%,rgba(9,9,11,0.00)_100%)]`}
@@ -26,29 +26,31 @@ export function CardSlider({ children }: { children: ReactNode }) {
         modules={[Navigation]}
         spaceBetween={22}
         slidesPerView={5}
-        onSwiper={(swiper) => {
-          setSwiperInstance(swiper);
-          setShowPrev(!swiper.isBeginning);
-          setShowNext(!swiper.isEnd);
-          swiper.on('slideChange', () => {
-            setShowPrev(!swiper.isBeginning);
-            setShowNext(!swiper.isEnd);
-          });
-        }}
-        breakpoints={{
-          0: {
-            slidesPerView: 2.2,
-            spaceBetween: 5
-          },
-          360: {
-            slidesPerView: 3.2,
-            spaceBetween: 10
-          },
-          420: {
-            slidesPerView: 5,
-            spaceBetween: 22
-          }
-        }}
+        // mousewheel
+
+        // onSwiper={(swiper) => {
+        //   setSwiperInstance(swiper);
+        //   setShowPrev(!swiper.isBeginning);
+        //   setShowNext(!swiper.isEnd);
+        //   swiper.on('slideChange', () => {
+        //     setShowPrev(!swiper.isBeginning);
+        //     setShowNext(!swiper.isEnd);
+        //   });
+        // }}
+        // breakpoints={{
+        //   0: {
+        //     slidesPerView: 2.2,
+        //     spaceBetween: 5
+        //   },
+        //   360: {
+        //     slidesPerView: 3.2,
+        //     spaceBetween: 10
+        //   },
+        //   420: {
+        //     slidesPerView: 5,
+        //     spaceBetween: 22
+        //   }
+        // }}
       >
         {children}
       </Swiper>

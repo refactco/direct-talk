@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useResourceDetail } from '@/contexts/ResourceDetailContext';
 import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { getResource } from '@/lib/api';
+import { cn } from '@/lib/utils';
 import { IAuthor, IResource } from '@/types/resources';
 import { Check, Plus } from 'lucide-react';
 import Image from 'next/image';
@@ -84,78 +85,85 @@ export function DetailSheetResourceBody(
             {isLoading ? (
               <Skeleton className="h-5 w-full" />
             ) : (
-              <div className="flex gap-4">
-                {firstPerson ? (
-                  <div
-                    className="inline-flex items-center h-7 relative gap-2 border border-black text-sm text-[#A7A7A7] cursor-pointer hover:text-white"
-                    onClick={() => {
-                      pushDetailItem(firstPerson);
-                    }}
-                  >
-                    {firstPerson.image_url ? (
-                      <div className="rounded-full w-7 h-7 aspect-square absolute">
-                        <Image
-                          alt=""
-                          src={firstPerson.image_url}
-                          fill
-                          className="object-cover border border-[#27272A] rounded-full"
-                        />
-                      </div>
-                    ) : null}
-                    <span className="pl-9 leading-7">{firstPerson.name}</span>
-                  </div>
-                ) : null}
-                {people && people.length > 1 ? (
-                  <div className="flex gap-2">
-                    <div className="flex h-7 w-7 border border-[#27272A] rounded-full justify-center items-center">
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <span className="text-xs font-semibold">
-                            +{people.length - 1}
-                          </span>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto flex flex-col items-start gap-3">
-                          {rest?.map((person: IAuthor, index: number) => {
-                            const { name, image_url } = person;
-
-                            return (
-                              <>
-                                <div
-                                  className="inline-flex items-center h-7 relative gap-2 text-sm text-[#A7A7A7] cursor-pointer hover:text-white"
-                                  onClick={() => {
-                                    pushDetailItem(person);
-                                  }}
-                                >
-                                  {image_url ? (
-                                    <div className="rounded-full w-7 h-7 aspect-square absolute">
-                                      <Image
-                                        alt=""
-                                        src={image_url}
-                                        fill
-                                        className="object-cover rounded-full"
-                                      />
-                                    </div>
-                                  ) : null}
-                                  <span className="pl-9 leading-7">{name}</span>
-                                </div>
-                              </>
-                            );
-                          })}
-                        </PopoverContent>
-                      </Popover>
+              <div className="flex gap-2">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <div className="flex gap-0 cursor-pointer">
+                      {people?.map((pers: IAuthor, index: number) => {
+                        return (
+                          <div
+                            className={cn(
+                              'rounded-full w-7 h-7 aspect-square relative border-2 border-[#09090B]',
+                              index > 0 ? '-ml-3' : ''
+                            )}
+                          >
+                            <Image
+                              alt=""
+                              src={pers.image_url}
+                              fill
+                              className="object-cover rounded-full"
+                            />
+                          </div>
+                        );
+                      })}
                     </div>
-                    <span className="text-sm font-semibold leading-7">
-                      People
-                    </span>
-                  </div>
-                ) : null}
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto flex flex-col items-start gap-3">
+                    {people?.map((person: IAuthor, index: number) => {
+                      const { name, image_url } = person;
+
+                      return (
+                        <>
+                          <div
+                            className="inline-flex items-center h-7 relative gap-2 text-sm text-[#A7A7A7] cursor-pointer hover:text-white"
+                            onClick={() => {
+                              pushDetailItem(person);
+                            }}
+                          >
+                            {image_url ? (
+                              <div className="rounded-full w-7 h-7 aspect-square absolute">
+                                <Image
+                                  alt=""
+                                  src={image_url}
+                                  fill
+                                  className="object-cover rounded-full"
+                                />
+                              </div>
+                            ) : null}
+                            <span className="pl-9 leading-7">{name}</span>
+                          </div>
+                        </>
+                      );
+                    })}
+                  </PopoverContent>
+                </Popover>
+                <div className="items-center max-w-36 truncate text-ellipsis">
+                  {people?.map((pers: IAuthor, index: number) => {
+                    return (
+                      <>
+                        <span
+                          className="text-xsm font-semibold text-neutral-300 hover:text-white cursor-pointer"
+                          onClick={() => {
+                            pushDetailItem(pers);
+                          }}
+                        >
+                          {pers.name}
+                        </span>
+                        {index < people.length - 1 ? <span>, </span> : null}
+                      </>
+                    );
+                  })}
+                </div>
               </div>
             )}
           </div>
           <Button
             size="icon"
             variant="ghost"
-            className="h-8 w-8 rounded-full bg-white text-black hover:bg-white/90 hover:scale-105 transition-transform self-end"
+            className={cn(
+              'h-8 w-8 rounded-full text-black hover:bg-white/90 hover:scale-105 transition-transform self-end',
+              isResourceSelected ? 'bg-primary' : 'bg-white'
+            )}
             onClick={() =>
               isResourceSelected ? removeResource(id) : addResource(resource)
             }
