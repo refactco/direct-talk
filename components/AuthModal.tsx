@@ -80,7 +80,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             {isLoadingGoogle ? (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             ) : (
-              <GoogleIcon className="fill-primary-foreground"/>
+              <GoogleIcon className="fill-primary-foreground" />
             )}
             Login with Google
           </Button>
@@ -93,7 +93,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             {isLoadingTwitter ? (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             ) : (
-              <XIcon className="fill-primary-foreground"/>
+              <XIcon className="fill-primary-foreground" />
             )}
             Login with X
           </Button>

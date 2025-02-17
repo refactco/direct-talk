@@ -16,8 +16,8 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { IDetailSheetResourceBodyTypeProps } from './detail-sheet-resource-body-type';
 import { DetailSheetResourceEpisodes } from './episodes/detail-sheet-resource-episodes';
-import {CheckIcon} from "@/components/icons/CheckIcon";
-import {PlusIcon} from "@/components/icons/PlusIcon";
+import { CheckIcon } from '@/components/icons/CheckIcon';
+import { PlusIcon } from '@/components/icons/PlusIcon';
 
 export function DetailSheetResourceBody(
   props: IDetailSheetResourceBodyTypeProps
@@ -163,9 +163,9 @@ export function DetailSheetResourceBody(
             }
           >
             {isResourceSelected ? (
-                <CheckIcon className="w-4 h-4 fill-primary-foreground" />
+              <CheckIcon className="w-4 h-4 fill-primary-foreground" />
             ) : (
-                <PlusIcon className="w-4 h-4 fill-accent" />
+              <PlusIcon className="w-4 h-4 fill-accent" />
             )}
           </Button>
         </div>
