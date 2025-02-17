@@ -94,7 +94,7 @@ export default function HomePage() {
   return (
     <div className="flex flex-col items-center justify-between min-h-[calc(100vh-4rem)] p-4 sm:p-6">
       <div className="w-full max-w-3xl flex-grow flex flex-col justify-center items-center">
-        <h1 className="text-3xl sm:text-3xl md:text-[2rem] font-semibold text-center text-white mb-4 sm:mb-6 mt-20 md:mt-0">
+        <h1 className="text-3xl sm:text-3xl md:text-[2rem] font-semibold text-center mb-4 sm:mb-6 mt-20 md:mt-0">
           What do you want to know?
         </h1>
         <div className="w-full">

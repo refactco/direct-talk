@@ -16,6 +16,8 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { IDetailSheetResourceBodyTypeProps } from './detail-sheet-resource-body-type';
 import { DetailSheetResourceEpisodes } from './episodes/detail-sheet-resource-episodes';
+import {CheckIcon} from "@/components/icons/CheckIcon";
+import {PlusIcon} from "@/components/icons/PlusIcon";
 
 export function DetailSheetResourceBody(
   props: IDetailSheetResourceBodyTypeProps
@@ -62,7 +64,7 @@ export function DetailSheetResourceBody(
       <div className="flex flex-col gap-3">
         {/* Cover Image and Info */}
         <div className="p-0">
-          <div className="relative aspect-square w-36 h-36 overflow-hidden rounded-[0.5rem] border border-[#27272A]">
+          <div className="relative aspect-square w-36 h-36 overflow-hidden rounded-[0.5rem] border border-border">
             <Image
               src={image_url ?? '/placeholder.svg'}
               alt={title}
@@ -74,7 +76,7 @@ export function DetailSheetResourceBody(
         </div>
         {/* Resource/Author Info */}
         <div>
-          <div className="text-xs font-medium text-[#A7A7A7] uppercase tracking-wider mb-1">
+          <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
             {type}
           </div>
           <h2 className="text-2xl font-bold mb-1">{title}</h2>
@@ -87,7 +89,7 @@ export function DetailSheetResourceBody(
               <div className="flex gap-4">
                 {firstPerson ? (
                   <div
-                    className="inline-flex items-center h-7 relative gap-2 border border-black text-sm text-[#A7A7A7] cursor-pointer hover:text-white"
+                    className="inline-flex items-center h-7 relative gap-2 text-sm text-muted-foreground cursor-pointer hover:text-foreground"
                     onClick={() => {
                       pushDetailItem(firstPerson);
                     }}
@@ -98,7 +100,7 @@ export function DetailSheetResourceBody(
                           alt=""
                           src={firstPerson.image_url}
                           fill
-                          className="object-cover border border-[#27272A] rounded-full"
+                          className="object-cover border border-border rounded-full"
                         />
                       </div>
                     ) : null}
@@ -107,7 +109,7 @@ export function DetailSheetResourceBody(
                 ) : null}
                 {people && people.length > 1 ? (
                   <div className="flex gap-2">
-                    <div className="flex h-7 w-7 border border-[#27272A] rounded-full justify-center items-center">
+                    <div className="flex h-7 w-7 border border-border rounded-full justify-center items-center">
                       <Popover>
                         <PopoverTrigger asChild>
                           <span className="text-xs font-semibold">
@@ -121,7 +123,7 @@ export function DetailSheetResourceBody(
                             return (
                               <>
                                 <div
-                                  className="inline-flex items-center h-7 relative gap-2 text-sm text-[#A7A7A7] cursor-pointer hover:text-white"
+                                  className="inline-flex items-center h-7 relative gap-2 text-sm text-muted-foreground cursor-pointer hover:text-white"
                                   onClick={() => {
                                     pushDetailItem(person);
                                   }}
@@ -155,15 +157,15 @@ export function DetailSheetResourceBody(
           <Button
             size="icon"
             variant="ghost"
-            className="h-8 w-8 rounded-full bg-white text-black hover:bg-white/90 hover:scale-105 transition-transform self-end"
+            className="h-8 w-8 rounded-full bg-foreground text-black hover:bg-white/90 hover:scale-105 transition-transform self-end"
             onClick={() =>
               isResourceSelected ? removeResource(id) : addResource(resource)
             }
           >
             {isResourceSelected ? (
-              <Check className="h-4 w-4" />
+                <CheckIcon className="w-4 h-4 fill-primary-foreground" />
             ) : (
-              <Plus className="h-4 w-4" />
+                <PlusIcon className="w-4 h-4 fill-accent" />
             )}
           </Button>
         </div>
@@ -172,8 +174,8 @@ export function DetailSheetResourceBody(
       <div className="flex flex-col">
         {/* Description */}
         <div className="space-y-1">
-          <h3 className="text-[#f2f2f2] text-base font-normal">About</h3>
-          <p className="text-sm leading-relaxed text-[#A7A7A7]">
+          <h3 className="text-base font-normal">About</h3>
+          <p className="text-sm leading-relaxed text-muted-foreground">
             {description}
           </p>
         </div>

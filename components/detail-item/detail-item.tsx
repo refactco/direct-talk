@@ -17,7 +17,7 @@ export function DetailItem(props: IDetailItemProps) {
     : 'bg-white hover:bg-white/90';
 
   return (
-    <div className="flex items-center justify-between bg-[#1C1917] rounded-lg px-3 py-4 relative">
+    <div className="flex items-center justify-between bg-accent rounded-lg px-3 py-4 relative">
       <div
         className="flex items-center gap-2 cursor-pointer"
         onClick={() => {
@@ -34,7 +34,7 @@ export function DetailItem(props: IDetailItemProps) {
           />
         </div>
         <div className="flex flex-col gap-1 self-start w-44">
-          <span className="text-xs leading-normal text-[#f2f2f2] font-semibold overflow-hidden text-ellipsis line-clamp-2">
+          <span className="text-xs leading-normal font-semibold overflow-hidden text-ellipsis line-clamp-2">
             {title}
           </span>
           {type === 'episode' && description ? (

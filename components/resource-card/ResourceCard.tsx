@@ -74,7 +74,7 @@ export function ResourceCard({
               className="absolute top-2 left-2 p-0 rounded-full bg-background opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300"
               onClick={handleViewDetails}
             >
-              <InfoIcon />
+              <InfoIcon className="fill-foreground" />
             </div>
           ) : null}
         </div>
@@ -100,12 +100,12 @@ export function ResourceCard({
               onClick={handleCardClick}
               className="w-6 h-6 rounded-full bg-primary ring-[3px] ring-primary/25 flex items-center justify-center"
             >
-              <CheckIcon className="w-4 h-4 text-primary-foreground" />
+              <CheckIcon className="w-4 h-4 fill-primary-foreground" />
             </div>
           ) : (
             <div
               onClick={handleCardClick}
-              className="w-6 h-6 rounded-full bg-white flex items-center justify-center"
+              className="w-6 h-6 rounded-full bg-foreground flex items-center justify-center"
             >
               <PlusIcon className="w-4 h-4 text-primary-foreground fill-accent" />
             </div>

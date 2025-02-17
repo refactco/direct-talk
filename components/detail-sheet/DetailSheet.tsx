@@ -18,7 +18,7 @@ export function DetailSheet() {
     >
       <SheetContent
         side="right"
-        className="w-full md:w-96 py-12 px-10 bg-[#121212] border-l border-[#282828] text-white h-[100vh] overflow-y-auto"
+        className="w-full md:w-96 py-12 px-10 bg-background border-l border-border text-foreground h-[100vh] overflow-y-auto"
       >
         <DetailSheetBody />
       </SheetContent>

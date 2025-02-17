@@ -45,7 +45,7 @@ export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
       <div className="flex flex-col gap-3">
         {/* Cover Image and Info */}
         <div className="p-0">
-          <div className="relative aspect-square w-36 h-36 overflow-hidden rounded-full border border-[#27272A]">
+          <div className="relative aspect-square w-36 h-36 overflow-hidden rounded-full border border-border">
             <Image
               src={image_url ?? '/placeholder.svg'}
               alt={name}
@@ -67,9 +67,9 @@ export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
         <div className="flex flex-col">
           {/* Description */}
           <div className="space-y-1">
-            <h3 className="text-[#f2f2f2] text-base font-normal">About</h3>
+            <h3 className="text-base font-normal">About</h3>
             <ScrollArea className="h-[calc(100vh-400px)]">
-              <p className="text-sm leading-relaxed text-[#A7A7A7]">
+              <p className="text-sm leading-relaxed text-muted-foreground">
                 {description}
               </p>
             </ScrollArea>

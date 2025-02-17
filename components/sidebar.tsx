@@ -66,7 +66,7 @@ export function Sidebar() {
       </nav>
       <div
         className={cn(
-          'absolute md:relative md:left-0 w-full z-50 flex l- h-full flex-col bg-accent transition-all duration-300 ease-in-out border-r border-white/10',
+          'absolute md:relative md:left-0 w-full z-50 flex l- h-full flex-col bg-accent transition-all duration-300 ease-in-out border-r border-border',
           isCollapsed ? 'md:w-[64px]' : 'md:w-[243px]',
           isMobileExpanded ? 'left-0' : '-left-full'
         )}
@@ -74,7 +74,7 @@ export function Sidebar() {
         {/* Logo Section */}
         <div
           className={cn(
-            'flex items-center p-4 border-b border-white/10',
+            'flex items-center p-4 border-b border-border',
             isCollapsed ? 'justify-center' : 'justify-between'
           )}
         >
@@ -120,9 +120,9 @@ export function Sidebar() {
               <Button
                 variant="default"
                 onClick={() => router.push('/')}
-                className="bg-white w-full mb-3 font-semibold"
+                className="bg-foreground w-full mb-3 font-semibold max-h-9 hover:bg-foreground/90 rounded-[6px]"
               >
-                <SearchIcon />
+                <SearchIcon className="fill-primary-foreground" />
                 Start Search
               </Button>
             ) : null}
@@ -159,8 +159,8 @@ export function Sidebar() {
                       key={chat.id}
                       href={`/chat/conversation?id=${chat.id}`}
                       className={cn(
-                        'flex items-center justify-between group py-2 text-sm rounded-sm transition-all',
-                        'hover:bg-white/10 hover:px-2',
+                        'flex items-center justify-between group py-2 text-sm rounded-md transition-all',
+                        'hover:bg-highlight hover:px-2 max-h-[34px]',
                         pathname?.includes(chat.id) && 'bg-accent'
                       )}
                     >
@@ -169,7 +169,7 @@ export function Sidebar() {
                       </span>
                       <TrashIcon
                         onClick={() => removeHistoryItem(chat.id)}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="opacity-0 group-hover:opacity-100 transition-opacity fill-foreground"
                       />
                     </Link>
                   ))
@@ -185,12 +185,12 @@ export function Sidebar() {
             <Button
               variant="outline"
               className={cn(
-                'justify-start w-max border-white/10 bg-transparent',
+                'justify-start w-max border-border bg-transparent',
                 isCollapsed && 'px-2.5 ml-2.5'
               )}
               onClick={handleAuth}
             >
-              <LogoutIcon className="h-4 w-4" />
+              <LogoutIcon className="h-4 w-4 fill-foreground" />
               {!isCollapsed && (
                 <span className="text-sm font-bold">
                   {isAuthenticated ? 'Logout' : 'Login'}

@@ -87,7 +87,7 @@ export function SearchModal({
             variant="ghost"
             size="icon"
             onClick={() => onOpenChange(false)}
-            className="rounded-full border border-white/10 absolute right-4 top-4 h-10 w-10"
+            className="rounded-full border border-border absolute right-4 top-4 h-10 w-10"
           >
             <X className="w-5 h-5" />
             {/* <CloseIcon className="fill-white" /> */}
@@ -100,7 +100,7 @@ export function SearchModal({
                   placeholder="Search in resources..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="bg-accent border border-white/10 pl-9 pr-4 py-2 w-full rounded-full text-white placeholder:text-muted-foreground h-[52px]"
+                  className="bg-accent border border-border pl-9 pr-4 py-2 w-full rounded-full placeholder:text-muted-foreground h-[52px]"
                 />
               </div>
             </div>

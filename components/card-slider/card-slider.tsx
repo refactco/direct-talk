@@ -13,13 +13,13 @@ export function CardSlider({ children }: { children: ReactNode }) {
     <div className="relative w-full group/slider">
       {/* Left Navigation Button */}
       <div
-        className={`${!showPrev && 'hidden'} absolute left-[-1px] top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover/slider:opacity-100 transition-opacity flex justify-center w-[95px] h-[calc(100%+2px)] bg-[linear-gradient(-270deg,#09090B_-3.68%,rgba(9,9,11,0.25)_84.45%,rgba(9,9,11,0.00)_100%)]`}
+        className={`${!showPrev && 'hidden'} absolute left-[-1px] top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover/slider:opacity-100 transition-opacity flex justify-center w-[95px] h-[calc(100%+2px)] dark:bg-[linear-gradient(-270deg,#09090B_-3.68%,rgba(9,9,11,0.25)_84.45%,rgba(9,9,11,0.00)_100%)] bg-[linear-gradient(-270deg,#ffffff_-3.68%,rgba(255,255,255,0.25)_84.45%,rgba(9,9,11,0.00)_100%)]`}
       >
         <button
           onClick={() => swiperInstance?.slidePrev()}
           className={`absolute left-0 prev-btn w-10 h-10 bg-accent rounded-full flex items-center justify-center top-10`}
         >
-          <ChevronLeftIcon />
+          <ChevronLeftIcon className="fill-foreground" />
         </button>
       </div>
       <Swiper
@@ -55,13 +55,20 @@ export function CardSlider({ children }: { children: ReactNode }) {
 
       {/* Right Navigation Button */}
       <div
-        className={`${!showNext && 'hidden'} absolute right-[-1px] top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover/slider:opacity-100 transition-opacity flex justify-end w-[95px] h-[calc(100%+2px)] bg-[linear-gradient(270deg,#0c0a09_-3.68%,rgba(9,9,11,0.25)_84.45%,rgba(9,9,11,0)_100%)]`}
+        className={`
+  ${!showNext && 'hidden'} 
+  absolute right-[-1px] top-1/2 -translate-y-1/2 z-10 
+  opacity-0 group-hover/slider:opacity-100 transition-opacity 
+  flex justify-end w-[95px] h-[calc(100%+2px)] 
+  dark:bg-[linear-gradient(270deg,#0c0a09_-3.68%,rgba(9,9,11,0.25)_84.45%,rgba(9,9,11,0)_100%)] 
+  bg-[linear-gradient(270deg,#ffffff_-3.68%,rgba(255,255,255,0.25)_84.45%,rgba(9,9,11,0)_100%)]
+`}
       >
         <button
           onClick={() => swiperInstance?.slideNext()}
           className={`absolute next-btn w-10 h-10 bg-accent rounded-full flex items-center justify-center top-10`}
         >
-          <ChevronRightIcon />
+          <ChevronRightIcon className="fill-foreground" />
         </button>
       </div>
     </div>

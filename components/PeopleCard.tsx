@@ -8,14 +8,14 @@ interface PeopleCardProps {
 
 export function PeopleCard({ people }: PeopleCardProps) {
   return (
-    <div className="group relative aspect-square cursor-pointer">
+    <div className="group/people relative aspect-square cursor-pointer">
       <div className="relative w-full aspect-square rounded-full overflow-hidden bg-accent">
         {people.image_url ? (
           <Image
             src={people.image_url || '/placeholder.svg'}
             alt={people.name}
             fill
-            className="object-cover transition-all duration-300 group-hover:scale-105"
+            className="object-cover transition-all duration-300 group-hover/people:scale-105"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-accent">
