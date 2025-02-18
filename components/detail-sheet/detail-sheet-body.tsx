@@ -26,7 +26,7 @@ export function DetailSheetBody() {
           <Button
             variant="ghost"
             size="icon"
-            className="h-6 w-6 rounded-full bg-black/40 hover:bg-black/60"
+            className="h-6 w-6 rounded-full bg-accent hover:bg-accent/90"
           >
             <X className="h-4 w-4" />
           </Button>
@@ -37,7 +37,7 @@ export function DetailSheetBody() {
           <Button
             variant="ghost"
             size="icon"
-            className="h-6 w-6 rounded-full bg-black/40 hover:bg-black/60"
+            className="h-6 w-6 rounded-full bg-accent hover:bg-accent/90"
             onClick={() => {
               popDetailItem();
             }}

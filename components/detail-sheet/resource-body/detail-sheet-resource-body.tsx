@@ -1,5 +1,7 @@
 'use client';
 
+import { CheckIcon } from '@/components/icons/CheckIcon';
+import { PlusIcon } from '@/components/icons/PlusIcon';
 import { Button } from '@/components/ui/button';
 import {
   Popover,
@@ -12,7 +14,6 @@ import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { getResource } from '@/lib/api';
 import { cn } from '@/lib/utils';
 import { IAuthor, IResource } from '@/types/resources';
-import { Check, Plus } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { IDetailSheetResourceBodyTypeProps } from './detail-sheet-resource-body-type';
@@ -63,7 +64,7 @@ export function DetailSheetResourceBody(
       <div className="flex flex-col gap-3">
         {/* Cover Image and Info */}
         <div className="p-0">
-          <div className="relative aspect-square w-36 h-36 overflow-hidden rounded-[0.5rem] border border-[#27272A]">
+          <div className="relative aspect-square w-36 h-36 overflow-hidden rounded-[0.5rem] border border-border">
             <Image
               src={image_url ?? '/placeholder.svg'}
               alt={title}
@@ -75,7 +76,7 @@ export function DetailSheetResourceBody(
         </div>
         {/* Resource/Author Info */}
         <div>
-          <div className="text-xs font-medium text-[#A7A7A7] uppercase tracking-wider mb-1">
+          <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
             {type}
           </div>
           <h2 className="text-2xl font-bold mb-1">{title}</h2>
@@ -169,9 +170,9 @@ export function DetailSheetResourceBody(
             }
           >
             {isResourceSelected ? (
-              <Check className="h-4 w-4" />
+              <CheckIcon className="w-4 h-4 fill-primary-foreground" />
             ) : (
-              <Plus className="h-4 w-4" />
+              <PlusIcon className="w-4 h-4 fill-accent" />
             )}
           </Button>
         </div>
@@ -180,8 +181,8 @@ export function DetailSheetResourceBody(
       <div className="flex flex-col">
         {/* Description */}
         <div className="space-y-1">
-          <h3 className="text-[#f2f2f2] text-base font-normal">About</h3>
-          <p className="text-sm leading-relaxed text-[#A7A7A7]">
+          <h3 className="text-base font-normal">About</h3>
+          <p className="text-sm leading-relaxed text-muted-foreground">
             {description}
           </p>
         </div>

@@ -17,7 +17,7 @@ export function DetailItem(props: IDetailItemProps) {
     : 'bg-white hover:bg-white/90';
 
   return (
-    <div className="flex items-center justify-between bg-[#1C1917] rounded-lg px-3 py-4 relative">
+    <div className="flex items-center justify-between bg-accent rounded-lg px-3 py-4 relative">
       <div
         className="flex items-center gap-2 cursor-pointer"
         onClick={() => {

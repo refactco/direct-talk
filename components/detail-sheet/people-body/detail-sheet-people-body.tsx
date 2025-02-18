@@ -55,7 +55,7 @@ export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
       <div className="flex flex-col gap-3">
         {/* Cover Image and Info */}
         <div className="p-0">
-          <div className="relative aspect-square w-36 h-36 overflow-hidden rounded-full border border-[#27272A]">
+          <div className="relative aspect-square w-36 h-36 overflow-hidden rounded-full border border-border">
             <Image
               src={image_url ?? '/placeholder.svg'}
               alt={name}

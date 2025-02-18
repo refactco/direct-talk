@@ -27,7 +27,7 @@ export function DetailSheet({ item, open, onOpenChange }: DetailSheetProps) {
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        className="w-[369px] p-0 bg-[#121212] border-l border-[#282828] text-white"
+        className="w-[369px] p-0 bg-background border-l border-border text-white"
       >
         <div className="relative flex flex-col h-full">
           {/* Header with close button */}
@@ -60,13 +60,13 @@ export function DetailSheet({ item, open, onOpenChange }: DetailSheetProps) {
             {/* Resource/Author Info */}
             <div className="flex justify-between items-start mb-6">
               <div className="flex-1">
-                <div className="text-xs font-medium text-[#A7A7A7] uppercase tracking-wider mb-1">
+                <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
                   {isResource ? item.type : 'Author'}
                 </div>
                 <h2 className="text-2xl font-bold mb-1">
                   {isResource ? item.title : item.name}
                 </h2>
-                <div className="text-sm text-[#A7A7A7]">
+                <div className="text-sm text-muted-foreground">
                   JK rowling
                   {isResource
                     ? item.authorId
@@ -95,9 +95,9 @@ export function DetailSheet({ item, open, onOpenChange }: DetailSheetProps) {
 
             {/* Description */}
             <div className="space-y-1">
-              <h3 className="text-[#f2f2f2] text-base font-normal">About</h3>
+              <h3 className="text-base font-normal">About</h3>
               <ScrollArea className="h-[calc(100vh-400px)]">
-                <p className="text-sm leading-relaxed text-[#A7A7A7]">
+                <p className="text-sm leading-relaxed text-muted-foreground">
                   {isResource ? item.description : item.bio}
                 </p>
               </ScrollArea>

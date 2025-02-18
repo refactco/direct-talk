@@ -72,7 +72,7 @@ export function ResourceCard({
               className="absolute top-2 left-2 p-0 rounded-full bg-background opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300"
               onClick={handleViewDetails}
             >
-              <InfoIcon />
+              <InfoIcon className="fill-foreground" />
             </div>
           ) : null}
         </div>
