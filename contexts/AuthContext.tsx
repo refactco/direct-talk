@@ -1,51 +1,88 @@
 'use client';
 
-import type React from 'react';
-import { createContext, useContext, useState, useEffect } from 'react';
-import { AuthModal } from '@/components/AuthModal';
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { supabase } from '@/lib/supabaseClient';
 
 interface User {
-  id: number;
-  name: string;
+  id: string;
   email: string;
+  name?: string;
 }
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
-  login: (token: string, user: User) => void;
+  loginWithGoogle: () => void;
+  loginWithTwitter: () => void;  // Added Twitter login
   logout: () => void;
   openAuthModal: () => void;
   closeAuthModal: () => void;
+  isAuthModalOpen: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const storedUser = localStorage.getItem('user');
-    if (token && storedUser) {
-      setUser(JSON.parse(storedUser));
-      setIsAuthenticated(true);
-    }
+    const checkUserSession = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      if (data.session) {
+        const { user } = data.session;
+        setUser({
+          id: user.id,
+          email: user.email || '',
+          name: user.user_metadata?.full_name || '',
+        });
+        setIsAuthenticated(true);
+      } else {
+        setUser(null);
+        setIsAuthenticated(false);
+      }
+    };
+
+    checkUserSession();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        setUser({
+          id: session.user.id,
+          email: session.user.email || '',
+          name: session.user.user_metadata?.full_name || '',
+        });
+        setIsAuthenticated(true);
+      } else {
+        setUser(null);
+        setIsAuthenticated(false);
+      }
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
   }, []);
 
-  const login = (token: string, user: User) => {
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(user));
-    setUser(user);
-    setIsAuthenticated(true);
-    closeAuthModal();
+  const loginWithGoogle = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: `${window.location.origin}` },
+    });
+    if (error) console.error('Google Login Error:', error);
   };
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+  const loginWithTwitter = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'twitter',
+      options: { redirectTo: `${window.location.origin}` },
+    });
+    if (error) console.error('Twitter Login Error:', error);
+  };
+
+  const logout = async () => {
+    await supabase.auth.signOut();
     setUser(null);
     setIsAuthenticated(false);
   };
@@ -54,23 +91,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const closeAuthModal = () => setIsAuthModalOpen(false);
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isAuthenticated,
-        login,
-        logout,
-        openAuthModal,
-        closeAuthModal
-      }}
-    >
-      {children}
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={closeAuthModal}
-        onAuthenticated={login}
-      />
-    </AuthContext.Provider>
+      <AuthContext.Provider
+          value={{
+            user,
+            isAuthenticated,
+            loginWithGoogle,
+            loginWithTwitter,
+            logout,
+            openAuthModal,
+            closeAuthModal,
+            isAuthModalOpen,
+          }}
+      >
+        {children}
+      </AuthContext.Provider>
   );
 }
 

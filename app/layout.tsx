@@ -17,6 +17,7 @@ import type React from 'react';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import './globals.css';
+import {AuthModal} from "@/components/AuthModal";
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -55,6 +56,7 @@ export default function RootLayout({
                               {children}
                             </main>
                             <Toaster />
+                            <AuthModal />
                             <DetailSheet />
                           </div>
                         </ResourceProvider>
