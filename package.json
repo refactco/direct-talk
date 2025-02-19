@@ -65,6 +65,7 @@
     "react-markdown": "^9.0.3",
     "react-resizable-panels": "^2.1.7",
     "react-slick": "^0.30.3",
+    "react-tooltip": "^5.28.0",
     "recharts": "2.15.0",
     "slick-carousel": "^1.8.1",
     "sonner": "^1.7.1",

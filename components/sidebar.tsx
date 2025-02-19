@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ThemeToggle } from './ThemeToggle';
+import { Tooltip } from './ui/tooltip/tooltip';
 
 export function Sidebar() {
   // const { mobileExpanded } = props;
@@ -100,14 +101,23 @@ export function Sidebar() {
             )}
           </Link>
           {!isCollapsed && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="w-5 h-5 rounded-full hidden md:flex items-center justify-center hover:bg-accent transition-colors duration-200"
-              onClick={() => setIsCollapsed(!isCollapsed)}
-            >
-              <CollapseIcon className="fill-muted-foreground h-4 w-4" />
-            </Button>
+            <>
+              <Tooltip id="collapse-button" place="right" content="Collapse" />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="w-5 h-5 rounded-full hidden md:flex items-center justify-center hover:bg-accent transition-colors duration-200"
+                onClick={() => setIsCollapsed(!isCollapsed)}
+                data-tooltip-id="collapse-button"
+              >
+                <CollapseIcon className="fill-muted-foreground h-4 w-4" />
+              </Button>
+            </>
+            // <Tooltip
+            //   content={
+            //   }
+            //   label="hello"
+            // />
           )}
           <Button
             variant="ghost"

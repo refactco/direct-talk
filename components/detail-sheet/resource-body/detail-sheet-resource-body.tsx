@@ -5,6 +5,7 @@ import { PlusIcon } from '@/components/icons/PlusIcon';
 import { Button } from '@/components/ui/button';
 import {
   Popover,
+  PopoverArrow,
   PopoverContent,
   PopoverTrigger
 } from '@/components/ui/popover';
@@ -76,10 +77,10 @@ export function DetailSheetResourceBody(
         </div>
         {/* Resource/Author Info */}
         <div>
-          <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
+          <div className="text-xxm font-medium text-muted-foreground uppercase tracking-wider mb-1">
             {type}
           </div>
-          <h2 className="text-2xl font-bold mb-1">{title}</h2>
+          <h2 className="text-1xl font-bold mb-1">{title}</h2>
         </div>
         <div className="flex gap-4 items-center justify-between selectedDetailItems-start">
           <div className="flex-1">
@@ -91,25 +92,44 @@ export function DetailSheetResourceBody(
                   <PopoverTrigger asChild>
                     <div className="flex gap-0 cursor-pointer">
                       {people?.map((pers: IAuthor, index: number) => {
-                        return (
-                          <div
-                            className={cn(
-                              'rounded-full w-7 h-7 aspect-square relative border-2 border-[#09090B]',
-                              index > 0 ? '-ml-3' : ''
-                            )}
-                          >
-                            <Image
-                              alt=""
-                              src={pers.image_url}
-                              fill
-                              className="object-cover rounded-full"
-                            />
-                          </div>
-                        );
+                        if (index < 3) {
+                          return (
+                            <div
+                              className={cn(
+                                'rounded-full w-875 h-875 aspect-square relative border-2 border-[#09090B]',
+                                index > 0 ? '-ml-3' : ''
+                              )}
+                            >
+                              <Image
+                                alt=""
+                                src={pers.image_url}
+                                fill
+                                className="object-cover rounded-full"
+                              />
+                            </div>
+                          );
+                        }
+
+                        return null;
                       })}
+                      {people && people.length > 3 ? (
+                        <div
+                          className={cn(
+                            'rounded-full w-875 h-875 aspect-square relative border-2 border-[#09090B] -ml-3 bg-[#302B27] flex items-center justify-center'
+                          )}
+                        >
+                          <span className="text-xsm font-semibold">
+                            +{people.length - 3}
+                          </span>
+                        </div>
+                      ) : null}
                     </div>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto flex flex-col items-start gap-3">
+                  <PopoverContent
+                    className="w-auto flex flex-col items-start gap-3 p-3"
+                    align="start"
+                  >
+                    <PopoverArrow className="fill-[#302B27]" />
                     {people?.map((person: IAuthor, index: number) => {
                       const { name, image_url } = person;
 
@@ -131,7 +151,9 @@ export function DetailSheetResourceBody(
                                 />
                               </div>
                             ) : null}
-                            <span className="pl-9 leading-7">{name}</span>
+                            <span className="pl-9 leading-7 text-xsm">
+                              {name}
+                            </span>
                           </div>
                         </>
                       );
@@ -182,7 +204,7 @@ export function DetailSheetResourceBody(
         {/* Description */}
         <div className="space-y-1">
           <h3 className="text-base font-normal">About</h3>
-          <p className="text-sm leading-relaxed text-muted-foreground">
+          <p className="text-xs leading-relaxed text-muted-foreground">
             {description}
           </p>
         </div>
