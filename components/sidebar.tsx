@@ -22,7 +22,7 @@ export function Sidebar() {
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileExpanded, setIsMobileExpanded] = useState(false);
-  const { isAuthenticated, openAuthModal, logout } = useAuth();
+  const { isAuthenticated, logout, openAuthModal } = useAuth();
   const { historyItems, removeHistoryItem } = useHistory();
   const router = useRouter();
   const isConversationPage = pathname?.includes('conversation');
