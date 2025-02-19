@@ -3,14 +3,16 @@
 import { ChatData, Message } from '@/app/chat/conversation/types';
 import type React from 'react';
 import { createContext, useCallback, useContext, useState } from 'react';
+import apiClient from '@/lib/axiosInstance';
 
 interface ChatContextType {
-  chatDatas: ChatData;
+  chatDatas: ChatData | null;
   isLoading: boolean;
+  isLoadingChats: boolean;
   error: string | null;
   doChat: (
     prompt: string,
-    contentId: string,
+    contentId?: string[],
     sessionId?: string
   ) => Promise<any>;
   fetchChat: (chatId: string) => Promise<any>;
@@ -18,43 +20,35 @@ interface ChatContextType {
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
-const BASE_API_CHAT = 'https://api-focus.sajjadrad.com/v1';
+const baseURL = process.env.NEXT_PUBLIC_BASE_AI_API_URL as string;
 
 export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   children
 }) => {
   const [chatDatas, setChatDatas] = useState<ChatData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingChats, setIsLoadingChats] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const doChat = useCallback(
     async (
       prompt: string,
-      contentIds: string,
+      contentIds?: string[],
       sessionId?: string
     ): Promise<string> => {
       setIsLoading(true);
       setError(null);
-      const formData: any = { prompt: prompt, content_ids: 'potter' };
-      // const formData: any = { prompt: prompt , content_ids: contentIds }
+      const formData: any = { question: prompt };
       if (sessionId) {
         formData['session_id'] = sessionId;
       }
+      if (contentIds && contentIds?.length > 0) {
+        formData['content_ids'] = contentIds;
+        // formData['content_ids'] = ["63dbf9f4-c510-4685-802f-efac4682bc5c"];
+      }
       try {
-        const response = await fetch(`${BASE_API_CHAT}/search`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Authorization: 'Bearer TEST_API_KEY'
-          },
-          body: new URLSearchParams(formData)
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to create chat');
-        }
-
-        const data = await response.json();
+        const response = await apiClient.post(`${baseURL}/search`, formData);
+        const data = await response.data;
         return data;
       } catch (err) {
         setError(
@@ -68,27 +62,20 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
     []
   );
 
-  const fetchChat = useCallback(async (chatId: string): Promise<void> => {
-    setIsLoading(true);
+  const fetchChat = useCallback(async (sessionId: string): Promise<void> => {
+    setIsLoadingChats(true);
     setError(null);
     try {
-      const response = await fetch(`${BASE_API_CHAT}/search/${chatId}`, {
-        headers: {
-          Authorization: 'Bearer TEST_API_KEY'
-        }
-      });
-      if (!response.ok) {
-        throw new Error('Failed to fetch chat');
-      }
-
-      const data = await response.json();
+      const response = await apiClient.get(`${baseURL}/search/${sessionId}`);
+      const data = await response.data;
       setChatDatas(data);
-    } catch (err) {
+    } catch (err: any) {
       setError(
         err instanceof Error ? err.message : 'An unknown error occurred'
       );
+      throw err;
     } finally {
-      setIsLoading(false);
+      setIsLoadingChats(false);
     }
   }, []);
 
@@ -97,7 +84,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
       if (!prevChatData) return null;
       return {
         ...prevChatData,
-        results: [...prevChatData.results, message]
+        chat_history: [...prevChatData.chat_history, message]
       };
     });
   };
@@ -105,6 +92,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   const value = {
     chatDatas,
     isLoading,
+    isLoadingChats,
     error,
     doChat,
     fetchChat,

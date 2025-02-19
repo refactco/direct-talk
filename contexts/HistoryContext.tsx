@@ -1,84 +1,91 @@
 'use client';
 
 import type React from 'react';
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback
-} from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import apiClient from '@/lib/axiosInstance';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export interface HistoryItem {
-  id: string;
-  title: string;
-  contentId: string;
-  createdAt: string;
+  content_ids: Array<string>;
+  session_id: string;
+  session_title: string;
 }
 
 interface HistoryContextType {
   historyItems: HistoryItem[];
-  addHistoryItem: (item: HistoryItem) => void;
   removeHistoryItem: (id: string) => void;
-  clearHistory: () => void;
+  updateHistory: () => void;
+  isLoading: boolean;
 }
 
 const HistoryContext = createContext<HistoryContextType | undefined>(undefined);
 
-const HISTORY_STORAGE_KEY = 'chat_history';
+const baseURL = process.env.NEXT_PUBLIC_BASE_AI_API_URL as string;
 
 export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
   children
 }) => {
   const [historyItems, setHistoryItems] = useState<HistoryItem[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const activeSessionId = searchParams.get('id');
 
+  const fetchChatHistory = async () => {
+    try {
+      setIsLoading(true);
+      const response = await apiClient.get(`${baseURL}/search`);
+      const data = await response.data?.reverse();
+      setHistoryItems(data);
+    } catch (err) {
+      console.log(
+        err instanceof Error ? err.message : 'An unknown error occurred'
+      );
+      if (err.status == 401) {
+        setHistoryItems([]);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
   useEffect(() => {
-    const storedHistory = localStorage.getItem(HISTORY_STORAGE_KEY);
-    if (storedHistory) {
-      setHistoryItems(JSON.parse(storedHistory));
+    if (historyItems?.length == 0) {
+      fetchChatHistory();
     }
   }, []);
 
-  const updateLocalStorage = useCallback((items: HistoryItem[]) => {
-    localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(items));
-  }, []);
+  const updateHistory = () => {
+    fetchChatHistory();
+  };
 
-  const addHistoryItem = useCallback(
-    (item: HistoryItem) => {
-      setHistoryItems((prevItems) => {
-        const updatedItems = [
-          item,
-          ...prevItems.filter((i) => i.id !== item.id)
-        ];
-        const newItems = updatedItems.slice(0, 50); // Keep only the 50 most recent items
-        updateLocalStorage(newItems);
-        return newItems;
-      });
-    },
-    [updateLocalStorage]
-  );
-
-  const removeHistoryItem = useCallback(
-    (id: string) => {
-      setHistoryItems((prevItems) => {
-        const newItems = prevItems.filter((item) => item.id !== id);
-        updateLocalStorage(newItems);
-        return newItems;
-      });
-    },
-    [updateLocalStorage]
-  );
-
-  const clearHistory = useCallback(() => {
-    setHistoryItems([]);
-    updateLocalStorage([]);
-  }, [updateLocalStorage]);
+  const removeHistoryItem = async (session_id: string) => {
+    try {
+      const response = await apiClient.delete(
+        `${baseURL}/search/${session_id}`
+      );
+      if (response.status == 204) {
+        setHistoryItems((prevItems) => {
+          const newItems = prevItems.filter(
+            (item) => item.session_id !== session_id
+          );
+          return newItems;
+        });
+        if (activeSessionId == session_id) {
+          router.push('/');
+        }
+      }
+    } catch (err) {
+      console.log(
+        err instanceof Error ? err.message : 'An unknown error occurred'
+      );
+    }
+  };
 
   const value = {
     historyItems,
-    addHistoryItem,
+    updateHistory,
     removeHistoryItem,
-    clearHistory
+    isLoading
   };
 
   return (

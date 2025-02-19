@@ -24,6 +24,7 @@ interface AuthContextType {
   openAuthModal: () => void;
   closeAuthModal: () => void;
   isAuthModalOpen: boolean;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -32,9 +33,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const checkUserSession = async () => {
+      setIsLoading(true);
       const { data, error } = await supabase.auth.getSession();
       if (data.session) {
         const { user } = data.session;
@@ -48,6 +51,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(null);
         setIsAuthenticated(false);
       }
+      setIsLoading(false);
     };
 
     checkUserSession();
@@ -90,9 +94,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = async () => {
+    setIsLoading(true);
     await supabase.auth.signOut();
     setUser(null);
     setIsAuthenticated(false);
+    setIsLoading(false);
   };
 
   const openAuthModal = () => setIsAuthModalOpen(true);
@@ -108,7 +114,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         logout,
         openAuthModal,
         closeAuthModal,
-        isAuthModalOpen
+        isAuthModalOpen,
+        isLoading
       }}
     >
       {children}

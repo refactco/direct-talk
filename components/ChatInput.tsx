@@ -17,6 +17,8 @@ interface ChatInputProps {
   isLoading: boolean;
   placeholder?: string;
   resetAfterSubmit?: boolean;
+  noAddResource?: boolean;
+  defaultValue?: string;
 }
 
 export function ChatInput({
@@ -26,14 +28,16 @@ export function ChatInput({
   selectedResources,
   isLoading,
   placeholder = 'Ask AI anything...',
-  resetAfterSubmit = false
+  resetAfterSubmit = false,
+  noAddResource = false,
+  defaultValue
 }: ChatInputProps) {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState(defaultValue ?? '');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (input.trim() && !isLoading) {
-      onSubmit(input.trim());
+    if (input?.trim() && !isLoading) {
+      onSubmit(input?.trim());
       if (resetAfterSubmit) {
         setInput('');
       }
@@ -51,7 +55,7 @@ export function ChatInput({
     <form onSubmit={handleSubmit} className="relative">
       <div className="rounded-3xl border border-border bg-background overflow-hidden">
         {/* Selected Resources */}
-        {selectedResources.length > 0 ? (
+        {selectedResources.length > 0 && !noAddResource ? (
           <div className="flex flex-wrap items-center gap-2 p-2 border-b border-border">
             {selectedResources.map((resource) => (
               <SelectedResourceCard
@@ -70,6 +74,7 @@ export function ChatInput({
             placeholder={placeholder}
             className="w-full flex-grow bg-background border-0 focus:outline-none focus:ring-0 placeholder-[#a2a2a4] text-xs md:text-xsm pt-2 resize-none"
             disabled={isLoading}
+            defaultValue={defaultValue}
           />
           <div className="flex items-center justify-between w-full">
             <button
@@ -88,7 +93,7 @@ export function ChatInput({
               className="w-8 h-8 sm:w-10 md:h-10 rounded-full bg-primary hover:bg-primary/90 flex items-center justify-center shrink-0 disabled:bg-accent-light disabled:cursor-not-allowed"
             >
               {isLoading ? (
-                <Loader2 className="animate-spin" />
+                <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
                 <ArrowRightIcon
                   className={cn('w-5 h-5', !input.trim() ? '' : 'text-black')}

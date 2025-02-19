@@ -14,8 +14,9 @@ import { cn } from '@/lib/utils';
 import { MenuIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { ThemeToggle } from './ThemeToggle';
+import { Icons } from '@/components/icons';
 import { Tooltip } from './ui/tooltip/tooltip';
 
 export function Sidebar() {
@@ -23,20 +24,20 @@ export function Sidebar() {
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileExpanded, setIsMobileExpanded] = useState(false);
-  const { isAuthenticated, logout, openAuthModal } = useAuth();
-  const { historyItems, removeHistoryItem } = useHistory();
+  const {
+    isAuthenticated,
+    logout,
+    openAuthModal,
+    isLoading: isLoadingAuth
+  } = useAuth();
+  const { historyItems, removeHistoryItem, isLoading, updateHistory } =
+    useHistory();
   const router = useRouter();
   const isConversationPage = pathname?.includes('conversation');
-  // useEffect(() => {
-  //   const updateChatHistory = () => {
-  //     setChatHistory(getChatHistory());
-  //   };
-  //   updateChatHistory();
-  //   window.addEventListener('chatHistoryUpdated', updateChatHistory);
-  //   return () => {
-  //     window.removeEventListener('chatHistoryUpdated', updateChatHistory);
-  //   };
-  // }, []);
+
+  useEffect(() => {
+    updateHistory();
+  }, [isAuthenticated]);
 
   const handleAuth = () => {
     if (isAuthenticated) {
@@ -171,28 +172,36 @@ export function Sidebar() {
               >
                 {historyItems.length > 0 ? (
                   historyItems.map((chat) => (
-                    <Link
-                      key={chat.id}
-                      href={`/chat/conversation?id=${chat.id}`}
+                    <div
+                      key={chat.session_id}
                       className={cn(
                         'flex items-center justify-between group py-2 text-sm rounded-md transition-all',
                         'hover:bg-highlight hover:px-2 max-h-[34px]',
-                        pathname?.includes(chat.id) && 'bg-accent'
+                        pathname?.includes(chat.session_id) && 'bg-accent'
                       )}
                     >
-                      <span className="truncate max-w-40 text-sm">
-                        {chat.title}
-                      </span>
+                      <Link
+                        href={`/chat/conversation?id=${chat.session_id}`}
+                        className="truncate max-w-40 text-sm"
+                      >
+                        {chat.session_title}
+                      </Link>
                       <TrashIcon
-                        onClick={() => removeHistoryItem(chat.id)}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity fill-foreground"
+                        onClick={() => removeHistoryItem(chat.session_id)}
+                        className="opacity-0 group-hover:opacity-100 transition-opacity fill-foreground cursor-pointer"
                       />
-                    </Link>
+                    </div>
                   ))
                 ) : (
-                  <div className="text-sm text-muted-foreground pb-2">
-                    No history records.
-                  </div>
+                  <Fragment>
+                    {isLoading ? (
+                      <Icons.spinner className="mt-2 m-auto h-4 w-4 animate-spin" />
+                    ) : (
+                      <div className="text-sm text-muted-foreground pb-2">
+                        No history records.
+                      </div>
+                    )}
+                  </Fragment>
                 )}
               </ScrollArea>
             )}
@@ -205,8 +214,13 @@ export function Sidebar() {
                 isCollapsed && 'px-2.5 ml-2.5'
               )}
               onClick={handleAuth}
+              disabled={isLoadingAuth}
             >
-              <LogoutIcon className="h-4 w-4 fill-foreground" />
+              {isLoadingAuth ? (
+                <Icons.spinner className=" h-4 w-4 animate-spin" />
+              ) : (
+                <LogoutIcon className="h-4 w-4 fill-foreground" />
+              )}
               {!isCollapsed && (
                 <span className="text-sm font-bold">
                   {isAuthenticated ? 'Logout' : 'Login'}

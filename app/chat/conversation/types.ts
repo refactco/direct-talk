@@ -1,11 +1,13 @@
 export interface Message {
-  role: 'user' | 'assistant';
-  content?: string;
-  message?: string;
+  question?: string;
+  answer?: string;
 }
 
 export interface ChatData {
   session_id: string;
   content_ids: string[];
-  results: Message[];
+  chat_history: Message[];
+  created_at: string;
+  session_title: string;
+  user_id: string;
 }

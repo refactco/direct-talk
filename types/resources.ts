@@ -2,7 +2,7 @@ export type ResourceType = 'book' | 'show' | 'episode';
 
 export interface IBaseResourceItem {
   id: number | string;
-  ref_id: number;
+  ref_id: string;
   description: string;
   image_url: string;
 }
