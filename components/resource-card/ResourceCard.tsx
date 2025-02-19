@@ -1,13 +1,12 @@
 'use client';
 
 import { InfoIcon } from '@/components/icons/InfoIcon';
-import { PlusIcon } from '@/components/icons/PlusIcon';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useResourceDetail } from '@/contexts/ResourceDetailContext';
 import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { cn } from '@/lib/utils';
 import type { IResource } from '@/types/resources';
-import { CheckIcon, MinusCircleIcon } from 'lucide-react';
+import { Check, Minus, Plus } from 'lucide-react';
 import Image from 'next/image';
 
 interface HomeResourceCardProps {
@@ -94,13 +93,22 @@ export function ResourceCard({
           )}
         >
           {selected ? (
-            <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-primary hover:bg-red-800 ring-[3px] ring-primary/25 hover:ring-red-800/25 flex items-center justify-center group/add">
-              <CheckIcon className="w-3 h-3 md:w-4 md:h-4 text-primary-foreground group-hover/add:hidden" />
-              <MinusCircleIcon className="md:w-4 md:h-4 text-white hidden group-hover/add:block" />
+            <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-primary hover:bg-foreground ring-[3px] ring-primary/25 hover:ring-transparent flex items-center justify-center group/add">
+              <Check
+                className="w-3 h-3 md:w-5 md:h-5 text-primary-foreground group-hover/add:hidden"
+                strokeWidth={3}
+              />
+              <Minus
+                className="md:w-5 md:h-5 text-primary-foreground hidden group-hover/add:block"
+                strokeWidth={3}
+              />
             </div>
           ) : (
             <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-white flex items-center justify-center">
-              <PlusIcon className="w-3 h-3 md:w-4 md:h-4 text-primary-foreground fill-accent" />
+              <Plus
+                className="w-3 h-3 md:w-5 md:h-5 text-primary-foreground fill-accent"
+                strokeWidth={3}
+              />
             </div>
           )}
         </div>
