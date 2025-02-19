@@ -13,6 +13,7 @@ import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react'; // Add Suspense
 import ReactMarkdown from 'react-markdown';
+import { Icons } from '@/components/icons';
 
 export default function ChatConversationPage() {
   const { selectedResources, removeResource } = useSelectedResources();
@@ -22,7 +23,8 @@ export default function ChatConversationPage() {
   const searchParams = useSearchParams();
   const chatId = searchParams.get('id');
   const { openAuthModal, isAuthenticated } = useAuth();
-  const { fetchChat, chatDatas, addMessage, doChat } = useChat();
+  const { fetchChat, chatDatas, addMessage, doChat, isLoadingChats } =
+    useChat();
   const [chatData, setChatData] = useState<ChatData | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const { resources, fetchResource } = useResource();
@@ -33,15 +35,14 @@ export default function ChatConversationPage() {
         messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
       }
     };
-    // Delay scrolling to allow UI updates
     const timeout = setTimeout(scrollToBottom, 100);
     return () => clearTimeout(timeout);
   };
   useEffect(() => {
     setChatData(chatDatas);
     scrollToLastMessage();
-    // const contentIds = messages?.content_ids || []
-    const contentIds = [11];
+    const contentIds = chatData?.content_ids;
+    // const contentIds = [11];
     if (contentIds?.length) {
       fetchResource(contentIds);
     }
@@ -49,11 +50,11 @@ export default function ChatConversationPage() {
 
   useEffect(() => {
     if (chatId) {
-      // TODO
-      if (!isAuthenticated) {
-        openAuthModal();
-      }
-      fetchChat(chatId);
+      fetchChat(chatId).catch((err) => {
+        if (!isAuthenticated && err.status === 401) {
+          openAuthModal();
+        }
+      });
     }
   }, [chatId]);
 
@@ -64,12 +65,10 @@ export default function ChatConversationPage() {
     setErrorMessage(null);
 
     try {
-      addMessage({ role: 'user', content: message });
+      addMessage({ question: message });
       scrollToLastMessage();
-      const contentId = selectedResources[0]?.id?.toString();
-      const result = await doChat(message, contentId, chatId?.toString());
-
-      addMessage({ role: 'assistant', content: result?.message });
+      const result = await doChat(message, undefined, chatId?.toString());
+      addMessage({ answer: result?.answer });
     } catch (error) {
       console.error('Error in handleSubmit:', error);
       setErrorMessage(
@@ -80,64 +79,51 @@ export default function ChatConversationPage() {
     }
   };
 
-  console.log({ chatData });
+  if (isLoadingChats) {
+    return <Icons.spinner className="m-auto mt-[6%] h-4 w-4 animate-spin" />;
+  }
 
   return (
     <div className="relative flex flex-col min-h-screen bg-background animate-in fade-in duration-500">
       <div className="flex-1 overflow-y-auto min-h-[calc(100vh-10rem)]">
         <div className="max-w-[732px] mx-auto pr-0 md:pr-12">
+          {Object.keys(resources).length > 0 && chatData?.chat_history && (
+            <div className="mt-6 flex flex-col gap-[14px] max-w-max">
+              <p className="text-sm font-bold">Resources</p>
+              {chatData?.content_ids?.map((id) => (
+                <SelectedResourceCard
+                  key={id}
+                  hideRemove
+                  resource={resources[11]}
+                />
+                // <SelectedResourceCard key={id} hideRemove resource={resources[id]} />
+              ))}
+            </div>
+          )}
           <div className="mb-6 py-6">
-            {chatData?.results?.map((message: Message, index: number) => (
+            {chatData?.chat_history?.map((message: Message, index: number) => (
               <div
                 key={index}
                 className={`p-3 md:p-4 rounded-lg ${
-                  message.role === 'user'
+                  message.question
                     ? 'bg-background-secondary mt-16 md:mt-10'
                     : 'bg-background-highlight'
                 }`}
               >
                 <div className="flex flex-col items-start gap-[14px]">
-                  {message.role === 'user' ? (
-                    <div>
-                      <p className="text-foreground text-lg font-bold">
-                        <ReactMarkdown>
-                          {message.content || message.message}
-                        </ReactMarkdown>
-                      </p>
-                      <div className="mt-6 flex flex-col gap-[14px] max-w-max">
-                        <p className="text-sm font-bold">Resources</p>
-                        <ResourcesList
-                          selectedResources={[resources[11]]}
-                          hideRemoveButton
-                        />
-                      </div>
-                    </div>
-                  ) : null}
-                  {message.role === 'assistant' ? (
-                    <div className="flex flex-col gap-3">
-                      <div className="flex gap-2">
-                        <Logo />
-                        <span>Answer</span>
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-foreground text-base">
-                          <ReactMarkdown>
-                            {message.content || message.message}
-                          </ReactMarkdown>
-                        </p>
-                      </div>
-                    </div>
-                  ) : null}
-                </div>
-                {/* {message.role === 'assistant' && (
-                  <div className="mt-6 flex flex-col gap-[14px] max-w-max">
-                    <p className="text-sm font-bold">Resources</p>
-                    <ResourcesList
-                      selectedResources={[resources[11]]}
-                      hideRemoveButton
-                    />
+                  {message.answer && <Logo />}
+                  <div className="flex-1">
+                    <p
+                      className={`text-foreground ${
+                        message.question ? 'text-lg font-bold' : 'text-base'
+                      }`}
+                    >
+                      <ReactMarkdown>
+                        {message.answer || message.question}
+                      </ReactMarkdown>
+                    </p>
                   </div>
-                )} */}
+                </div>
               </div>
             ))}
             {isLoading && <TextLoading />}

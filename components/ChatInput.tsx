@@ -15,6 +15,7 @@ interface ChatInputProps {
   isLoading: boolean;
   placeholder?: string;
   resetAfterSubmit?: boolean;
+  defaultValue?: string;
 }
 
 export function ChatInput({
@@ -23,14 +24,15 @@ export function ChatInput({
   hideResources = false,
   isLoading,
   placeholder = 'Ask AI anything...',
-  resetAfterSubmit = false
+  resetAfterSubmit = false,
+  defaultValue
 }: ChatInputProps) {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState(defaultValue ?? '');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (input.trim() && !isLoading) {
-      onSubmit(input.trim());
+    if (input?.trim() && !isLoading) {
+      onSubmit(input?.trim());
       if (resetAfterSubmit) {
         setInput('');
       }
@@ -60,6 +62,7 @@ export function ChatInput({
             placeholder={placeholder}
             className="w-full flex-grow bg-background border-0 focus:outline-none focus:ring-0 placeholder-[#a2a2a4] text-xs md:text-xsm pt-2 resize-none"
             disabled={isLoading}
+            defaultValue={defaultValue}
           />
           <div
             className={cn(
@@ -85,7 +88,7 @@ export function ChatInput({
               className="w-8 h-8 sm:w-10 md:h-10 rounded-full bg-primary hover:bg-primary/90 focus:bg:primary/70 flex items-center justify-center shrink-0 disabled:bg-accent-light disabled:cursor-not-allowed"
             >
               {isLoading ? (
-                <Loader2 className="animate-spin" />
+                <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
                 <ArrowRightIcon
                   className={cn('w-5 h-5', !input.trim() ? '' : 'text-black')}
