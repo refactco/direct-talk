@@ -15,7 +15,6 @@ import { MenuIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { ThemeToggle } from './ThemeToggle';
 import { Tooltip } from './ui/tooltip/tooltip';
 
 export function Sidebar() {
@@ -26,7 +25,8 @@ export function Sidebar() {
   const { isAuthenticated, logout, openAuthModal } = useAuth();
   const { historyItems, removeHistoryItem } = useHistory();
   const router = useRouter();
-  const isConversationPage = pathname?.includes('conversation');
+  console.log({ pathname });
+  const isNotHomePage: boolean = pathname !== '/';
   // useEffect(() => {
   //   const updateChatHistory = () => {
   //     setChatHistory(getChatHistory());
@@ -60,7 +60,7 @@ export function Sidebar() {
           <MenuIcon className="absolute rotate-90 scale-0 w-5 h-5 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
         </Button>
-        <ThemeToggle />
+        {/* <ThemeToggle /> */}
       </nav>
       <div
         onClick={() => {
@@ -73,7 +73,7 @@ export function Sidebar() {
       ></div>
       <div
         className={cn(
-          'absolute md:relative md:left-0 w-64 z-50 flex l- h-full flex-col bg-accent transition-all duration-300 ease-in-out border-r border-white/10',
+          'absolute md:relative md:left-0 w-80 z-50 flex l- h-full flex-col bg-accent transition-all duration-300 ease-in-out border-r border-white/10',
           isCollapsed ? 'md:w-[64px]' : 'md:w-[243px]',
           isMobileExpanded ? 'left-0' : '-left-full'
         )}
@@ -97,7 +97,7 @@ export function Sidebar() {
           >
             <Logo />
             {!isCollapsed && (
-              <span className="text-lg font-semibold">Direct Talk</span>
+              <span className="text-lg font-semibold">Ask Archive</span>
             )}
           </Link>
           {!isCollapsed && (
@@ -113,11 +113,6 @@ export function Sidebar() {
                 <CollapseIcon className="fill-muted-foreground h-4 w-4" />
               </Button>
             </>
-            // <Tooltip
-            //   content={
-            //   }
-            //   label="hello"
-            // />
           )}
           <Button
             variant="ghost"
@@ -130,16 +125,16 @@ export function Sidebar() {
         </div>
 
         <div className="flex-1 flex flex-col overflow-hidden">
-          <div className="space-y-3 p-5 flex-1">
+          <div className={cn('space-y-3 flex-1', isCollapsed ? 'p-3' : 'p-5')}>
             {/* History Section */}
-            {!isCollapsed && isConversationPage ? (
+            {isNotHomePage ? (
               <Button
                 variant="default"
                 onClick={() => router.push('/')}
                 className="bg-foreground w-full mb-3 font-semibold max-h-9 hover:bg-foreground/90 rounded-[6px]"
               >
                 <SearchIcon className="fill-primary-foreground" />
-                Start Search
+                {isCollapsed ? '' : 'New Search'}
               </Button>
             ) : null}
             <div
@@ -167,7 +162,7 @@ export function Sidebar() {
 
             {!isCollapsed && (
               <ScrollArea
-                className={`h-[calc(100vh-${isConversationPage ? '264px' : '212px'})] border-white`}
+                className={`h-[calc(100vh-${isNotHomePage ? '264px' : '212px'})] border-white`}
               >
                 {historyItems.length > 0 ? (
                   historyItems.map((chat) => (
@@ -197,25 +192,50 @@ export function Sidebar() {
               </ScrollArea>
             )}
           </div>
-          <div className="p-5">
+          <div
+            className={cn(
+              'flex flex-col gap-5',
+              isCollapsed ? 'px-3 pb-3 items-center' : 'px-5 pb-5'
+            )}
+          >
             <Button
               variant="outline"
               className={cn(
-                'justify-start w-max border-border bg-transparent',
-                isCollapsed && 'px-2.5 ml-2.5'
+                'justify-start w-max bg-transparent',
+                isCollapsed ? 'p-0 border-none' : 'border-border'
               )}
               onClick={handleAuth}
             >
-              <LogoutIcon className="h-4 w-4 fill-foreground" />
+              <LogoutIcon
+                className={cn(
+                  'fill-foreground',
+                  isCollapsed ? 'h-5 w-5' : 'h-4 w-4'
+                )}
+              />
               {!isCollapsed && (
                 <span className="text-sm font-bold">
                   {isAuthenticated ? 'Logout' : 'Login'}
                 </span>
               )}
             </Button>
+            {!isCollapsed ? (
+              <div className="flex flex-col gap-2">
+                <p className="text-xs text-muted-foreground">
+                  Copyright &copy; 2025 Refact, LLC
+                </p>
+                <div className="flex flex-col gap-1 text-xs text-muted-foreground [&_a:hover]:text-white">
+                  <div className="flex gap-[0.38rem] items-center">
+                    <Link href="/privacy">Privacy Policy</Link>
+                    <div className="w-1 h-1 rounded-full bg-muted-foreground" />
+                    <Link href="/terms">Terms of Use</Link>
+                  </div>
+                  <div>
+                    <Link href="/about">About</Link>
+                  </div>
+                </div>
+              </div>
+            ) : null}
           </div>
-
-          {/* Account Section */}
         </div>
       </div>
     </>

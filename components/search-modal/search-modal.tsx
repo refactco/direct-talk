@@ -82,29 +82,30 @@ export function SearchModal({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-full md:max-w-[1299px] h-full md:h-auto p-0 gap-0 bg-background ring-0">
-        <ScrollArea className="hello-world">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => onOpenChange(false)}
-            className="rounded-full border border-border absolute right-4 top-4 h-10 w-10"
-          >
-            <X className="w-5 h-5" />
-            {/* <CloseIcon className="fill-white" /> */}
-          </Button>
-          <div className="flex flex-col h-full md:h-[85vh] w-full md:w-auto max-w-[360px] md:max-w-[730px] m-auto">
-            <div className="flex items-center gap-1 mt-20 md:mt-11">
-              <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
-                <Input
-                  placeholder="Search in resources..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="bg-accent border border-border pl-9 pr-4 py-2 w-full rounded-full placeholder:text-muted-foreground h-[52px]"
-                />
-              </div>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => onOpenChange(false)}
+          className="rounded-full border border-border absolute right-4 top-4 h-10 w-10"
+        >
+          <X className="w-5 h-5" />
+          {/* <CloseIcon className="fill-white" /> */}
+        </Button>
+        <div className="flex flex-col w-full max-w-[360px] md:max-w-[730px] m-auto">
+          <div className="flex items-center gap-1 mt-20 md:mt-11 mb-6">
+            <div className="relative flex-1">
+              <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
+              <Input
+                placeholder="Search in resources..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="bg-accent border border-border pl-9 pr-4 py-2 w-full rounded-full placeholder:text-muted-foreground h-[52px]"
+              />
             </div>
-
+          </div>
+        </div>
+        <ScrollArea className="hello-world">
+          <div className="flex flex-col h-full md:h-[71vh] w-full md:w-auto max-w-[360px] md:max-w-[730px] m-auto">
             {/* Content Area */}
             {showWarning && (
               <Alert variant="warning" className="my-6 rounded-full">
@@ -123,7 +124,7 @@ export function SearchModal({
 
             {/* Search Results or Default Content */}
             {!isLoading && (
-              <div className="py-12">
+              <div className="py-6">
                 {/* People Section */}
                 {searchResults?.people?.length > 0 && (
                   <div className="group">

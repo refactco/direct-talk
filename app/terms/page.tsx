@@ -1,7 +1,7 @@
-export default function AboutPage() {
+export default function TermsPage() {
   return (
     <div className="container mx-auto max-w-4xl p-6">
-      <h1 className="mb-8 text-4xl font-bold">About Ask Archive</h1>
+      <h1 className="mb-8 text-4xl font-bold">Terms of Use</h1>
 
       <div className="space-y-8">
         <section>

@@ -29,6 +29,8 @@ export interface IAuthor extends IBaseResourceItem {
   };
 }
 
+export type TSelectedResource = IResource | IAuthor;
+
 export interface ITopic {
   id: number;
   term: string;

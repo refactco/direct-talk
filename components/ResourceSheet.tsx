@@ -7,13 +7,13 @@ import {
   SheetDescription,
   SheetTitle
 } from '@/components/ui/sheet';
-import type { IAuthor, IResource } from '@/types/resources';
+import type { TSelectedResource } from '@/types/resources';
 import { X } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
 interface ResourceSheetProps {
-  resource: IResource | IAuthor | null;
+  resource: TSelectedResource | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }

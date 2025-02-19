@@ -1,14 +1,12 @@
 'use client';
 
-import { IAuthor, IResource } from '@/types/resources';
+import { TSelectedResource } from '@/types/resources';
 import { createContext, ReactNode, useContext, useState } from 'react';
 
-type TResourceDetailItem = IResource | IAuthor;
-
 interface ResourceDetailContextType {
-  selectedDetailItems?: TResourceDetailItem[];
-  setSelectedDetailItems: (item?: TResourceDetailItem[]) => void;
-  pushDetailItem: (item: TResourceDetailItem) => void;
+  selectedDetailItems?: TSelectedResource[];
+  setSelectedDetailItems: (item?: TSelectedResource[]) => void;
+  pushDetailItem: (item: TSelectedResource) => void;
   popDetailItem: () => void;
   clearDetailItem: () => void;
   // openSheet?: boolean;
@@ -21,7 +19,7 @@ const ResourceDetailContext = createContext<
 
 export function ResourceDetailProvider({ children }: { children: ReactNode }) {
   const [selectedDetailItems, setSelectedDetailItems] =
-    useState<TResourceDetailItem[]>();
+    useState<TSelectedResource[]>();
   // const [openSheet, setOpenSheet] = useState<boolean>();
   // const router = useRouter();
   // const pathname = usePathname();

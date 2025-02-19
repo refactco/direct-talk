@@ -3,8 +3,8 @@
 import { ChatData, Message } from '@/app/chat/conversation/types';
 import { ChatInput } from '@/components/ChatInput';
 import { Logo } from '@/components/icons/Logo';
+import { ResourcesList } from '@/components/resources-list/resources-list';
 import { SearchModal } from '@/components/search-modal/search-modal';
-import SelectedResourceCard from '@/components/SelectedResourceCard';
 import TextLoading from '@/components/TextLoading';
 import { useAuth } from '@/contexts/AuthContext';
 import { useChat } from '@/contexts/ChatContext';
@@ -80,10 +80,12 @@ export default function ChatConversationPage() {
     }
   };
 
+  console.log({ chatData });
+
   return (
     <div className="relative flex flex-col min-h-screen bg-background animate-in fade-in duration-500">
       <div className="flex-1 overflow-y-auto min-h-[calc(100vh-10rem)]">
-        <div className="max-w-[732px] mx-auto pr-[52px]">
+        <div className="max-w-[732px] mx-auto pr-0 md:pr-12">
           <div className="mb-6 py-6">
             {chatData?.results?.map((message: Message, index: number) => (
               <div
@@ -95,34 +97,47 @@ export default function ChatConversationPage() {
                 }`}
               >
                 <div className="flex flex-col items-start gap-[14px]">
-                  {message.role === 'assistant' && <Logo />}
-                  <div className="flex-1">
-                    <p
-                      className={`text-foreground ${
-                        message.role === 'user'
-                          ? 'text-lg font-bold'
-                          : 'text-base'
-                      }`}
-                    >
-                      <ReactMarkdown>
-                        {message.content || message.message}
-                      </ReactMarkdown>
-                    </p>
-                  </div>
+                  {message.role === 'user' ? (
+                    <div>
+                      <p className="text-foreground text-lg font-bold">
+                        <ReactMarkdown>
+                          {message.content || message.message}
+                        </ReactMarkdown>
+                      </p>
+                      <div className="mt-6 flex flex-col gap-[14px] max-w-max">
+                        <p className="text-sm font-bold">Resources</p>
+                        <ResourcesList
+                          selectedResources={[resources[11]]}
+                          hideRemoveButton
+                        />
+                      </div>
+                    </div>
+                  ) : null}
+                  {message.role === 'assistant' ? (
+                    <div className="flex flex-col gap-3">
+                      <div className="flex gap-2">
+                        <Logo />
+                        <span>Answer</span>
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-foreground text-base">
+                          <ReactMarkdown>
+                            {message.content || message.message}
+                          </ReactMarkdown>
+                        </p>
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
-                {message.role === 'assistant' && (
+                {/* {message.role === 'assistant' && (
                   <div className="mt-6 flex flex-col gap-[14px] max-w-max">
                     <p className="text-sm font-bold">Resources</p>
-                    {chatData?.content_ids?.map((id) => (
-                      <SelectedResourceCard
-                        key={id}
-                        hideRemove
-                        resource={resources[11]}
-                      />
-                      // <SelectedResourceCard key={id} hideRemove resource={resources[id]} />
-                    ))}
+                    <ResourcesList
+                      selectedResources={[resources[11]]}
+                      hideRemoveButton
+                    />
                   </div>
-                )}
+                )} */}
               </div>
             ))}
             {isLoading && <TextLoading />}
@@ -136,13 +151,13 @@ export default function ChatConversationPage() {
         </div>
       </div>
       {/* Empty div for scrolling to bottom */}
-      <div className="sticky bottom-0 w-full bg-background pb-4 sm:pb-6 pt-2 sm:pt-4">
-        <div className="max-w-[732px] mx-auto px-4 sm:px-6">
+      <div className="sticky bottom-0 w-full">
+        <div className="h-10 w-full bg-fade"></div>
+        <div className="max-w-[732px] mx-auto px-4 bg-background pb-3 md:pb-12">
           <ChatInput
             onSubmit={handleSubmit}
             onAddResource={() => setIsResourceSelectorOpen(true)}
-            onRemoveResource={removeResource}
-            selectedResources={selectedResources}
+            hideResources
             isLoading={isLoading}
             placeholder="Ask follow-up..."
             resetAfterSubmit

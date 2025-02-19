@@ -1,13 +1,13 @@
 'use client';
 
 import { useToast } from '@/hooks/use-toast';
-import type { IAuthor, IResource } from '@/types/resources';
+import type { TSelectedResource } from '@/types/resources';
 import type React from 'react';
 import { createContext, useContext, useState } from 'react';
 
 type SelectedResourcesContextType = {
-  selectedResources: (IResource | IAuthor)[];
-  addResource: (resource: IResource | IAuthor) => void;
+  selectedResources: TSelectedResource[];
+  addResource: (resource: TSelectedResource) => void;
   removeResource: (resourceId: string | number) => void;
   resetSelectedResources: () => void;
   isSelected: (resourceId: string | number) => boolean;
@@ -23,11 +23,11 @@ export function SelectedResourcesProvider({
   children: React.ReactNode;
 }) {
   const [selectedResources, setSelectedResources] = useState<
-    (IResource | IAuthor)[]
+    TSelectedResource[]
   >([]);
   const { toast } = useToast();
 
-  const addResource = (resource: IResource | IAuthor) => {
+  const addResource = (resource: TSelectedResource) => {
     setSelectedResources((prev) => {
       if (prev.length >= 10) {
         toast({

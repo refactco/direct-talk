@@ -6,3 +6,4 @@ node_modules
 
 # lint-staged
 .lint-staged.config.js
+.env

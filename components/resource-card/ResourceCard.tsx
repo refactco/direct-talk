@@ -78,11 +78,11 @@ export function ResourceCard({
         </div>
         <div className="w-full pt-2 pb-1">
           {!hideType ? (
-            <p className="text-[11px] font-semibold text-muted-foreground uppercase">
+            <p className="text-xxs md:text-xxm font-semibold text-muted-foreground uppercase">
               {resource?.type}
             </p>
           ) : null}
-          <h3 className="text-sm font-bold text-foreground text-left truncate max-w-[calc(100%-28px)] transition-all duration-300">
+          <h3 className="text-xs md:text-sm font-semibold text-foreground text-left truncate max-w-[calc(100%-28px)] transition-all duration-300">
             {resource?.title}
           </h3>
         </div>
@@ -94,13 +94,13 @@ export function ResourceCard({
           )}
         >
           {selected ? (
-            <div className="w-6 h-6 rounded-full bg-primary hover:bg-red-800 ring-[3px] ring-primary/25 hover:ring-red-800/25 flex items-center justify-center group/add">
-              <CheckIcon className="w-4 h-4 text-primary-foreground group-hover/add:hidden" />
-              <MinusCircleIcon className="w-4 h-4 text-white hidden group-hover/add:block" />
+            <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-primary hover:bg-red-800 ring-[3px] ring-primary/25 hover:ring-red-800/25 flex items-center justify-center group/add">
+              <CheckIcon className="w-3 h-3 md:w-4 md:h-4 text-primary-foreground group-hover/add:hidden" />
+              <MinusCircleIcon className="md:w-4 md:h-4 text-white hidden group-hover/add:block" />
             </div>
           ) : (
-            <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
-              <PlusIcon className="w-4 h-4 text-primary-foreground fill-accent" />
+            <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-white flex items-center justify-center">
+              <PlusIcon className="w-3 h-3 md:w-4 md:h-4 text-primary-foreground fill-accent" />
             </div>
           )}
         </div>

@@ -1,8 +1,8 @@
+import { AuthModal } from '@/components/AuthModal';
 import { DetailSheet } from '@/components/detail-sheet/DetailSheet';
 import { Providers } from '@/components/providers';
 import { Sidebar } from '@/components/sidebar';
 import { ThemeProvider } from '@/components/ThemeProvider';
-import { ThemeToggle } from '@/components/ThemeToggle';
 import { Toaster } from '@/components/ui/toaster';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { ChatProvider } from '@/contexts/ChatContext';
@@ -17,7 +17,6 @@ import type React from 'react';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import './globals.css';
-import { AuthModal } from '@/components/AuthModal';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -51,7 +50,7 @@ export default function RootLayout({
                         <ResourceProvider>
                           <div className="flex h-screen">
                             <Sidebar />
-                            <ThemeToggle className="hidden md:flex absolute top-4 md:top-8 right-4 md:right-8 z-10" />
+                            {/* <ThemeToggle className="hidden md:flex absolute top-4 md:top-8 right-4 md:right-8 z-10" /> */}
                             <main className="flex-1 overflow-y-auto px-4 py-4 md:px-8 md:py-8  !pb-0">
                               {children}
                             </main>

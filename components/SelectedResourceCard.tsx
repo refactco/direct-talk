@@ -18,9 +18,9 @@ function SelectedResourceCard({
   return (
     <div
       key={id}
-      className="flex items-center gap-2 bg-accent rounded-lg px-2 py-1 relative"
+      className="flex shrink-0 w-[45%] sm:w-[48%] md:w-auto items-center gap-2 bg-accent rounded-lg p-2 relative"
     >
-      <div className="h-6 w-6 overflow-hidden flex-shrink-0">
+      <div className="h-6 w-6 overflow-hidden flex-shrink-0 rounded-md">
         <Image
           src={image_url ?? '/placeholder.svg'}
           alt={displayName}
@@ -46,7 +46,7 @@ function SelectedResourceCard({
               onRemoveResource(id);
             }
           }}
-          className="absolute top-1 right-1 hover:text-muted-foreground"
+          className="absolute top-2 right-2 hover:text-muted-foreground"
         >
           <CloseIcon className="fill-white h-3 w-3 sm:h-4 sm:w-4" />
         </button>

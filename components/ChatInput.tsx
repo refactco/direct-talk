@@ -2,18 +2,16 @@
 
 // import { ArrowRightIcon } from '@/components/icons/ArrowRightIcon';
 // import { PlusIcon } from '@/components/icons/PlusIcon';
-import SelectedResourceCard from '@/components/SelectedResourceCard';
 import { cn } from '@/lib/utils';
-import type { IResource } from '@/types/resources';
 import { ArrowRightIcon, Loader2, PlusIcon } from 'lucide-react';
 import type React from 'react';
 import { useState } from 'react';
+import { SelectedResourcesList } from './selected-resources-list/selected-resources-list';
 
 interface ChatInputProps {
   onSubmit: (message: string) => void;
   onAddResource: () => void;
-  onRemoveResource: (resourceId: string) => void;
-  selectedResources: IResource[];
+  hideResources?: boolean;
   isLoading: boolean;
   placeholder?: string;
   resetAfterSubmit?: boolean;
@@ -22,8 +20,7 @@ interface ChatInputProps {
 export function ChatInput({
   onSubmit,
   onAddResource,
-  onRemoveResource,
-  selectedResources,
+  hideResources = false,
   isLoading,
   placeholder = 'Ask AI anything...',
   resetAfterSubmit = false
@@ -51,16 +48,9 @@ export function ChatInput({
     <form onSubmit={handleSubmit} className="relative">
       <div className="rounded-3xl border border-border bg-background overflow-hidden">
         {/* Selected Resources */}
-        {selectedResources.length > 0 ? (
-          <div className="flex flex-wrap items-center gap-2 p-2 border-b border-border">
-            {selectedResources.map((resource) => (
-              <SelectedResourceCard
-                resource={resource}
-                onRemoveResource={onRemoveResource}
-              />
-            ))}
-          </div>
-        ) : null}
+        {hideResources ? null : (
+          <SelectedResourcesList customClassName="p-3 border-b border-border" />
+        )}
         {/* Input Area */}
         <div className="flex flex-col items-center p-3">
           <textarea
@@ -71,21 +61,28 @@ export function ChatInput({
             className="w-full flex-grow bg-background border-0 focus:outline-none focus:ring-0 placeholder-[#a2a2a4] text-xs md:text-xsm pt-2 resize-none"
             disabled={isLoading}
           />
-          <div className="flex items-center justify-between w-full">
-            <button
-              type="button"
-              className="flex gap-2 items-center text-[13px] font-semibold"
-              onClick={onAddResource}
-            >
-              <div className="w-8 h-8 rounded-full flex items-center justify-center bg-accent-light hover:bg-accent-light/80 transition-colors">
-                <PlusIcon className="fill-foreground h-5 w-5" />
-              </div>
-              Add resource
-            </button>
+          <div
+            className={cn(
+              'flex items-center justify-between w-full',
+              hideResources ? 'justify-end' : 'justify-between'
+            )}
+          >
+            {hideResources ? null : (
+              <button
+                type="button"
+                className="flex gap-2 items-center text-[13px] font-semibold"
+                onClick={onAddResource}
+              >
+                <div className="w-8 h-8 rounded-full flex items-center justify-center bg-accent-light hover:bg-accent-light/70 focus:bg-accent-light/60 transition-colors">
+                  <PlusIcon className="fill-foreground h-5 w-5" />
+                </div>
+                Add resource
+              </button>
+            )}
             <button
               type="submit"
               disabled={isLoading || !input.trim()}
-              className="w-8 h-8 sm:w-10 md:h-10 rounded-full bg-primary hover:bg-primary/90 flex items-center justify-center shrink-0 disabled:bg-accent-light disabled:cursor-not-allowed"
+              className="w-8 h-8 sm:w-10 md:h-10 rounded-full bg-primary hover:bg-primary/90 focus:bg:primary/70 flex items-center justify-center shrink-0 disabled:bg-accent-light disabled:cursor-not-allowed"
             >
               {isLoading ? (
                 <Loader2 className="animate-spin" />
