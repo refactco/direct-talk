@@ -17,7 +17,6 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Fragment, useEffect, useState } from 'react';
 import { ThemeToggle } from './ThemeToggle';
 import { Icons } from '@/components/icons';
-import { useState } from 'react';
 import { Tooltip } from './ui/tooltip/tooltip';
 
 export function Sidebar() {
