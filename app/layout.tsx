@@ -13,7 +13,7 @@ import { SearchProvider } from '@/contexts/SearchContext';
 import { SelectedResourcesProvider } from '@/contexts/SelectedResourcesContext';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import React, {Suspense} from 'react';
+import React, { Suspense } from 'react';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import './globals.css';

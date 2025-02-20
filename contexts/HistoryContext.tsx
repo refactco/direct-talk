@@ -3,7 +3,7 @@
 import type React from 'react';
 import { createContext, useContext, useState, useEffect } from 'react';
 import apiClient from '@/lib/axiosInstance';
-import {useRouter} from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export interface HistoryItem {
   content_ids: Array<string>;
@@ -56,7 +56,10 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
     fetchChatHistory();
   };
 
-  const removeHistoryItem = async (session_id: string, active_session_id: string) => {
+  const removeHistoryItem = async (
+    session_id: string,
+    active_session_id: string
+  ) => {
     try {
       const response = await apiClient.delete(
         `${baseURL}/search/${session_id}`
