@@ -3,7 +3,7 @@
 import type React from 'react';
 import { createContext, useContext, useState, useEffect } from 'react';
 import apiClient from '@/lib/axiosInstance';
-import { useRouter, useSearchParams } from 'next/navigation';
+import {useRouter} from 'next/navigation';
 
 export interface HistoryItem {
   content_ids: Array<string>;
@@ -13,7 +13,7 @@ export interface HistoryItem {
 
 interface HistoryContextType {
   historyItems: HistoryItem[];
-  removeHistoryItem: (id: string) => void;
+  removeHistoryItem: (id: string, active_session_id: string | null) => void;
   updateHistory: () => void;
   isLoading: boolean;
 }
@@ -28,8 +28,6 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
   const [historyItems, setHistoryItems] = useState<HistoryItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const activeSessionId = searchParams.get('id');
 
   const fetchChatHistory = async () => {
     try {
@@ -58,7 +56,7 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
     fetchChatHistory();
   };
 
-  const removeHistoryItem = async (session_id: string) => {
+  const removeHistoryItem = async (session_id: string, active_session_id: string) => {
     try {
       const response = await apiClient.delete(
         `${baseURL}/search/${session_id}`
@@ -70,7 +68,7 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
           );
           return newItems;
         });
-        if (activeSessionId == session_id) {
+        if (active_session_id == session_id) {
           router.push('/');
         }
       }

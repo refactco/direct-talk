@@ -13,7 +13,7 @@ import { SearchProvider } from '@/contexts/SearchContext';
 import { SelectedResourcesProvider } from '@/contexts/SelectedResourcesContext';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import type React from 'react';
+import React, {Suspense} from 'react';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import './globals.css';
@@ -50,7 +50,9 @@ export default function RootLayout({
                       <ChatProvider>
                         <ResourceProvider>
                           <div className="flex h-screen">
-                            <Sidebar />
+                            <Suspense>
+                              <Sidebar />
+                            </Suspense>
                             <ThemeToggle className="hidden md:flex absolute top-4 md:top-8 right-4 md:right-8 z-10" />
                             <main className="flex-1 overflow-y-auto px-4 py-4 md:px-8 md:py-8  !pb-0">
                               {children}
