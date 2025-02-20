@@ -14,6 +14,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react'; // Add Suspense
 import ReactMarkdown from 'react-markdown';
 import { Icons } from '@/components/icons';
+import SelectedResourceCard from "@/components/SelectedResourceCard";
 
 export default function ChatConversationPage() {
   const { selectedResources, removeResource } = useSelectedResources();
@@ -94,7 +95,7 @@ export default function ChatConversationPage() {
                 <SelectedResourceCard
                   key={id}
                   hideRemove
-                  resource={resources[11]}
+                  resource={resources[id]}
                 />
                 // <SelectedResourceCard key={id} hideRemove resource={resources[id]} />
               ))}
