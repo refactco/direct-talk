@@ -1,6 +1,6 @@
 'use client';
 
-import { ChatData, Message } from '@/app/chat/conversation/types';
+import { ChatData, Message } from '@/app/conversation/types';
 import { ChatInput } from '@/components/ChatInput';
 import { Logo } from '@/components/icons/Logo';
 import { ResourcesList } from '@/components/resources-list/resources-list';

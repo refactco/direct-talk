@@ -1,6 +1,6 @@
 'use client';
 
-import { ChatData, Message } from '@/app/chat/conversation/types';
+import { ChatData, Message } from '@/app/conversation/types';
 import type React from 'react';
 import { createContext, useCallback, useContext, useState } from 'react';
 import apiClient from '@/lib/axiosInstance';

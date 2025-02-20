@@ -30,9 +30,16 @@ export default function HomePage() {
   const { isAuthenticated, openAuthModal } = useAuth();
   const { doChat } = useChat();
   const { updateHistory } = useHistory();
-  const startMessage = localStorage.getItem('startMessage');
-  const startResources = localStorage.getItem('startResources');
-  const startResourceIds = localStorage.getItem('startResourceIds');
+  let startMessage: any, startResources: any, startResourceIds: any;
+  try {
+    if (typeof window !== "undefined") {
+      startMessage = localStorage.getItem('startMessage');
+      startResources = localStorage.getItem('startResources');
+      startResourceIds = localStorage.getItem('startResourceIds');
+    }
+  } catch (error) {
+    console.error("localStorage is not available", error);
+  }
 
   useEffect(() => {
     setIsMounted(true);
@@ -95,7 +102,7 @@ export default function HomePage() {
       if (contentIds.length > 0) {
         const chatData = await doChat(message, contentIds);
         updateHistory();
-        router.push(`/chat/conversation?id=${chatData.session_id}`);
+        router.push(`/conversation?id=${chatData.session_id}`);
         localStorage.removeItem('startMessage');
         localStorage.removeItem('startResources');
         localStorage.removeItem('startResourceIds');

@@ -13,7 +13,7 @@ import { useHistory } from '@/contexts/HistoryContext';
 import { cn } from '@/lib/utils';
 import { MenuIcon } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import {usePathname, useRouter, useSearchParams} from 'next/navigation';
 import { Fragment, useEffect, useState } from 'react';
 import { ThemeToggle } from './ThemeToggle';
 import { Icons } from '@/components/icons';
@@ -34,8 +34,9 @@ export function Sidebar() {
   const { historyItems, removeHistoryItem, isLoading, updateHistory } =
     useHistory();
   const router = useRouter();
-  console.log({ pathname });
   const isNotHomePage: boolean = pathname !== '/';
+  const searchParams = useSearchParams();
+  const activeSessionId = searchParams.get('id');
 
   useEffect(() => {
     updateHistory();
@@ -178,13 +179,13 @@ export function Sidebar() {
                       )}
                     >
                       <Link
-                        href={`/chat/conversation?id=${chat.session_id}`}
+                        href={`/conversation?id=${chat.session_id}`}
                         className="truncate max-w-40 text-sm"
                       >
                         {chat.session_title}
                       </Link>
                       <TrashIcon
-                        onClick={() => removeHistoryItem(chat.session_id)}
+                        onClick={() => removeHistoryItem(chat.session_id, activeSessionId)}
                         className="opacity-0 group-hover:opacity-100 transition-opacity fill-foreground cursor-pointer"
                       />
                     </div>
