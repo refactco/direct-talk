@@ -205,3 +205,42 @@
     rgba(9, 9, 11, 0) 100%
   );
 }
+
+.bg-fade-inverse {
+  background: linear-gradient(
+    180deg,
+    #09090b -3.68%,
+    rgba(9, 9, 11, 0.25) 84.45%,
+    rgba(9, 9, 11, 0) 100%
+  );
+}
+
+.bg-history-top-fade {
+  background: linear-gradient(0deg, rgba(28, 25, 23, 0) 51.16%, #1c1917 96.74%);
+}
+
+.bg-history-bottom-fade {
+  background: linear-gradient(
+    180deg,
+    rgba(28, 25, 23, 0) 51.16%,
+    #1c1917 96.74%
+  );
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the track */
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scroll thumb */
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color of the scroll thumb on hover */
+}

@@ -50,7 +50,7 @@ export function CardSlider({ children }: { children: ReactNode }) {
           },
           420: {
             slidesPerView: 5,
-            spaceBetween: 22.08
+            spaceBetween: 0
           }
         }}
       >

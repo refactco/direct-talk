@@ -5,4 +5,6 @@ export interface IResourcesListProps {
   onRemoveResource?(id: string): void;
   hideRemoveButton?: boolean;
   customClassName?: string;
+  direction?: 'horizontal' | 'vertical';
+  wrapTitle?: boolean;
 }

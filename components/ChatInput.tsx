@@ -48,26 +48,39 @@ export function ChatInput({
 
   return (
     <form onSubmit={handleSubmit} className="relative">
-      <div className="rounded-3xl border border-border bg-background overflow-hidden">
+      <div
+        className={cn(
+          'rounded-3xl border border-border bg-background overflow-hidden',
+          hideResources ? 'rounded-[62.4375rem]' : 'rounded-3xl'
+        )}
+      >
         {/* Selected Resources */}
         {hideResources ? null : (
           <SelectedResourcesList customClassName="p-3 border-b border-border" />
         )}
         {/* Input Area */}
-        <div className="flex flex-col items-center p-3">
+        <div
+          className={cn(
+            'flex items-center p-3',
+            hideResources ? 'flex-row' : 'flex-col'
+          )}
+        >
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
-            className="w-full flex-grow bg-background border-0 focus:outline-none focus:ring-0 placeholder-[#a2a2a4] text-xs md:text-xsm pt-2 resize-none"
+            className={cn(
+              'w-full flex-grow bg-background border-0 focus:outline-none focus:ring-0 placeholder-[#a2a2a4] text-xs md:text-xsm pt-2 resize-none',
+              hideResources ? 'flex-1' : ''
+            )}
             disabled={isLoading}
             defaultValue={defaultValue}
           />
           <div
             className={cn(
-              'flex items-center justify-between w-full',
-              hideResources ? 'justify-end' : 'justify-between'
+              'flex items-center',
+              hideResources ? 'justify-end' : 'justify-between w-full'
             )}
           >
             {hideResources ? null : (

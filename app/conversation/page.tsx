@@ -1,23 +1,19 @@
 'use client';
 
-import { ChatData, Message } from '@/app/conversation/types';
+import { ChatData, Message } from '@/app/chat/conversation/types';
 import { ChatInput } from '@/components/ChatInput';
+import { Icons } from '@/components/icons';
 import { Logo } from '@/components/icons/Logo';
 import { ResourcesList } from '@/components/resources-list/resources-list';
-import { SearchModal } from '@/components/search-modal/search-modal';
 import TextLoading from '@/components/TextLoading';
 import { useAuth } from '@/contexts/AuthContext';
 import { useChat } from '@/contexts/ChatContext';
 import { useResource } from '@/contexts/ResourcesContext';
-import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react'; // Add Suspense
 import ReactMarkdown from 'react-markdown';
-import { Icons } from '@/components/icons';
-import SelectedResourceCard from '@/components/SelectedResourceCard';
 
 export default function ChatConversationPage() {
-  const { selectedResources, removeResource } = useSelectedResources();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isResourceSelectorOpen, setIsResourceSelectorOpen] = useState(false);
@@ -42,8 +38,8 @@ export default function ChatConversationPage() {
   useEffect(() => {
     setChatData(chatDatas);
     scrollToLastMessage();
-    const contentIds = chatData?.content_ids;
-    // const contentIds = [11];
+    // const contentIds = chatData?.content_ids;
+    const contentIds = [11];
     if (contentIds?.length) {
       fetchResource(contentIds);
     }
@@ -85,76 +81,83 @@ export default function ChatConversationPage() {
   }
 
   return (
-    <div className="relative flex flex-col min-h-screen bg-background animate-in fade-in duration-500">
-      <div className="flex-1 overflow-y-auto min-h-[calc(100vh-10rem)]">
-        <div className="max-w-[732px] mx-auto pr-0 md:pr-12">
-          {Object.keys(resources).length > 0 && chatData?.chat_history && (
-            <div className="mt-6 flex flex-col gap-[14px] max-w-max">
-              <p className="text-sm font-bold">Resources</p>
-              {chatData?.content_ids?.map((id) => (
-                <SelectedResourceCard
-                  key={id}
-                  hideRemove
-                  resource={resources[id]}
-                />
-                // <SelectedResourceCard key={id} hideRemove resource={resources[id]} />
-              ))}
-            </div>
-          )}
-          <div className="mb-6 py-6">
-            {chatData?.chat_history?.map((message: Message, index: number) => (
-              <div
-                key={index}
-                className={`p-3 md:p-4 rounded-lg ${
-                  message.question
-                    ? 'bg-background-secondary mt-16 md:mt-10'
-                    : 'bg-background-highlight'
-                }`}
-              >
-                <div className="flex flex-col items-start gap-[14px]">
-                  {message.answer && <Logo />}
-                  <div className="flex-1">
-                    <p
-                      className={`text-foreground ${
-                        message.question ? 'text-lg font-bold' : 'text-base'
-                      }`}
-                    >
-                      <ReactMarkdown>
-                        {message.answer || message.question}
-                      </ReactMarkdown>
-                    </p>
+    <div className="flex gap-10 justify-center">
+      <div className="fixed top-0 left-0 h-16 bg-fade-inverse z-[1] w-[calc(100vw-1rem)]"></div>
+      <div className="relative flex flex-col h-[calc(100vh-3rem)] justify-between bg-background animate-in fade-in duration-500 pt-8">
+        <div>
+          <div className="w-[732px] mx-auto pr-0 md:pr-12">
+            <div className="mb-6 px-3 md:px-4 flex flex-col gap-6">
+              {chatData?.chat_history?.map(
+                (message: Message, index: number) => (
+                  <div
+                    key={index}
+                    className={`rounded-lg ${
+                      message.role === 'user'
+                        ? 'bg-background-secondary mt-16 md:mt-10'
+                        : 'bg-background-highlight'
+                    }`}
+                  >
+                    <div className="flex flex-col items-start gap-[14px]">
+                      {message.question ? (
+                        <div>
+                          <p className="text-foreground text-lg font-bold">
+                            <ReactMarkdown>{message.question}</ReactMarkdown>
+                          </p>
+                        </div>
+                      ) : null}
+                      {message.answer ? (
+                        <div className="flex flex-col gap-3">
+                          <div className="flex gap-2">
+                            <Logo />
+                            <span>Answer</span>
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-foreground text-base">
+                              <ReactMarkdown>{message.answer}</ReactMarkdown>
+                            </p>
+                          </div>
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
+                )
+              )}
+              {isLoading && <TextLoading />}
+              {errorMessage && (
+                <div className="text-red-500 text-xs sm:text-sm">
+                  {errorMessage}
                 </div>
-              </div>
-            ))}
-            {isLoading && <TextLoading />}
-            {errorMessage && (
-              <div className="text-red-500 text-xs sm:text-sm">
-                {errorMessage}
-              </div>
-            )}
-            <div ref={messagesEndRef} />
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+          </div>
+        </div>
+        {/* Empty div for scrolling to bottom */}
+        <div className="sticky bottom-0 w-full">
+          <div className="h-10 w-full bg-fade"></div>
+          <div className="max-w-[732px] mx-auto px-4 bg-background pb-3 md:pb-20">
+            <ChatInput
+              onSubmit={handleSubmit}
+              onAddResource={() => setIsResourceSelectorOpen(true)}
+              hideResources
+              isLoading={isLoading}
+              placeholder="Ask follow-up..."
+              resetAfterSubmit
+            />
           </div>
         </div>
       </div>
-      {/* Empty div for scrolling to bottom */}
-      <div className="sticky bottom-0 w-full">
-        <div className="h-10 w-full bg-fade"></div>
-        <div className="max-w-[732px] mx-auto px-4 bg-background pb-3 md:pb-12">
-          <ChatInput
-            onSubmit={handleSubmit}
-            onAddResource={() => setIsResourceSelectorOpen(true)}
-            hideResources
-            isLoading={isLoading}
-            placeholder="Ask follow-up..."
-            resetAfterSubmit
+      <div className="w-44 mt-10">
+        <div className="sticky top-10 left-0 flex flex-col gap-3">
+          <p className="text-sm font-bold">Resources</p>
+          <ResourcesList
+            selectedResources={[resources[11]]}
+            hideRemoveButton
+            direction="vertical"
+            wrapTitle
           />
         </div>
       </div>
-      <SearchModal
-        open={isResourceSelectorOpen}
-        onOpenChange={setIsResourceSelectorOpen}
-      />
     </div>
   );
 }

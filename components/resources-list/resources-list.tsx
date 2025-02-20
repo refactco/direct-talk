@@ -11,7 +11,9 @@ export function ResourcesList(props: IResourcesListProps) {
     selectedResources,
     onRemoveResource,
     customClassName = '',
-    hideRemoveButton = false
+    hideRemoveButton = false,
+    direction = 'horizontal',
+    wrapTitle = false
   } = props;
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -22,18 +24,30 @@ export function ResourcesList(props: IResourcesListProps) {
   return (
     <div
       className={cn(
-        'flex overflow-x-auto md:grid md:grid-cols-4 items-center gap-2',
+        'flex items-center gap-2',
+        direction === 'horizontal'
+          ? 'flex-row md:grid md:grid-cols-4 overflow-x-auto'
+          : 'flex-col',
         customClassName
       )}
     >
       {selectedResources.map((resource: TSelectedResource, index: number) => {
         if (selectedResources.length === 4 || index < 3) {
           return (
-            <SelectedResourceCard
-              resource={resource}
-              hideRemove={hideRemoveButton}
-              onRemoveResource={onRemoveResource}
-            />
+            <div
+              key={index}
+              className={cn(
+                direction === 'horizontal'
+                  ? 'w-[45%] sm:w-[48%] md:w-auto'
+                  : 'w-full'
+              )}
+            >
+              <SelectedResourceCard
+                resource={resource}
+                hideRemove={hideRemoveButton}
+                onRemoveResource={onRemoveResource}
+              />
+            </div>
           );
         }
 

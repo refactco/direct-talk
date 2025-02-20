@@ -1,10 +1,12 @@
 'use client';
 
+import { Icons } from '@/components/icons';
 import { CollapseIcon } from '@/components/icons/CollapseIcon';
 import { HistoryIcon } from '@/components/icons/HistoryIcon';
 import { Logo } from '@/components/icons/Logo';
 import { LogoutIcon } from '@/components/icons/LogoutIcon';
 import { SearchIcon } from '@/components/icons/SearchIcon';
+import { SidebarList } from '@/components/sidebar/sidebar-list';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAuth } from '@/contexts/AuthContext';
@@ -13,16 +15,16 @@ import { cn } from '@/lib/utils';
 import { MenuIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Fragment, useEffect, useState } from 'react';
-import { Icons } from '@/components/icons';
+import { useEffect, useState } from 'react';
 import { Tooltip } from '../ui/tooltip/tooltip';
-import { SidebarList } from '@/components/sidebar/sidebar-list';
 
 export function Sidebar() {
   // const { mobileExpanded } = props;
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileExpanded, setIsMobileExpanded] = useState(false);
+  const [showTopFade, setShowTopFade] = useState(false);
+  const [showBottomFade, setShowBottomFade] = useState(true);
   const {
     isAuthenticated,
     logout,
@@ -43,6 +45,17 @@ export function Sidebar() {
     } else {
       openAuthModal();
     }
+  };
+
+  const handleScroll = (event) => {
+    const { scrollTop, scrollHeight, clientHeight } = event.target;
+
+    console.log({ scrollTop, scrollHeight, clientHeight });
+    // Show/hide top fade based on scroll position
+    setShowTopFade(scrollTop > 0);
+
+    // Show/hide bottom fade based on scroll position
+    setShowBottomFade(scrollTop + clientHeight < scrollHeight);
   };
 
   return (
@@ -161,9 +174,24 @@ export function Sidebar() {
 
             {!isCollapsed && (
               <ScrollArea
-                className={`h-[calc(100vh-${isNotHomePage ? '264px' : '212px'})] border-white`}
+                className={cn(`border-white relative`)}
+                onScroll={handleScroll}
               >
-                <SidebarList list={historyItems} isLoading={isLoading} />
+                <div
+                  className={cn(
+                    isNotHomePage
+                      ? 'h-[calc(100vh-322px)]'
+                      : 'h-[calc(100vh-270px)]'
+                  )}
+                >
+                  {showTopFade ? (
+                    <div className="w-full h-32 bg-history-top-fade absolute top-0"></div>
+                  ) : null}
+                  <SidebarList list={historyItems} isLoading={isLoading} />
+                  {showBottomFade ? (
+                    <div className="w-full h-32 bg-history-bottom-fade absolute bottom-0"></div>
+                  ) : null}
+                </div>
               </ScrollArea>
             )}
           </div>

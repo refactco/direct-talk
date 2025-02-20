@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import 'swiper/css';
 import { SwiperSlide } from 'swiper/react';
 import { PeopleCard } from '../people-card/PeopleCard';
+import { SelectedResourcesList } from '../selected-resources-list/selected-resources-list';
 import { ResourceSelectorProps, SearchResults } from './search-modal-types';
 
 export function SearchModal({
@@ -81,7 +82,7 @@ export function SearchModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-full md:max-w-[1299px] h-full md:h-auto p-0 gap-0 bg-background ring-0">
+      <DialogContent className="w-full md:max-w-[1299px] h-full md:max-h-[811px] p-0 gap-0 bg-background ring-0">
         <Button
           variant="ghost"
           size="icon"
@@ -91,8 +92,8 @@ export function SearchModal({
           <X className="w-5 h-5" />
           {/* <CloseIcon className="fill-white" /> */}
         </Button>
-        <div className="flex flex-col w-full max-w-[360px] md:max-w-[730px] m-auto">
-          <div className="flex items-center gap-1 mt-20 md:mt-11 mb-6">
+        <div className="flex flex-col w-full max-w-[360px] md:max-w-[730px] m-auto gap-6">
+          <div className="flex items-center gap-1 mt-20 md:mt-11">
             <div className="relative flex-1">
               <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
               <Input
@@ -102,6 +103,9 @@ export function SearchModal({
                 className="bg-accent border border-border pl-9 pr-4 py-2 w-full rounded-full placeholder:text-muted-foreground h-[52px]"
               />
             </div>
+          </div>
+          <div className="mb-6">
+            <SelectedResourcesList />
           </div>
         </div>
         <ScrollArea className="hello-world">

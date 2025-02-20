@@ -1,25 +1,25 @@
 import { CloseIcon } from '@/components/icons/CloseIcon';
+import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
 interface SelectedResourceCardProps {
   resource: any;
   onRemoveResource?: (id: string) => void;
   hideRemove?: boolean;
+  wrapTitle?: boolean;
 }
 
 function SelectedResourceCard({
   resource,
   onRemoveResource,
-  hideRemove = false
+  hideRemove = false,
+  wrapTitle = false
 }: SelectedResourceCardProps) {
   const { id, image_url, title, name, type } = resource;
   const displayName = title ?? name;
 
   return (
-    <div
-      key={id}
-      className="flex shrink-0 w-[45%] sm:w-[48%] md:w-auto items-center gap-2 bg-accent rounded-lg p-2 relative"
-    >
+    <div className="flex shrink-0 w-full items-center gap-2 bg-accent rounded-lg p-2 relative">
       <div className="h-6 w-6 overflow-hidden flex-shrink-0 rounded-md">
         <Image
           src={image_url ?? '/placeholder.svg'}
@@ -33,7 +33,12 @@ function SelectedResourceCard({
         <span className="text-xxs leading-[normal] text-muted-foreground uppercase">
           {type ?? 'Person'}
         </span>
-        <span className="text-xsm font-semibold leading-[normal] truncate max-w-32">
+        <span
+          className={cn(
+            'text-xsm font-semibold leading-[normal]',
+            wrapTitle ? '' : 'truncate max-w-32'
+          )}
+        >
           {displayName}
         </span>
       </div>
