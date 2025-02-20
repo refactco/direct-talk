@@ -32,13 +32,13 @@ export default function HomePage() {
   const { updateHistory } = useHistory();
   let startMessage: any, startResources: any, startResourceIds: any;
   try {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       startMessage = localStorage.getItem('startMessage');
       startResources = localStorage.getItem('startResources');
       startResourceIds = localStorage.getItem('startResourceIds');
     }
   } catch (error) {
-    console.error("localStorage is not available", error);
+    console.error('localStorage is not available', error);
   }
 
   useEffect(() => {

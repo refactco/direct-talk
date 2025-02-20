@@ -13,7 +13,7 @@ import { useHistory } from '@/contexts/HistoryContext';
 import { cn } from '@/lib/utils';
 import { MenuIcon } from 'lucide-react';
 import Link from 'next/link';
-import {usePathname, useRouter, useSearchParams} from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Fragment, useEffect, useState } from 'react';
 import { ThemeToggle } from './ThemeToggle';
 import { Icons } from '@/components/icons';
@@ -185,7 +185,9 @@ export function Sidebar() {
                         {chat.session_title}
                       </Link>
                       <TrashIcon
-                        onClick={() => removeHistoryItem(chat.session_id, activeSessionId)}
+                        onClick={() =>
+                          removeHistoryItem(chat.session_id, activeSessionId)
+                        }
                         className="opacity-0 group-hover:opacity-100 transition-opacity fill-foreground cursor-pointer"
                       />
                     </div>
