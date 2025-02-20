@@ -5,7 +5,6 @@ import { HistoryIcon } from '@/components/icons/HistoryIcon';
 import { Logo } from '@/components/icons/Logo';
 import { LogoutIcon } from '@/components/icons/LogoutIcon';
 import { SearchIcon } from '@/components/icons/SearchIcon';
-import { TrashIcon } from '@/components/icons/TrashIcon';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAuth } from '@/contexts/AuthContext';
@@ -13,11 +12,11 @@ import { useHistory } from '@/contexts/HistoryContext';
 import { cn } from '@/lib/utils';
 import { MenuIcon } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Fragment, useEffect, useState } from 'react';
-import { ThemeToggle } from './ThemeToggle';
 import { Icons } from '@/components/icons';
-import { Tooltip } from './ui/tooltip/tooltip';
+import { Tooltip } from '../ui/tooltip/tooltip';
+import { SidebarList } from '@/components/sidebar/sidebar-list';
 
 export function Sidebar() {
   // const { mobileExpanded } = props;
@@ -30,12 +29,9 @@ export function Sidebar() {
     openAuthModal,
     isLoading: isLoadingAuth
   } = useAuth();
-  const { historyItems, removeHistoryItem, isLoading, updateHistory } =
-    useHistory();
+  const { historyItems, isLoading, updateHistory } = useHistory();
   const router = useRouter();
   const isNotHomePage: boolean = pathname !== '/';
-  const searchParams = useSearchParams();
-  const activeSessionId = searchParams.get('id');
 
   useEffect(() => {
     updateHistory();
@@ -89,7 +85,7 @@ export function Sidebar() {
           )}
         >
           <Link
-            href="/"
+            href="/public"
             className="flex items-center gap-3"
             onClick={(e) => {
               if (isCollapsed) {
@@ -167,41 +163,7 @@ export function Sidebar() {
               <ScrollArea
                 className={`h-[calc(100vh-${isNotHomePage ? '264px' : '212px'})] border-white`}
               >
-                {historyItems.length > 0 ? (
-                  historyItems.map((chat) => (
-                    <div
-                      key={chat.session_id}
-                      className={cn(
-                        'flex items-center justify-between group py-2 text-sm rounded-md transition-all',
-                        'hover:bg-highlight hover:px-2 max-h-[34px]',
-                        pathname?.includes(chat.session_id) && 'bg-accent'
-                      )}
-                    >
-                      <Link
-                        href={`/conversation?id=${chat.session_id}`}
-                        className="truncate max-w-40 text-sm"
-                      >
-                        {chat.session_title}
-                      </Link>
-                      <TrashIcon
-                        onClick={() =>
-                          removeHistoryItem(chat.session_id, activeSessionId)
-                        }
-                        className="opacity-0 group-hover:opacity-100 transition-opacity fill-foreground cursor-pointer"
-                      />
-                    </div>
-                  ))
-                ) : (
-                  <Fragment>
-                    {isLoading ? (
-                      <Icons.spinner className="mt-2 m-auto h-4 w-4 animate-spin" />
-                    ) : (
-                      <div className="text-sm text-muted-foreground pb-2">
-                        No history records.
-                      </div>
-                    )}
-                  </Fragment>
-                )}
+                <SidebarList list={historyItems} isLoading={isLoading} />
               </ScrollArea>
             )}
           </div>
