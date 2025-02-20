@@ -224,11 +224,11 @@ export function Sidebar() {
                 <Icons.spinner className=" h-4 w-4 animate-spin" />
               ) : (
                 <LogoutIcon
-                className={cn(
-                  'fill-foreground',
-                  isCollapsed ? 'h-5 w-5' : 'h-4 w-4'
-                )}
-              />
+                  className={cn(
+                    'fill-foreground',
+                    isCollapsed ? 'h-5 w-5' : 'h-4 w-4'
+                  )}
+                />
               )}
               {!isCollapsed && (
                 <span className="text-sm font-bold">
