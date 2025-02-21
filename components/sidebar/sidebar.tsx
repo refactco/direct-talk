@@ -19,10 +19,10 @@ import { Tooltip } from '../ui/tooltip/tooltip';
 import { SidebarList } from '@/components/sidebar/sidebar-list';
 
 export function Sidebar() {
-  // const { mobileExpanded } = props;
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileExpanded, setIsMobileExpanded] = useState(false);
+  const [showContent, setShowContent] = useState(false);
   const {
     isAuthenticated,
     logout,
@@ -45,6 +45,16 @@ export function Sidebar() {
     }
   };
 
+  useEffect(() => {
+    if (!isCollapsed) {
+      setTimeout(() => {
+        setShowContent(false);
+      }, 200);
+    } else {
+      setShowContent(true);
+    }
+  }, [isCollapsed]);
+
   return (
     <>
       <nav className="flex md:hidden w-full justify-between absolute z-50 p-4 border-b border-current/80 bg-background">
@@ -59,7 +69,6 @@ export function Sidebar() {
           <MenuIcon className="absolute rotate-90 scale-0 w-5 h-5 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
         </Button>
-        {/* <ThemeToggle /> */}
       </nav>
       <div
         onClick={() => {
@@ -72,7 +81,7 @@ export function Sidebar() {
       ></div>
       <div
         className={cn(
-          'absolute md:relative md:left-0 w-80 z-50 flex l- h-full flex-col bg-accent transition-all duration-300 ease-in-out border-r border-white/10',
+          'absolute md:relative md:left-0 w-80 z-50 flex h-full flex-col bg-accent transition-all duration-300 ease-in-out border-r border-white/10',
           isCollapsed ? 'md:w-[64px]' : 'md:w-[243px]',
           isMobileExpanded ? 'left-0' : '-left-full'
         )}
@@ -94,25 +103,45 @@ export function Sidebar() {
               }
             }}
           >
-            <Logo />
+            <Logo className="flex-[25px]" />
             {!isCollapsed && (
-              <span className="text-lg font-semibold">Ask Archive</span>
+              <div
+                className={cn(
+                  'transition-opacity duration-200',
+                  showContent ? 'opacity-0' : 'opacity-100'
+                )}
+              >
+                <span className="text-lg font-semibold whitespace-nowrap">
+                  Ask Archive
+                </span>
+              </div>
             )}
           </Link>
-          {!isCollapsed && (
-            <>
-              <Tooltip id="collapse-button" place="right" content="Collapse" />
-              <Button
-                variant="ghost"
-                size="icon"
-                className="w-5 h-5 rounded-full hidden md:flex items-center justify-center hover:bg-accent transition-colors duration-200"
-                onClick={() => setIsCollapsed(!isCollapsed)}
-                data-tooltip-id="collapse-button"
-              >
-                <CollapseIcon className="fill-muted-foreground h-4 w-4" />
-              </Button>
-            </>
-          )}
+          <div
+            className={cn(
+              'transition-opacity duration-200',
+              showContent ? 'opacity-0' : 'opacity-100'
+            )}
+          >
+            {!isCollapsed && (
+              <>
+                <Tooltip
+                  id="collapse-button"
+                  place="right"
+                  content="Collapse"
+                />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="w-5 h-5 rounded-full hidden md:flex items-center justify-center hover:bg-accent transition-colors duration-200"
+                  onClick={() => setIsCollapsed(!isCollapsed)}
+                  data-tooltip-id="collapse-button"
+                >
+                  <CollapseIcon className="fill-muted-foreground h-4 w-4" />
+                </Button>
+              </>
+            )}
+          </div>
           <Button
             variant="ghost"
             size="icon"
@@ -163,7 +192,15 @@ export function Sidebar() {
               <ScrollArea
                 className={`h-[calc(100vh-${isNotHomePage ? '264px' : '212px'})] border-white`}
               >
-                <SidebarList list={historyItems} isLoading={isLoading} />
+                {/* Add Fade-in/Fade-out */}
+                <div
+                  className={cn(
+                    'transition-opacity duration-200',
+                    showContent ? 'opacity-0' : 'opacity-100'
+                  )}
+                >
+                  <SidebarList list={historyItems} isLoading={isLoading} />
+                </div>
               </ScrollArea>
             )}
           </div>
@@ -173,44 +210,63 @@ export function Sidebar() {
               isCollapsed ? 'px-3 pb-3 items-center' : 'px-5 pb-5'
             )}
           >
-            <Button
-              variant="outline"
+            <div
               className={cn(
-                'justify-start w-max bg-transparent',
-                isCollapsed ? 'p-0 border-none' : 'border-border'
+                showContent ? 'opacity-0' : 'opacity-100 duration-200'
               )}
-              onClick={handleAuth}
-              disabled={isLoadingAuth}
             >
-              {isLoadingAuth ? (
-                <Icons.spinner className=" h-4 w-4 animate-spin" />
-              ) : (
-                <LogoutIcon
-                  className={cn(
-                    'fill-foreground',
-                    isCollapsed ? 'h-5 w-5' : 'h-4 w-4'
-                  )}
-                />
-              )}
-              {!isCollapsed && (
-                <span className="text-sm font-bold">
-                  {isAuthenticated ? 'Logout' : 'Login'}
-                </span>
-              )}
-            </Button>
+              <Button
+                variant="outline"
+                className={cn(
+                  'justify-start w-max bg-transparent',
+                  showContent ? 'p-0 border-none' : 'border-border'
+                )}
+                onClick={handleAuth}
+                disabled={isLoadingAuth}
+              >
+                {isLoadingAuth ? (
+                  <Icons.spinner className=" h-4 w-4 animate-spin" />
+                ) : (
+                  <LogoutIcon
+                    className={cn(
+                      'fill-foreground',
+                      isCollapsed ? 'h-5 w-5' : 'h-4 w-4'
+                    )}
+                  />
+                )}
+                {!isCollapsed && (
+                  <span className="text-sm font-bold">
+                    {isAuthenticated ? 'Logout' : 'Login'}
+                  </span>
+                )}
+              </Button>
+            </div>
+            {isCollapsed && (
+              <LogoutIcon
+                onClick={handleAuth}
+                className={'fill-foreground h-5 w-5 cursor-pointer'}
+              />
+            )}
             {!isCollapsed ? (
-              <div className="flex flex-col gap-2">
-                <p className="text-xs text-muted-foreground">
-                  Copyright &copy; 2025 Refact, LLC
-                </p>
-                <div className="flex flex-col gap-1 text-xs text-muted-foreground [&_a:hover]:text-white">
-                  <div className="flex gap-[0.38rem] items-center">
-                    <Link href="/privacy">Privacy Policy</Link>
-                    <div className="w-1 h-1 rounded-full bg-muted-foreground" />
-                    <Link href="/terms">Terms of Use</Link>
-                  </div>
-                  <div>
-                    <Link href="/about">About</Link>
+              <div
+                className={cn(
+                  'transition-opacity duration-200',
+                  showContent ? 'opacity-0 d' : 'opacity-100'
+                )}
+              >
+                <div className="flex flex-col gap-2">
+                  <p className="text-xs text-muted-foreground">
+                    Copyright &copy; 2025 Refact, LLC
+                  </p>
+                  <div className="flex flex-col gap-1 text-xs text-muted-foreground [&_a:hover]:text-white">
+                    <div className="flex gap-[0.38rem] items-center">
+                      <Link href="/privacy">Privacy Policy</Link>
+                      <div className="w-1 h-1 rounded-full bg-muted-foreground" />
+                      <Link href="/terms">Terms of Use</Link>
+                    </div>
+                    <div>
+                      <Link href="/about">About</Link>
+                    </div>
                   </div>
                 </div>
               </div>
