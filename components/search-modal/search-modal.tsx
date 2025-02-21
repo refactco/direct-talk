@@ -135,7 +135,7 @@ export function SearchModal({
                     <h2 className="text-xl font-semibold text-white mb-6">
                       {search ? 'Peoples' : 'Popular Peoples'}
                     </h2>
-                    <CardSlider>
+                    <CardSlider spaceBetween={22.08}>
                       {searchResults.people.map((people) => (
                         <SwiperSlide key={people.id}>
                           <PeopleCard people={people} />

@@ -5,7 +5,13 @@ import { ReactNode, useState } from 'react';
 import { Navigation } from 'swiper/modules';
 import { Swiper } from 'swiper/react';
 
-export function CardSlider({ children }: { children: ReactNode }) {
+export function CardSlider({
+  children,
+  spaceBetween
+}: {
+  children: ReactNode;
+  spaceBetween?: number;
+}) {
   const [swiperInstance, setSwiperInstance] = useState<any>(null);
   const [showPrev, setShowPrev] = useState(false);
   const [showNext, setShowNext] = useState(false);
@@ -46,11 +52,11 @@ export function CardSlider({ children }: { children: ReactNode }) {
           },
           360: {
             slidesPerView: 3.2,
-            spaceBetween: 16
+            spaceBetween: 0
           },
           420: {
             slidesPerView: 5,
-            spaceBetween: 0
+            spaceBetween: spaceBetween ?? 0
           }
         }}
       >
