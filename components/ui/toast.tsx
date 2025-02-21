@@ -6,7 +6,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import {CloseIcon} from "@/components/icons/CloseIcon";
+import { CloseIcon } from '@/components/icons/CloseIcon';
 
 const ToastProvider = ToastPrimitives.Provider;
 
