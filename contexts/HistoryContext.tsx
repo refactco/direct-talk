@@ -4,6 +4,8 @@ import type React from 'react';
 import { createContext, useContext, useState, useEffect } from 'react';
 import apiClient from '@/lib/axiosInstance';
 import { useRouter } from 'next/navigation';
+import toastConfig from "@/lib/toast-config";
+import {useToast} from "@/hooks/use-toast";
 
 export interface HistoryItem {
   content_ids: Array<string>;
@@ -28,6 +30,7 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
   const [historyItems, setHistoryItems] = useState<HistoryItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
+  const { toast } = useToast();
 
   const fetchChatHistory = async () => {
     try {
@@ -36,11 +39,14 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
       const data = await response.data?.reverse();
       setHistoryItems(data);
     } catch (err) {
-      console.log(
-        err instanceof Error ? err.message : 'An unknown error occurred'
-      );
-      if (err.status == 401) {
+      if (err?.status == 401) {
         setHistoryItems([]);
+      } else {
+        const toastLimitConf: any = toastConfig({
+          message: err instanceof Error ? err.message : 'An unknown error occurred',
+          toastType: 'destructive'
+        });
+        toast(toastLimitConf);
       }
     } finally {
       setIsLoading(false);
@@ -76,9 +82,11 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       }
     } catch (err) {
-      console.log(
-        err instanceof Error ? err.message : 'An unknown error occurred'
-      );
+      const toastLimitConf: any = toastConfig({
+        message: err instanceof Error ? err.message : 'An unknown error occurred',
+        toastType: 'destructive'
+      });
+      toast(toastLimitConf);
     }
   };
 

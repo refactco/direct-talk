@@ -8,6 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useChat } from '@/contexts/ChatContext';
 import { useHistory } from '@/contexts/HistoryContext';
 import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
+import { useToast } from '@/hooks/use-toast';
 import { mockedPopularResources } from '@/lib/mocked/popular-resources';
 import type { IResource } from '@/types/resources';
 import { useRouter } from 'next/navigation';
@@ -29,6 +30,7 @@ export default function HomePage() {
   const { isAuthenticated, openAuthModal } = useAuth();
   const { doChat } = useChat();
   const { updateHistory } = useHistory();
+  const { toast } = useToast();
   let startMessage: any, startResources: any, startResourceIds: any;
   try {
     if (typeof window !== 'undefined') {
@@ -114,11 +116,6 @@ export default function HomePage() {
         localStorage.removeItem('startResources');
         localStorage.removeItem('startResourceIds');
       }
-    } catch (error) {
-      console.error('Error creating new chat:', error);
-      setErrorMessage(
-        `Failed to create a new chat: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
     } finally {
       setIsLoading(false);
     }

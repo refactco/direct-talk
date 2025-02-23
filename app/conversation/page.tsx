@@ -68,11 +68,6 @@ export default function ChatConversationPage() {
       scrollToLastMessage();
       const result = await doChat(message, undefined, chatId?.toString());
       addMessage({ answer: result?.answer });
-    } catch (error) {
-      console.error('Error in handleSubmit:', error);
-      setErrorMessage(
-        `Failed to get response: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
     } finally {
       setIsLoading(false);
     }

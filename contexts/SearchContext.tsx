@@ -11,6 +11,8 @@ import {
   useEffect,
   useState
 } from 'react';
+import toastConfig from "@/lib/toast-config";
+import {useToast} from "@/hooks/use-toast";
 
 interface SearchResults {
   resources: IResource[];
@@ -37,6 +39,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
   });
   const router = useRouter();
   const pathname = usePathname();
+  const { toast } = useToast();
 
   const performSearch = useCallback(async (searchQuery: string) => {
     if (!searchQuery.trim()) {
@@ -64,8 +67,12 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
         topics,
         isLoading: false
       });
-    } catch (error) {
-      console.error('Search error:', error);
+    } catch (err) {
+      const toastLimitConf: any = toastConfig({
+        message: err instanceof Error ? err.message : 'An unknown error occurred',
+        toastType: 'destructive'
+      });
+      toast(toastLimitConf);
       setResults((prev) => ({ ...prev, isLoading: false }));
     }
   }, []);
