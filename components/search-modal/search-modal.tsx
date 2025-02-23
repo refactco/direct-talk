@@ -15,6 +15,8 @@ import { SwiperSlide } from 'swiper/react';
 import { PeopleCard } from '../people-card/PeopleCard';
 import { SelectedResourcesList } from '../selected-resources-list/selected-resources-list';
 import { ResourceSelectorProps, SearchResults } from './search-modal-types';
+import toastConfig from "@/lib/toast-config";
+import {useToast} from "@/hooks/use-toast";
 
 export function SearchModal({
   open,
@@ -23,6 +25,7 @@ export function SearchModal({
 }: ResourceSelectorProps) {
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
   const [searchResults, setSearchResults] = useState<SearchResults>({
     people: [],
     shows: [],
@@ -36,8 +39,12 @@ export function SearchModal({
       try {
         const results = await searchAll(search);
         setSearchResults(results);
-      } catch (error) {
-        console.error('Search failed:', error);
+      } catch (err) {
+        const toastLimitConf: any = toastConfig({
+          message: err instanceof Error ? err.message : 'Search failed',
+          toastType: 'destructive'
+        });
+        toast(toastLimitConf);
         setSearchResults({
           people: [],
           shows: [],
@@ -57,21 +64,21 @@ export function SearchModal({
       const loadDefaultContent = async () => {
         setIsLoading(true);
         try {
-          const [defaultAuthors, defaultShows, defaultBooks, defaultEpisodes] =
+          const [defaultAuthors, defaultShows] =
             await Promise.all([
               getAuthors({ limit: 10 }),
-              getResources({ type: 'show', limit: 10 }),
-              getResources({ type: 'book', limit: 10 }),
-              getResources({ type: 'episode', limit: 10 })
+              getResources({  limit: 10 }),
             ]);
           setSearchResults({
             people: defaultAuthors?.people,
             shows: defaultShows.resources,
-            books: defaultBooks.resources,
-            episodes: defaultEpisodes.resources
           });
-        } catch (error) {
-          console.error('Failed to load default content:', error);
+        } catch (err) {
+          const toastLimitConf: any = toastConfig({
+            message: err instanceof Error ? err.message : 'Failed to load default content',
+            toastType: 'destructive'
+          });
+          toast(toastLimitConf);
         } finally {
           setIsLoading(false);
         }

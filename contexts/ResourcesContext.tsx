@@ -1,6 +1,8 @@
 'use client';
 
 import { createContext, useContext, useState } from 'react';
+import toastConfig from "@/lib/toast-config";
+import {useToast} from "@/hooks/use-toast";
 
 interface ResourceData {
   [key: string]: any;
@@ -23,10 +25,11 @@ export function useResource(): ResourceContextType {
   return context;
 }
 const BASE_API_URL = 'https://dt-api.refact.co/wp-json/direct-talk/v1';
+
 export function ResourceProvider({ children }: { children: React.ReactNode }) {
   const [resources, setResources] = useState<ResourceData>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const fetchResource = async (contentIds: string[]) => {
     const newContentIds = contentIds.filter((id) => !resources[id]);
@@ -48,8 +51,12 @@ export function ResourceProvider({ children }: { children: React.ReactNode }) {
       }, {} as ResourceData);
 
       setResources((prev) => ({ ...prev, ...resourceMap }));
-    } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : 'Unknown error');
+    } catch (err) {
+      const toastLimitConf: any = toastConfig({
+        message: err instanceof Error ? error.message : 'Unknown error',
+        toastType: 'destructive'
+      });
+      toast(toastLimitConf);
     } finally {
       setIsLoading(false);
     }
@@ -57,7 +64,7 @@ export function ResourceProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <ResourceContext.Provider
-      value={{ resources, fetchResource, isLoading, errorMessage }}
+      value={{ resources, fetchResource, isLoading }}
     >
       {children}
     </ResourceContext.Provider>

@@ -13,6 +13,8 @@ import type { IResource } from '@/types/resources';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { SwiperSlide } from 'swiper/react';
+import toastConfig from "@/lib/toast-config";
+import {useToast} from "@/hooks/use-toast";
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,6 +32,7 @@ export default function HomePage() {
   const { isAuthenticated, openAuthModal } = useAuth();
   const { doChat } = useChat();
   const { updateHistory } = useHistory();
+  const { toast } = useToast();
   let startMessage: any, startResources: any, startResourceIds: any;
   try {
     if (typeof window !== 'undefined') {
@@ -51,8 +54,12 @@ export default function HomePage() {
       try {
         const resources = await getResources({ sort: 'popular', limit: 5 });
         setPopularResources(resources?.resources);
-      } catch (error) {
-        console.error('Error fetching popular resources:', error);
+      } catch (err) {
+        const toastLimitConf: any = toastConfig({
+          message: err instanceof Error ? err.message : 'Error fetching popular resources',
+          toastType: 'destructive'
+        });
+        toast(toastLimitConf);
       } finally {
         setIsLoadingPopular(false);
       }
@@ -107,11 +114,6 @@ export default function HomePage() {
         localStorage.removeItem('startResources');
         localStorage.removeItem('startResourceIds');
       }
-    } catch (error) {
-      console.error('Error creating new chat:', error);
-      setErrorMessage(
-        `Failed to create a new chat: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
     } finally {
       setIsLoading(false);
     }

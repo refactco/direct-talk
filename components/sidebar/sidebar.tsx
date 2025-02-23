@@ -217,15 +217,15 @@ export function Sidebar() {
                   {showTopFade ? (
                     <div className="w-full h-32 bg-history-top-fade absolute top-0"></div>
                   ) : null}
-                    <div
-                        className={cn(
-                            'transition-opacity duration-200',
-                            showContent ? 'opacity-0' : 'opacity-100'
-                        )}
-                    >
-                  <SidebarList list={historyItems} isLoading={isLoading} />
-                    </div>
-                        {showBottomFade ? (
+                  <div
+                    className={cn(
+                      'transition-opacity duration-200',
+                      showContent ? 'opacity-0' : 'opacity-100'
+                    )}
+                  >
+                    <SidebarList list={historyItems} isLoading={isLoading} />
+                  </div>
+                  {showBottomFade ? (
                     <div className="w-full h-32 bg-history-bottom-fade absolute bottom-0"></div>
                   ) : null}
                 </div>

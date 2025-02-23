@@ -21,7 +21,7 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Direct Talk - Talk to you favorite resources',
+  title: 'Ask Archive - ask you favorite resources',
   description:
     'Discover and engage with curated resources through AI-powered conversations'
 };

@@ -24,8 +24,6 @@ export function AuthModal() {
     setIsLoadingGoogle(true);
     try {
       await loginWithGoogle();
-    } catch (error) {
-      console.error('Google Authentication Error:', error);
     } finally {
       setIsLoadingGoogle(false);
     }
@@ -35,8 +33,6 @@ export function AuthModal() {
     setIsLoadingTwitter(true);
     try {
       await loginWithTwitter();
-    } catch (error) {
-      console.error('Twitter Authentication Error:', error);
     } finally {
       setIsLoadingTwitter(false);
     }
