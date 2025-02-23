@@ -6,8 +6,8 @@ import { IGetResourceEpisodesResponse } from '@/lib/api/api-type';
 import { IResource } from '@/types/resources';
 import { useEffect, useState } from 'react';
 import { IDetailSheetResourceEpisodesProps } from './detail-sheet-resource-episodes-type';
-import toastConfig from "@/lib/toast-config";
-import {useToast} from "@/hooks/use-toast";
+import toastConfig from '@/lib/toast-config';
+import { useToast } from '@/hooks/use-toast';
 
 export function DetailSheetResourceEpisodes(
   props: IDetailSheetResourceEpisodesProps
@@ -37,7 +37,8 @@ export function DetailSheetResourceEpisodes(
         setEpisodesInfo(rest);
       } catch (err) {
         const toastLimitConf: any = toastConfig({
-          message: err instanceof Error ? err.message : 'Error fetching episodes',
+          message:
+            err instanceof Error ? err.message : 'Error fetching episodes',
           toastType: 'destructive'
         });
         toast(toastLimitConf);
@@ -65,7 +66,8 @@ export function DetailSheetResourceEpisodes(
         setEpisodesInfo(rest);
       } catch (err) {
         const toastLimitConf: any = toastConfig({
-          message: err instanceof Error ? err.message : 'Error fetching episodes',
+          message:
+            err instanceof Error ? err.message : 'Error fetching episodes',
           toastType: 'destructive'
         });
         toast(toastLimitConf);

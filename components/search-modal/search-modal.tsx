@@ -15,8 +15,8 @@ import { SwiperSlide } from 'swiper/react';
 import { PeopleCard } from '../people-card/PeopleCard';
 import { SelectedResourcesList } from '../selected-resources-list/selected-resources-list';
 import { ResourceSelectorProps, SearchResults } from './search-modal-types';
-import toastConfig from "@/lib/toast-config";
-import {useToast} from "@/hooks/use-toast";
+import toastConfig from '@/lib/toast-config';
+import { useToast } from '@/hooks/use-toast';
 
 export function SearchModal({
   open,
@@ -64,18 +64,20 @@ export function SearchModal({
       const loadDefaultContent = async () => {
         setIsLoading(true);
         try {
-          const [defaultAuthors, defaultShows] =
-            await Promise.all([
-              getAuthors({ limit: 10 }),
-              getResources({  limit: 10 }),
-            ]);
+          const [defaultAuthors, defaultShows] = await Promise.all([
+            getAuthors({ limit: 10 }),
+            getResources({ limit: 10 })
+          ]);
           setSearchResults({
             people: defaultAuthors?.people,
-            shows: defaultShows.resources,
+            shows: defaultShows.resources
           });
         } catch (err) {
           const toastLimitConf: any = toastConfig({
-            message: err instanceof Error ? err.message : 'Failed to load default content',
+            message:
+              err instanceof Error
+                ? err.message
+                : 'Failed to load default content',
             toastType: 'destructive'
           });
           toast(toastLimitConf);

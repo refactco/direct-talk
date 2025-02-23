@@ -50,11 +50,17 @@ export default function HomePage() {
   //   const fetchPopularResources = async () => {
   //     setIsLoadingPopular(true);
   //     try {
-  //       const resources = await getResources({ sort: 'popularity', limit: 5 });
-  //       console.log({ resources });
+  //       const resources = await getResources({ sort: 'popular', limit: 5 });
   //       setPopularResources(resources?.resources);
-  //     } catch (error) {
-  //       console.error('Error fetching popular resources:', error);
+  //     } catch (err) {
+  //       const toastLimitConf: any = toastConfig({
+  //         message:
+  //           err instanceof Error
+  //             ? err.message
+  //             : 'Error fetching popular resources',
+  //         toastType: 'destructive'
+  //       });
+  //       toast(toastLimitConf);
   //     } finally {
   //       setIsLoadingPopular(false);
   //     }

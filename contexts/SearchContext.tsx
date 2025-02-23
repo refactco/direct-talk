@@ -11,8 +11,8 @@ import {
   useEffect,
   useState
 } from 'react';
-import toastConfig from "@/lib/toast-config";
-import {useToast} from "@/hooks/use-toast";
+import toastConfig from '@/lib/toast-config';
+import { useToast } from '@/hooks/use-toast';
 
 interface SearchResults {
   resources: IResource[];
@@ -69,7 +69,8 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
       });
     } catch (err) {
       const toastLimitConf: any = toastConfig({
-        message: err instanceof Error ? err.message : 'An unknown error occurred',
+        message:
+          err instanceof Error ? err.message : 'An unknown error occurred',
         toastType: 'destructive'
       });
       toast(toastLimitConf);

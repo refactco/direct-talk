@@ -8,8 +8,8 @@ import {
   ReactNode
 } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import toastConfig from "@/lib/toast-config";
-import {useToast} from "@/hooks/use-toast";
+import toastConfig from '@/lib/toast-config';
+import { useToast } from '@/hooks/use-toast';
 
 interface User {
   id: string;
