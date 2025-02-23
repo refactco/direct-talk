@@ -102,7 +102,7 @@ export function ChatInput({
               className="w-8 h-8 sm:w-10 md:h-10 rounded-full bg-primary hover:bg-primary/90 focus:bg:primary/70 flex items-center justify-center shrink-0 disabled:bg-accent-light disabled:cursor-not-allowed"
             >
               <ArrowRightIcon
-                  className={cn('w-5 h-5', !input.trim() ? '' : 'text-black')}
+                className={cn('w-5 h-5', !input.trim() ? '' : 'text-black')}
               />
             </button>
           </div>
