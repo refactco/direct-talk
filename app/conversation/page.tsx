@@ -8,10 +8,10 @@ import TextLoading from '@/components/TextLoading';
 import { useAuth } from '@/contexts/AuthContext';
 import { useChat } from '@/contexts/ChatContext';
 import { useResource } from '@/contexts/ResourcesContext';
-import {useRouter, useSearchParams} from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react'; // Add Suspense
 import ReactMarkdown from 'react-markdown';
-import {useHistory} from "@/contexts/HistoryContext";
+import { useHistory } from '@/contexts/HistoryContext';
 
 export default function ChatConversationPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,8 +20,15 @@ export default function ChatConversationPage() {
   const searchParams = useSearchParams();
   const chatId = searchParams.get('id');
   const { openAuthModal, isAuthenticated } = useAuth();
-  const { fetchChat, chatDatas, addMessage, doChat, startChatData, updateStartChatDate, resetChatData } =
-    useChat();
+  const {
+    fetchChat,
+    chatDatas,
+    addMessage,
+    doChat,
+    startChatData,
+    updateStartChatDate,
+    resetChatData
+  } = useChat();
   const [chatData, setChatData] = useState<ChatData | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const hasStartedChat = useRef(false);
@@ -50,16 +57,18 @@ export default function ChatConversationPage() {
 
   const startNewChat = async () => {
     if (startChatData.message) {
-      setIsLoading(true)
+      setIsLoading(true);
       addMessage({ question: startChatData.message });
-      const chatData = await doChat(startChatData?.message, startChatData?.contentIds);
+      const chatData = await doChat(
+        startChatData?.message,
+        startChatData?.contentIds
+      );
       router.push(`/conversation?id=${chatData.session_id}`);
       updateHistory();
-      updateStartChatDate(null, null)
-      setIsLoading(false)
+      updateStartChatDate(null, null);
+      setIsLoading(false);
     }
-  }
-
+  };
 
   useEffect(() => {
     if (chatId) {
@@ -112,12 +121,12 @@ export default function ChatConversationPage() {
                   >
                     <div className="flex flex-col items-start gap-[14px]">
                       {message.question ? (
-                          <div>
-                            <div ref={messagesEndRef}/>
-                            <p className="text-foreground text-lg font-bold">
-                              <ReactMarkdown>{message.question}</ReactMarkdown>
-                            </p>
-                          </div>
+                        <div>
+                          <div ref={messagesEndRef} />
+                          <p className="text-foreground text-lg font-bold">
+                            <ReactMarkdown>{message.question}</ReactMarkdown>
+                          </p>
+                        </div>
                       ) : null}
                       {message.answer ? (
                         <div className="flex flex-col gap-3">
@@ -161,17 +170,17 @@ export default function ChatConversationPage() {
         </div>
       </div>
       <div className="w-44 mt-10">
-        {
-          Object.entries(resources).length > 0 ? <div className="sticky top-10 left-0 flex flex-col gap-3">
+        {Object.entries(resources).length > 0 ? (
+          <div className="sticky top-10 left-0 flex flex-col gap-3">
             <p className="text-sm font-bold">Resources</p>
             <ResourcesList
-                selectedResources={[resources[11]]}
-                hideRemoveButton
-                direction="vertical"
-                wrapTitle
+              selectedResources={[resources[11]]}
+              hideRemoveButton
+              direction="vertical"
+              wrapTitle
             />
-          </div>  : null
-        }
+          </div>
+        ) : null}
       </div>
     </div>
   );

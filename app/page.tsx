@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import { SwiperSlide } from 'swiper/react';
 import toastConfig from '@/lib/toast-config';
 import { useToast } from '@/hooks/use-toast';
-import {useChat} from "@/contexts/ChatContext";
+import { useChat } from '@/contexts/ChatContext';
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -1,6 +1,6 @@
 'use client';
 
-import {ChatData, Message, StartChatData} from '@/app/conversation/types';
+import { ChatData, Message, StartChatData } from '@/app/conversation/types';
 import type React from 'react';
 import { createContext, useCallback, useContext, useState } from 'react';
 import apiClient from '@/lib/axiosInstance';
@@ -21,7 +21,10 @@ interface ChatContextType {
   addMessage: (message: Message) => void;
   resetChatData: () => void;
   startChatData: StartChatData;
-  updateStartChatDate: (message: string | null, contentIds: string[] | null) => void;
+  updateStartChatDate: (
+    message: string | null,
+    contentIds: string[] | null
+  ) => void;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -31,13 +34,18 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   children
 }) => {
   const [chatDatas, setChatDatas] = useState<ChatData | null>(null);
-  const [startChatData, setStartChatData] = useState<StartChatData | null>(null);
+  const [startChatData, setStartChatData] = useState<StartChatData | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingChats, setIsLoadingChats] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
 
-  const updateStartChatDate = (message: string | null, contentIds: string[] | null) => {
+  const updateStartChatDate = (
+    message: string | null,
+    contentIds: string[] | null
+  ) => {
     setStartChatData({ message, contentIds });
   };
 
@@ -106,8 +114,8 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const resetChatData = () => {
-    setChatDatas(null)
-  }
+    setChatDatas(null);
+  };
 
   const value = {
     chatDatas,
