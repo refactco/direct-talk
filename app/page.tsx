@@ -13,8 +13,8 @@ import type { IResource } from '@/types/resources';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { SwiperSlide } from 'swiper/react';
-import toastConfig from "@/lib/toast-config";
-import {useToast} from "@/hooks/use-toast";
+import toastConfig from '@/lib/toast-config';
+import { useToast } from '@/hooks/use-toast';
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,7 +56,10 @@ export default function HomePage() {
         setPopularResources(resources?.resources);
       } catch (err) {
         const toastLimitConf: any = toastConfig({
-          message: err instanceof Error ? err.message : 'Error fetching popular resources',
+          message:
+            err instanceof Error
+              ? err.message
+              : 'Error fetching popular resources',
           toastType: 'destructive'
         });
         toast(toastLimitConf);

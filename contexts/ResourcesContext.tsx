@@ -1,8 +1,8 @@
 'use client';
 
 import { createContext, useContext, useState } from 'react';
-import toastConfig from "@/lib/toast-config";
-import {useToast} from "@/hooks/use-toast";
+import toastConfig from '@/lib/toast-config';
+import { useToast } from '@/hooks/use-toast';
 
 interface ResourceData {
   [key: string]: any;
@@ -63,9 +63,7 @@ export function ResourceProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <ResourceContext.Provider
-      value={{ resources, fetchResource, isLoading }}
-    >
+    <ResourceContext.Provider value={{ resources, fetchResource, isLoading }}>
       {children}
     </ResourceContext.Provider>
   );

@@ -4,8 +4,8 @@ import { ChatData, Message } from '@/app/conversation/types';
 import type React from 'react';
 import { createContext, useCallback, useContext, useState } from 'react';
 import apiClient from '@/lib/axiosInstance';
-import toastConfig from "@/lib/toast-config";
-import {useToast} from "@/hooks/use-toast";
+import toastConfig from '@/lib/toast-config';
+import { useToast } from '@/hooks/use-toast';
 
 interface ChatContextType {
   chatDatas: ChatData | null;
@@ -55,7 +55,8 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
         return data;
       } catch (err) {
         const toastLimitConf: any = toastConfig({
-          message: err instanceof Error ? err.message : 'An unknown error occurred',
+          message:
+            err instanceof Error ? err.message : 'An unknown error occurred',
           toastType: 'destructive'
         });
         toast(toastLimitConf);
@@ -76,7 +77,8 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
       setChatDatas(data);
     } catch (err: any) {
       const toastLimitConf: any = toastConfig({
-        message: err instanceof Error ? err.message : 'An unknown error occurred',
+        message:
+          err instanceof Error ? err.message : 'An unknown error occurred',
         toastType: 'destructive'
       });
       toast(toastLimitConf);

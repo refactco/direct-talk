@@ -9,7 +9,13 @@ interface toastConfigProps {
   toastType?: 'normal' | 'destructive';
 }
 const toastConfig = (props: toastConfigProps) => {
-  const { image_url, message, onAction, action_text, toastType = 'normal' } = props;
+  const {
+    image_url,
+    message,
+    onAction,
+    action_text,
+    toastType = 'normal'
+  } = props;
   return {
     variant: 'default',
     description: (
@@ -27,17 +33,17 @@ const toastConfig = (props: toastConfigProps) => {
       </div>
     ),
     action: (
-        <>
-          {
-            onAction ? <ToastAction
-                className="bg-primary text-black border-none font-semibold text-xs rounded-[6px] hover:bg-primary/90"
-                altText="Action"
-                onClick={onAction}
-            >
-              { action_text }
-            </ToastAction> : null
-          }
-          </>
+      <>
+        {onAction ? (
+          <ToastAction
+            className="bg-primary text-black border-none font-semibold text-xs rounded-[6px] hover:bg-primary/90"
+            altText="Action"
+            onClick={onAction}
+          >
+            {action_text}
+          </ToastAction>
+        ) : null}
+      </>
     ),
     style: {
       position: 'fixed',

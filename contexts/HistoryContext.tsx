@@ -4,8 +4,8 @@ import type React from 'react';
 import { createContext, useContext, useState, useEffect } from 'react';
 import apiClient from '@/lib/axiosInstance';
 import { useRouter } from 'next/navigation';
-import toastConfig from "@/lib/toast-config";
-import {useToast} from "@/hooks/use-toast";
+import toastConfig from '@/lib/toast-config';
+import { useToast } from '@/hooks/use-toast';
 
 export interface HistoryItem {
   content_ids: Array<string>;
@@ -43,7 +43,8 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
         setHistoryItems([]);
       } else {
         const toastLimitConf: any = toastConfig({
-          message: err instanceof Error ? err.message : 'An unknown error occurred',
+          message:
+            err instanceof Error ? err.message : 'An unknown error occurred',
           toastType: 'destructive'
         });
         toast(toastLimitConf);
@@ -83,7 +84,8 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     } catch (err) {
       const toastLimitConf: any = toastConfig({
-        message: err instanceof Error ? err.message : 'An unknown error occurred',
+        message:
+          err instanceof Error ? err.message : 'An unknown error occurred',
         toastType: 'destructive'
       });
       toast(toastLimitConf);

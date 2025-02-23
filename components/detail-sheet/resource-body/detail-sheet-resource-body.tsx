@@ -19,8 +19,8 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { IDetailSheetResourceBodyTypeProps } from './detail-sheet-resource-body-type';
 import { DetailSheetResourceEpisodes } from './episodes/detail-sheet-resource-episodes';
-import toastConfig from "@/lib/toast-config";
-import {useToast} from "@/hooks/use-toast";
+import toastConfig from '@/lib/toast-config';
+import { useToast } from '@/hooks/use-toast';
 
 export function DetailSheetResourceBody(
   props: IDetailSheetResourceBodyTypeProps
@@ -52,7 +52,10 @@ export function DetailSheetResourceBody(
         setDetailedResource(fetchedResource);
       } catch (err) {
         const toastLimitConf: any = toastConfig({
-          message: err instanceof Error ? err.message : 'Error fetching popular resources',
+          message:
+            err instanceof Error
+              ? err.message
+              : 'Error fetching popular resources',
           toastType: 'destructive'
         });
         toast(toastLimitConf);

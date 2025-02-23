@@ -11,8 +11,8 @@ import { Check, Plus } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { IDetailSheetPeopleBodyTypeProps } from './detail-sheet-people-body-type';
-import {useToast} from "@/hooks/use-toast";
-import toastConfig from "@/lib/toast-config";
+import { useToast } from '@/hooks/use-toast';
+import toastConfig from '@/lib/toast-config';
 
 export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
   const { person } = props;
@@ -30,7 +30,6 @@ export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
   } = detailedPerson;
   const { toast } = useToast();
 
-
   const fetchDetailedPerson = async () => {
     setIsLoading(true);
     try {
@@ -39,7 +38,10 @@ export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
       setDetailedPerson(fetchedPerson);
     } catch (err) {
       const toastLimitConf: any = toastConfig({
-        message: err instanceof Error ? err.message : 'Error fetching popular resources',
+        message:
+          err instanceof Error
+            ? err.message
+            : 'Error fetching popular resources',
         toastType: 'destructive'
       });
       toast(toastLimitConf);
