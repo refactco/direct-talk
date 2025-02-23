@@ -175,14 +175,14 @@ export function SearchModal({
                 )}
 
                 {/* Episode Section */}
-                {search && searchResults.episodes.length > 0 && (
+                {search && searchResults?.episodes?.length > 0 && (
                   <>
                     <h2 className="text-xl font-bold text-white mb-6 mt-12">
                       Episodes
                     </h2>
                     <div className="relative w-full">
                       <CardSlider>
-                        {searchResults.episodes.map((resource) => (
+                        {searchResults?.episodes?.map((resource) => (
                           <SwiperSlide key={resource.id}>
                             <ResourceCard
                               key={resource.id}
@@ -197,14 +197,14 @@ export function SearchModal({
                 )}
 
                 {/* Book Section */}
-                {search && searchResults.books.length > 0 && (
+                {search && searchResults?.books?.length > 0 && (
                   <>
                     <h2 className="text-xl font-bold text-white mb-6 mt-12">
                       Books
                     </h2>
                     <div className="relative w-full">
                       <CardSlider>
-                        {searchResults.books.map((resource) => (
+                        {searchResults?.books?.map((resource) => (
                           <SwiperSlide key={resource.id}>
                             <ResourceCard
                               key={resource.id}
@@ -221,10 +221,10 @@ export function SearchModal({
 
                 {/* No Results Message */}
                 {search.trim() &&
-                  searchResults.people.length === 0 &&
-                  searchResults.shows.length === 0 &&
-                  searchResults.episodes.length === 0 &&
-                  searchResults.books.length === 0 && (
+                  searchResults?.people.length === 0 &&
+                  searchResults?.shows.length === 0 &&
+                  searchResults?.episodes.length === 0 &&
+                  searchResults?.books.length === 0 && (
                     <div className="text-center text-neutral-400 py-8">
                       No results found for "{search}"
                     </div>

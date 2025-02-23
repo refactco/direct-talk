@@ -25,7 +25,7 @@ export function SidebarItem(props: { item: HistoryItem }) {
         href={`/conversation?id=${item.session_id}`}
         className="truncate max-w-40 text-sm"
       >
-        {item.session_title.replace('"', '').replace('"', '')}
+        {item.session_title?.replace(/^"(.*)"$/, '$1')}
       </Link>
       <TrashIcon
         onClick={() => removeHistoryItem(item.session_id, activeSessionId)}

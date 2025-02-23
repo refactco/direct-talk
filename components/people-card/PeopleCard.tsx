@@ -71,7 +71,7 @@ export function PeopleCard({
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-accent">
-              <UserIcon className="fill-muted-foreground" />
+              <UserIcon className="stroke-muted-foreground" />
             </div>
           )}
           {showDetails ? (

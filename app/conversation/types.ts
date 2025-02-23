@@ -16,3 +16,8 @@ export interface IChatHistory {
   question: string;
   answer: string;
 }
+
+export interface StartChatData {
+  message?: string | null;
+  contentIds?: string[] | null;
+}
