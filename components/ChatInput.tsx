@@ -100,15 +100,9 @@ export function ChatInput({
               disabled={isLoading || !input.trim()}
               className="w-8 h-8 sm:w-10 md:h-10 rounded-full bg-primary hover:bg-primary/90 focus:bg:primary/70 flex items-center justify-center shrink-0 disabled:bg-accent-light disabled:cursor-not-allowed"
             >
-              {isLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <ArrowRightIcon
+              <ArrowRightIcon
                   className={cn('w-5 h-5', !input.trim() ? '' : 'text-black')}
-
-                  // fill={!input.trim() ? 'rgba(161, 161, 161, 1)' : '#052E16'}
-                />
-              )}
+              />
             </button>
           </div>
         </div>

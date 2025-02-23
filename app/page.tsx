@@ -5,8 +5,6 @@ import { ChatInput } from '@/components/ChatInput';
 import { ResourceCard } from '@/components/resource-card/ResourceCard';
 import { SearchModal } from '@/components/search-modal/search-modal';
 import { useAuth } from '@/contexts/AuthContext';
-import { useChat } from '@/contexts/ChatContext';
-import { useHistory } from '@/contexts/HistoryContext';
 import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { getResources } from '@/lib/api';
 import type { IResource } from '@/types/resources';
@@ -15,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { SwiperSlide } from 'swiper/react';
 import toastConfig from '@/lib/toast-config';
 import { useToast } from '@/hooks/use-toast';
+import {useChat} from "@/contexts/ChatContext";
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,8 +29,7 @@ export default function HomePage() {
     useSelectedResources();
   const router = useRouter();
   const { isAuthenticated, openAuthModal } = useAuth();
-  const { doChat } = useChat();
-  const { updateHistory } = useHistory();
+  const { updateStartChatDate } = useChat();
   const { toast } = useToast();
   let startMessage: any, startResources: any, startResourceIds: any;
   try {
@@ -107,18 +105,13 @@ export default function HomePage() {
   };
 
   const startNewChat = async (message: string, contentIds: string[]) => {
-    setIsLoading(true);
-    try {
-      if (contentIds.length > 0) {
-        const chatData = await doChat(message, contentIds);
-        updateHistory();
-        router.push(`/conversation?id=${chatData.session_id}`);
-        localStorage.removeItem('startMessage');
-        localStorage.removeItem('startResources');
-        localStorage.removeItem('startResourceIds');
-      }
-    } finally {
-      setIsLoading(false);
+    if (contentIds.length > 0) {
+      setIsLoading(true);
+      updateStartChatDate(message, contentIds);
+      router.push(`/conversation`);
+      localStorage.removeItem('startMessage');
+      localStorage.removeItem('startResources');
+      localStorage.removeItem('startResourceIds');
     }
   };
   return (

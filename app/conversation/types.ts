@@ -11,3 +11,7 @@ export interface ChatData {
   session_title: string;
   user_id: string;
 }
+export interface StartChatData {
+  message?: string | null;
+  contentIds?: string[] | null;
+}

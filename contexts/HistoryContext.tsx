@@ -36,7 +36,7 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       setIsLoading(true);
       const response = await apiClient.get(`${baseURL}/search`);
-      const data = await response.data?.reverse();
+      const data = await response.data;
       setHistoryItems(data);
     } catch (err) {
       if (err?.status == 401) {

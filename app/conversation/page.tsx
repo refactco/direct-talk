@@ -2,16 +2,16 @@
 
 import { ChatData, Message } from '@/app/chat/conversation/types';
 import { ChatInput } from '@/components/ChatInput';
-import { Icons } from '@/components/icons';
 import { Logo } from '@/components/icons/Logo';
 import { ResourcesList } from '@/components/resources-list/resources-list';
 import TextLoading from '@/components/TextLoading';
 import { useAuth } from '@/contexts/AuthContext';
 import { useChat } from '@/contexts/ChatContext';
 import { useResource } from '@/contexts/ResourcesContext';
-import { useSearchParams } from 'next/navigation';
+import {useRouter, useSearchParams} from 'next/navigation';
 import { useEffect, useRef, useState } from 'react'; // Add Suspense
 import ReactMarkdown from 'react-markdown';
+import {useHistory} from "@/contexts/HistoryContext";
 
 export default function ChatConversationPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,11 +20,14 @@ export default function ChatConversationPage() {
   const searchParams = useSearchParams();
   const chatId = searchParams.get('id');
   const { openAuthModal, isAuthenticated } = useAuth();
-  const { fetchChat, chatDatas, addMessage, doChat, isLoadingChats } =
+  const { fetchChat, chatDatas, addMessage, doChat, startChatData, updateStartChatDate, resetChatData } =
     useChat();
   const [chatData, setChatData] = useState<ChatData | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const hasStartedChat = useRef(false);
   const { resources, fetchResource } = useResource();
+  const { updateHistory } = useHistory();
+  const router = useRouter();
 
   const scrollToLastMessage = () => {
     const scrollToBottom = () => {
@@ -45,13 +48,32 @@ export default function ChatConversationPage() {
     }
   }, [chatDatas]);
 
+  const startNewChat = async () => {
+    if (startChatData.message) {
+      setIsLoading(true)
+      addMessage({ question: startChatData.message });
+      const chatData = await doChat(startChatData?.message, startChatData?.contentIds);
+      router.push(`/conversation?id=${chatData.session_id}`);
+      updateHistory();
+      updateStartChatDate(null, null)
+      setIsLoading(false)
+    }
+  }
+
+
   useEffect(() => {
     if (chatId) {
+      resetChatData();
+      updateStartChatDate(null, null);
       fetchChat(chatId).catch((err) => {
         if (!isAuthenticated && err.status === 401) {
           openAuthModal();
         }
       });
+    } else if (!chatId && startChatData?.message && !hasStartedChat.current) {
+      resetChatData();
+      hasStartedChat.current = true;
+      startNewChat();
     }
   }, [chatId]);
 
@@ -70,10 +92,6 @@ export default function ChatConversationPage() {
       setIsLoading(false);
     }
   };
-
-  if (isLoadingChats) {
-    return <Icons.spinner className="m-auto mt-[6%] h-4 w-4 animate-spin" />;
-  }
 
   return (
     <div className="flex gap-10 justify-center">
@@ -94,11 +112,12 @@ export default function ChatConversationPage() {
                   >
                     <div className="flex flex-col items-start gap-[14px]">
                       {message.question ? (
-                        <div>
-                          <p className="text-foreground text-lg font-bold">
-                            <ReactMarkdown>{message.question}</ReactMarkdown>
-                          </p>
-                        </div>
+                          <div>
+                            <div ref={messagesEndRef}/>
+                            <p className="text-foreground text-lg font-bold">
+                              <ReactMarkdown>{message.question}</ReactMarkdown>
+                            </p>
+                          </div>
                       ) : null}
                       {message.answer ? (
                         <div className="flex flex-col gap-3">
@@ -123,7 +142,6 @@ export default function ChatConversationPage() {
                   {errorMessage}
                 </div>
               )}
-              <div ref={messagesEndRef} />
             </div>
           </div>
         </div>
@@ -143,15 +161,17 @@ export default function ChatConversationPage() {
         </div>
       </div>
       <div className="w-44 mt-10">
-        <div className="sticky top-10 left-0 flex flex-col gap-3">
-          <p className="text-sm font-bold">Resources</p>
-          <ResourcesList
-            selectedResources={[resources[11]]}
-            hideRemoveButton
-            direction="vertical"
-            wrapTitle
-          />
-        </div>
+        {
+          Object.entries(resources).length > 0 ? <div className="sticky top-10 left-0 flex flex-col gap-3">
+            <p className="text-sm font-bold">Resources</p>
+            <ResourcesList
+                selectedResources={[resources[11]]}
+                hideRemoveButton
+                direction="vertical"
+                wrapTitle
+            />
+          </div>  : null
+        }
       </div>
     </div>
   );
