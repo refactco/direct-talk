@@ -1,13 +1,14 @@
 'use client';
 
 import { DetailItemList } from '@/components/detail-item-list/detail-item-list';
+import { useResourceDetailEpisodes } from '@/contexts/resource-detail-episodes-context';
+import { useToast } from '@/hooks/use-toast';
 import { getResourceEpisodes } from '@/lib/api';
 import { IGetResourceEpisodesResponse } from '@/lib/api/api-type';
+import toastConfig from '@/lib/toast-config';
 import { IResource } from '@/types/resources';
 import { useEffect, useState } from 'react';
 import { IDetailSheetResourceEpisodesProps } from './detail-sheet-resource-episodes-type';
-import toastConfig from '@/lib/toast-config';
-import { useToast } from '@/hooks/use-toast';
 
 export function DetailSheetResourceEpisodes(
   props: IDetailSheetResourceEpisodesProps
@@ -21,6 +22,7 @@ export function DetailSheetResourceEpisodes(
     useState<Omit<IGetResourceEpisodesResponse, 'resources'>>();
   const { type, image_url, id } = resource;
   const { toast } = useToast();
+  const { isReachedToEnd, setIsReachedToEnd } = useResourceDetailEpisodes();
 
   useEffect(() => {
     const fetchEpisodes = async () => {
@@ -79,6 +81,13 @@ export function DetailSheetResourceEpisodes(
     fetchEpisodes();
   }, [currentPage]);
 
+  useEffect((): void => {
+    if (isReachedToEnd && (episodesInfo?.total ?? 0) > episodes.length) {
+      setCurrentPage(currentPage + 1);
+      setIsReachedToEnd(false);
+    }
+  }, [isReachedToEnd]);
+
   if (type !== 'show') {
     return null;
   }
@@ -90,10 +99,10 @@ export function DetailSheetResourceEpisodes(
       resources={episodes}
       isLoading={isEpisodeLoading}
       isLoadingMore={isLoadingMore}
-      showLoadMore={(episodesInfo?.total ?? 0) > episodes.length}
-      onLoadMoreClick={() => {
-        setCurrentPage(currentPage + 1);
-      }}
+      showLoadMore={false}
+      // onLoadMoreClick={() => {
+      //   setCurrentPage(currentPage + 1);
+      // }}
     />
   );
 }

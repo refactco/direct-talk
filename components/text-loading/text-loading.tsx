@@ -1,4 +1,8 @@
-function TextLoading() {
+import { ITextLoadingProps } from './text-loading-type';
+
+export function TextLoading(props: ITextLoadingProps) {
+  const { text } = props;
+
   return (
     <div className="text-xs sm:text-sm text-muted-foreground animate-pulse flex items-center">
       <div className="mr-1 h-0.5 w-0.5 sm:h-1.5 sm:w-1.5 bg-muted-foreground rounded-full animate-bounce"></div>
@@ -10,9 +14,7 @@ function TextLoading() {
         className="mr-2 h-0.5 w-0.5 sm:h-1.5 sm:w-1.5 bg-muted-foreground rounded-full animate-bounce"
         style={{ animationDelay: '0.4s' }}
       ></div>
-      AI is thinking...
+      {text}
     </div>
   );
 }
-
-export default TextLoading;

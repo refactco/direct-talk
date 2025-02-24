@@ -3,14 +3,14 @@
 // import { ArrowRightIcon } from '@/components/icons/ArrowRightIcon';
 // import { PlusIcon } from '@/components/icons/PlusIcon';
 import { cn } from '@/lib/utils';
-import { ArrowRightIcon, Loader2, PlusIcon } from 'lucide-react';
+import { ArrowRightIcon, PlusIcon } from 'lucide-react';
 import type React from 'react';
 import { useState } from 'react';
 import { SelectedResourcesList } from './selected-resources-list/selected-resources-list';
 
 interface ChatInputProps {
   onSubmit: (message: string) => void;
-  onAddResource: () => void;
+  onAddResource?: () => void;
   hideResources?: boolean;
   isLoading: boolean;
   placeholder?: string;

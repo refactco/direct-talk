@@ -7,6 +7,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { ChatProvider } from '@/contexts/ChatContext';
 import { HistoryProvider } from '@/contexts/HistoryContext';
+import { ResourceDetailEpisodesProvider } from '@/contexts/resource-detail-episodes-context';
 import { ResourceDetailProvider } from '@/contexts/ResourceDetailContext';
 import { ResourceProvider } from '@/contexts/ResourcesContext';
 import { SearchProvider } from '@/contexts/SearchContext';
@@ -51,12 +52,14 @@ export default function RootLayout({
                           <div className="flex h-screen">
                             <Sidebar />
                             {/* <ThemeToggle className="hidden md:flex absolute top-4 md:top-8 right-4 md:right-8 z-10" /> */}
-                            <main className="flex-1 overflow-y-auto px-4 py-4 md:px-8 md:py-8  !pb-0">
+                            <main className="flex-1 overflow-y-auto px-4 py-4 md:px-8 md:py-8 mt-16 md:mt-0 !pb-0">
                               {children}
                             </main>
                             <Toaster />
                             <AuthModal />
-                            <DetailSheet />
+                            <ResourceDetailEpisodesProvider>
+                              <DetailSheet />
+                            </ResourceDetailEpisodesProvider>
                           </div>
                         </ResourceProvider>
                       </ChatProvider>

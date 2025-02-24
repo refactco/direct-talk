@@ -12,15 +12,15 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 import { useResourceDetail } from '@/contexts/ResourceDetailContext';
 import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
+import { useToast } from '@/hooks/use-toast';
 import { getResource } from '@/lib/api';
+import toastConfig from '@/lib/toast-config';
 import { cn } from '@/lib/utils';
 import { IAuthor, IResource } from '@/types/resources';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { IDetailSheetResourceBodyTypeProps } from './detail-sheet-resource-body-type';
 import { DetailSheetResourceEpisodes } from './episodes/detail-sheet-resource-episodes';
-import toastConfig from '@/lib/toast-config';
-import { useToast } from '@/hooks/use-toast';
 
 export function DetailSheetResourceBody(
   props: IDetailSheetResourceBodyTypeProps
@@ -218,7 +218,9 @@ export function DetailSheetResourceBody(
           </p>
         </div>
       </div>
-      <DetailSheetResourceEpisodes resource={detailedResource} />
+      {type === 'show' ? (
+        <DetailSheetResourceEpisodes resource={detailedResource} />
+      ) : null}
     </>
   );
 }

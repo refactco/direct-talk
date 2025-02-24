@@ -1,5 +1,6 @@
 import { IResource } from '@/types/resources';
 import { DetailItem } from '../detail-item/detail-item';
+import { Icons } from '../icons';
 import { Button } from '../ui/button';
 import { Skeleton } from '../ui/skeleton';
 import { IDetailItemListProps } from './detail-item-list-type';
@@ -54,7 +55,15 @@ export function DetailItemList(props: IDetailItemListProps) {
         >
           {isLoadingMore ? 'Loading...' : 'Load More'}
         </Button>
-      ) : null}
+      ) : (
+        <>
+          {isLoadingMore ? (
+            <div className="flex justify-center mt-4">
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+            </div>
+          ) : null}
+        </>
+      )}
     </div>
   );
 }

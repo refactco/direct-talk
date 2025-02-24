@@ -6,7 +6,7 @@ import { HistoryIcon } from '@/components/icons/HistoryIcon';
 import { Logo } from '@/components/icons/Logo';
 import { LogoutIcon } from '@/components/icons/LogoutIcon';
 import { SearchIcon } from '@/components/icons/SearchIcon';
-import { SidebarList } from '@/components/sidebar/sidebar-list';
+import { HistoryList } from '@/components/sidebar/history-list/history-list';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAuth } from '@/contexts/AuthContext';
@@ -71,6 +71,10 @@ export function Sidebar() {
     }
   }, [isCollapsed]);
 
+  const closeMobileSidebar = () => {
+    setIsMobileExpanded(false);
+  };
+
   return (
     <>
       <nav className="flex md:hidden w-full justify-between absolute z-50 p-4 border-b border-current/80 bg-background">
@@ -88,7 +92,7 @@ export function Sidebar() {
       </nav>
       <div
         onClick={() => {
-          setIsMobileExpanded(false);
+          closeMobileSidebar();
         }}
         className={cn(
           'fixed inset-0 z-50 bg-black/50 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
@@ -115,8 +119,11 @@ export function Sidebar() {
             onClick={(e) => {
               if (isCollapsed) {
                 e.preventDefault();
+
                 setIsCollapsed(false);
               }
+
+              closeMobileSidebar();
             }}
           >
             <Logo className="flex-[25px]" />
@@ -150,7 +157,9 @@ export function Sidebar() {
                   variant="ghost"
                   size="icon"
                   className="w-5 h-5 rounded-full hidden md:flex items-center justify-center hover:bg-accent transition-colors duration-200"
-                  onClick={() => setIsCollapsed(!isCollapsed)}
+                  onClick={() => {
+                    setIsCollapsed(!isCollapsed);
+                  }}
                   data-tooltip-id="collapse-button"
                 >
                   <CollapseIcon className="fill-muted-foreground h-4 w-4" />
@@ -162,7 +171,9 @@ export function Sidebar() {
             variant="ghost"
             size="icon"
             className="w-5 h-5 rounded-full flex md:hidden items-center justify-center hover:bg-accent transition-colors duration-200"
-            onClick={() => setIsMobileExpanded(false)}
+            onClick={() => {
+              closeMobileSidebar();
+            }}
           >
             <CollapseIcon className="fill-muted-foreground" />
           </Button>
@@ -175,6 +186,7 @@ export function Sidebar() {
               <Button
                 variant="default"
                 onClick={() => {
+                  closeMobileSidebar();
                   resetSelectedResources();
                   router.push('/');
                 }}
@@ -194,7 +206,9 @@ export function Sidebar() {
                 <Button
                   variant="ghost"
                   className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors duration-200"
-                  onClick={() => setIsCollapsed(!isCollapsed)}
+                  onClick={() => {
+                    setIsCollapsed(!isCollapsed);
+                  }}
                 >
                   <HistoryIcon />
                 </Button>
@@ -228,7 +242,13 @@ export function Sidebar() {
                       showContent ? 'opacity-0' : 'opacity-100'
                     )}
                   >
-                    <SidebarList list={historyItems} isLoading={isLoading} />
+                    <HistoryList
+                      list={historyItems}
+                      isLoading={isLoading}
+                      onCloseSidebar={() => {
+                        closeMobileSidebar();
+                      }}
+                    />
                   </div>
                   {showBottomFade ? (
                     <div className="w-full h-32 bg-history-bottom-fade absolute bottom-0"></div>
