@@ -8,8 +8,9 @@ import { ResourcesList } from '@/components/resources-list/resources-list';
 import TextLoading from '@/components/TextLoading';
 import { useAuth } from '@/contexts/AuthContext';
 import { useChat } from '@/contexts/ChatContext';
+import { useHistory } from '@/contexts/HistoryContext';
 import { useResource } from '@/contexts/ResourcesContext';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react'; // Add Suspense
 import ReactMarkdown from 'react-markdown';
 import { IChatHistory } from './types';
@@ -21,11 +22,22 @@ export default function ChatConversationPage() {
   const searchParams = useSearchParams();
   const chatId = searchParams.get('id');
   const { openAuthModal, isAuthenticated } = useAuth();
-  const { fetchChat, chatDatas, addMessage, doChat, isLoadingChats } =
-    useChat();
+  const {
+    fetchChat,
+    chatDatas,
+    addMessage,
+    doChat,
+    startChatData,
+    updateStartChatDate,
+    resetChatData,
+    isLoadingChats
+  } = useChat();
   const [chatData, setChatData] = useState<ChatData | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const hasStartedChat = useRef(false);
   const { resources, fetchResource } = useResource();
+  const { updateHistory } = useHistory();
+  const router = useRouter();
 
   const scrollToLastMessage = () => {
     const scrollToBottom = () => {
@@ -47,13 +59,34 @@ export default function ChatConversationPage() {
     }
   }, [chatDatas]);
 
+  const startNewChat = async () => {
+    if (startChatData.message) {
+      setIsLoading(true);
+      addMessage({ question: startChatData.message });
+      const chatData = await doChat(
+        startChatData?.message,
+        startChatData?.contentIds
+      );
+      router.push(`/conversation?id=${chatData.session_id}`);
+      updateHistory();
+      updateStartChatDate(null, null);
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (chatId) {
+      resetChatData();
+      updateStartChatDate(null, null);
       fetchChat(chatId).catch((err) => {
         if (!isAuthenticated && err.status === 401) {
           openAuthModal();
         }
       });
+    } else if (!chatId && startChatData?.message && !hasStartedChat.current) {
+      resetChatData();
+      hasStartedChat.current = true;
+      startNewChat();
     }
   }, [chatId]);
 
@@ -68,11 +101,6 @@ export default function ChatConversationPage() {
       scrollToLastMessage();
       const result = await doChat(message, undefined, chatId?.toString());
       addMessage({ answer: result?.answer });
-    } catch (error) {
-      console.error('Error in handleSubmit:', error);
-      setErrorMessage(
-        `Failed to get response: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
     } finally {
       setIsLoading(false);
     }
@@ -138,7 +166,6 @@ export default function ChatConversationPage() {
                   {errorMessage}
                 </div>
               )}
-              <div ref={messagesEndRef} />
             </div>
           </div>
         </div>

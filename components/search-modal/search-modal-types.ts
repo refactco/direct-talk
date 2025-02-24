@@ -7,8 +7,8 @@ export interface ResourceSelectorProps {
 }
 
 export interface SearchResults {
-  books: IResource[];
-  people: IAuthor[];
-  shows: IResource[];
-  episodes: IResource[];
+  books?: IResource[];
+  people?: IAuthor[];
+  shows?: IResource[];
+  episodes?: IResource[];
 }

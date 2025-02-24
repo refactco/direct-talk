@@ -15,6 +15,8 @@ import { SwiperSlide } from 'swiper/react';
 import { PeopleCard } from '../people-card/PeopleCard';
 import { SelectedResourcesList } from '../selected-resources-list/selected-resources-list';
 import { ResourceSelectorProps, SearchResults } from './search-modal-types';
+import toastConfig from '@/lib/toast-config';
+import { useToast } from '@/hooks/use-toast';
 
 export function SearchModal({
   open,
@@ -23,6 +25,7 @@ export function SearchModal({
 }: ResourceSelectorProps) {
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
   const [searchResults, setSearchResults] = useState<SearchResults>({
     people: [],
     shows: [],
@@ -36,8 +39,12 @@ export function SearchModal({
       try {
         const results = await searchAll(search);
         setSearchResults(results);
-      } catch (error) {
-        console.error('Search failed:', error);
+      } catch (err) {
+        const toastLimitConf: any = toastConfig({
+          message: err instanceof Error ? err.message : 'Search failed',
+          toastType: 'destructive'
+        });
+        toast(toastLimitConf);
         setSearchResults({
           people: [],
           shows: [],
@@ -57,21 +64,23 @@ export function SearchModal({
       const loadDefaultContent = async () => {
         setIsLoading(true);
         try {
-          const [defaultAuthors, defaultShows, defaultBooks, defaultEpisodes] =
-            await Promise.all([
-              getAuthors({ limit: 10 }),
-              getResources({ type: 'show', limit: 10 }),
-              getResources({ type: 'book', limit: 10 }),
-              getResources({ type: 'episode', limit: 10 })
-            ]);
+          const [defaultAuthors, defaultShows] = await Promise.all([
+            getAuthors({ limit: 10 }),
+            getResources({ limit: 10 })
+          ]);
           setSearchResults({
             people: defaultAuthors?.people,
-            shows: defaultShows.resources,
-            books: defaultBooks.resources,
-            episodes: defaultEpisodes.resources
+            shows: defaultShows.resources
           });
-        } catch (error) {
-          console.error('Failed to load default content:', error);
+        } catch (err) {
+          const toastLimitConf: any = toastConfig({
+            message:
+              err instanceof Error
+                ? err.message
+                : 'Failed to load default content',
+            toastType: 'destructive'
+          });
+          toast(toastLimitConf);
         } finally {
           setIsLoading(false);
         }
@@ -166,14 +175,14 @@ export function SearchModal({
                 )}
 
                 {/* Episode Section */}
-                {search && searchResults.episodes.length > 0 && (
+                {search && searchResults?.episodes?.length > 0 && (
                   <>
                     <h2 className="text-xl font-bold text-white mb-6 mt-12">
                       Episodes
                     </h2>
                     <div className="relative w-full">
                       <CardSlider>
-                        {searchResults.episodes.map((resource) => (
+                        {searchResults?.episodes?.map((resource) => (
                           <SwiperSlide key={resource.id}>
                             <ResourceCard
                               key={resource.id}
@@ -188,14 +197,14 @@ export function SearchModal({
                 )}
 
                 {/* Book Section */}
-                {search && searchResults.books.length > 0 && (
+                {search && searchResults?.books?.length > 0 && (
                   <>
                     <h2 className="text-xl font-bold text-white mb-6 mt-12">
                       Books
                     </h2>
                     <div className="relative w-full">
                       <CardSlider>
-                        {searchResults.books.map((resource) => (
+                        {searchResults?.books?.map((resource) => (
                           <SwiperSlide key={resource.id}>
                             <ResourceCard
                               key={resource.id}
@@ -212,10 +221,10 @@ export function SearchModal({
 
                 {/* No Results Message */}
                 {search.trim() &&
-                  searchResults.people.length === 0 &&
-                  searchResults.shows.length === 0 &&
-                  searchResults.episodes.length === 0 &&
-                  searchResults.books.length === 0 && (
+                  searchResults?.people.length === 0 &&
+                  searchResults?.shows.length === 0 &&
+                  searchResults?.episodes.length === 0 &&
+                  searchResults?.books.length === 0 && (
                     <div className="text-center text-neutral-400 py-8">
                       No results found for "{search}"
                     </div>

@@ -8,6 +8,8 @@ import {
   ReactNode
 } from 'react';
 import { supabase } from '@/lib/supabaseClient';
+import toastConfig from '@/lib/toast-config';
+import { useToast } from '@/hooks/use-toast';
 
 interface User {
   id: string;
@@ -34,6 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     const checkUserSession = async () => {
@@ -50,6 +53,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } else {
         setUser(null);
         setIsAuthenticated(false);
+      }
+      if (error?.message) {
+        const toastLimitConf: any = toastConfig({
+          message: error.message ?? 'Unknown error',
+          toastType: 'destructive'
+        });
+        toast(toastLimitConf);
       }
       setIsLoading(false);
     };
@@ -82,7 +92,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       provider: 'google',
       options: { redirectTo: `${window.location.origin}` }
     });
-    if (error) console.error('Google Login Error:', error);
+    if (error) {
+      const toastLimitConf: any = toastConfig({
+        message: error.message ?? 'Google Login Error',
+        toastType: 'destructive'
+      });
+      toast(toastLimitConf);
+    }
   };
 
   const loginWithTwitter = async () => {
@@ -90,7 +106,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       provider: 'twitter',
       options: { redirectTo: `${window.location.origin}` }
     });
-    if (error) console.error('Twitter Login Error:', error);
+    if (error) {
+      const toastLimitConf: any = toastConfig({
+        message: error.message ?? 'Twitter Login Error',
+        toastType: 'destructive'
+      });
+      toast(toastLimitConf);
+    }
   };
 
   const logout = async () => {

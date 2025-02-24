@@ -1,9 +1,11 @@
 'use client';
 
-import { ChatData, Message } from '@/app/conversation/types';
+import { ChatData, Message, StartChatData } from '@/app/conversation/types';
+import { useToast } from '@/hooks/use-toast';
+import apiClient from '@/lib/axiosInstance';
+import toastConfig from '@/lib/toast-config';
 import type React from 'react';
 import { createContext, useCallback, useContext, useState } from 'react';
-import apiClient from '@/lib/axiosInstance';
 
 interface ChatContextType {
   chatDatas: ChatData | null;
@@ -12,11 +14,17 @@ interface ChatContextType {
   error: string | null;
   doChat: (
     prompt: string,
-    contentId?: string[],
+    contentId?: string[] | null,
     sessionId?: string
   ) => Promise<any>;
   fetchChat: (chatId: string) => Promise<any>;
   addMessage: (message: Message) => void;
+  resetChatData: () => void;
+  startChatData: StartChatData;
+  updateStartChatDate: (
+    message: string | null,
+    contentIds: string[] | null
+  ) => void;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -26,9 +34,20 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   children
 }) => {
   const [chatDatas, setChatDatas] = useState<ChatData | null>(null);
+  const [startChatData, setStartChatData] = useState<StartChatData | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingChats, setIsLoadingChats] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
+
+  const updateStartChatDate = (
+    message: string | null,
+    contentIds: string[] | null
+  ) => {
+    setStartChatData({ message, contentIds });
+  };
 
   const doChat = useCallback(
     async (
@@ -44,16 +63,18 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
       }
       if (contentIds && contentIds?.length > 0) {
         formData['content_ids'] = contentIds;
-        // formData['content_ids'] = ["63dbf9f4-c510-4685-802f-efac4682bc5c"];
       }
       try {
         const response = await apiClient.post(`${baseURL}/search`, formData);
         const data = await response.data;
         return data;
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : 'An unknown error occurred'
-        );
+        const toastLimitConf: any = toastConfig({
+          message:
+            err instanceof Error ? err.message : 'An unknown error occurred',
+          toastType: 'destructive'
+        });
+        toast(toastLimitConf);
         throw err;
       } finally {
         setIsLoading(false);
@@ -70,9 +91,12 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
       const data = await response.data;
       setChatDatas(data);
     } catch (err: any) {
-      setError(
-        err instanceof Error ? err.message : 'An unknown error occurred'
-      );
+      const toastLimitConf: any = toastConfig({
+        message:
+          err instanceof Error ? err.message : 'An unknown error occurred',
+        toastType: 'destructive'
+      });
+      toast(toastLimitConf);
       throw err;
     } finally {
       setIsLoadingChats(false);
@@ -89,6 +113,10 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
+  const resetChatData = () => {
+    setChatDatas(null);
+  };
+
   const value = {
     chatDatas,
     isLoading,
@@ -96,7 +124,10 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
     error,
     doChat,
     fetchChat,
-    addMessage
+    addMessage,
+    startChatData,
+    updateStartChatDate,
+    resetChatData
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
