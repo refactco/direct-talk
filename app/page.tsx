@@ -8,7 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useChat } from '@/contexts/ChatContext';
 import { useHistory } from '@/contexts/HistoryContext';
 import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
-import { getResources } from '@/lib/api';
+import { mockedPopularResources } from '@/lib/mocked/popular-resources';
 import type { IResource } from '@/types/resources';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -18,14 +18,13 @@ export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
   const [popularResources, setPopularResources] = useState<IResource[]>(
-    new Array(5).fill(null)
+    mockedPopularResources
   );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingPopular, setIsLoadingPopular] = useState(true);
+  const [isLoadingPopular, setIsLoadingPopular] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const { selectedResources, removeResource, addResource } =
-    useSelectedResources();
+  const { selectedResources, addResource } = useSelectedResources();
   const router = useRouter();
   const { isAuthenticated, openAuthModal } = useAuth();
   const { doChat } = useChat();
@@ -45,47 +44,55 @@ export default function HomePage() {
     setIsMounted(true);
   }, []);
 
-  useEffect(() => {
-    const fetchPopularResources = async () => {
-      setIsLoadingPopular(true);
-      try {
-        const resources = await getResources({ sort: 'popular', limit: 5 });
-        setPopularResources(resources?.resources);
-      } catch (error) {
-        console.error('Error fetching popular resources:', error);
-      } finally {
-        setIsLoadingPopular(false);
-      }
-    };
-    if (popularResources?.length > 0 && !popularResources[0]) {
-      fetchPopularResources();
-    }
-  }, []);
+  // useEffect(() => {
+  //   const fetchPopularResources = async () => {
+  //     setIsLoadingPopular(true);
+  //     try {
+  //       const resources = await getResources({ sort: 'popularity', limit: 5 });
+  //       console.log({ resources });
+  //       setPopularResources(resources?.resources);
+  //     } catch (error) {
+  //       console.error('Error fetching popular resources:', error);
+  //     } finally {
+  //       setIsLoadingPopular(false);
+  //     }
+  //   };
+  //   if (popularResources?.length > 0 && !popularResources[0]) {
+  //     fetchPopularResources();
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (isAuthenticated && startMessage && startResourceIds) {
       if (startResources && JSON.parse(startResources).length > 0) {
         JSON.parse(startResources)?.map((el: IResource) => addResource(el));
       }
+      console.log({ startResources });
       startNewChat(startMessage, JSON.parse(startResourceIds));
     }
   }, [isAuthenticated]);
 
   const handleSubmit = async (message: string) => {
     setErrorMessage(null);
-    const contentIds: string[] = selectedResources
-      .map((resource) => resource.ref_id)
-      .filter(
-        (ref_id) => ref_id !== '' && ref_id !== null && ref_id !== undefined
-      );
+    const contentIds: string[] = [];
+
+    selectedResources.forEach((resource) => {
+      const { ref_id } = resource;
+
+      if (ref_id !== null && ref_id !== undefined && ref_id !== '') {
+        contentIds.push(ref_id);
+      }
+    });
 
     if (!isAuthenticated) {
       localStorage.setItem('startMessage', message);
       localStorage.setItem('startResources', JSON.stringify(selectedResources));
       localStorage.setItem('startResourceIds', JSON.stringify(contentIds));
+
       openAuthModal();
       return;
     }
+
     if (message.trim()) {
       if (selectedResources.length > 0) {
         await startNewChat(message, contentIds);
@@ -116,6 +123,7 @@ export default function HomePage() {
       setIsLoading(false);
     }
   };
+
   return (
     <div className="flex flex-col items-center gap-16 md:gap-16 justify-normal md:justify-center min-h-[calc(100vh-4rem)] p-0 md:p-4">
       <div className="w-full max-w-3xl flex flex-col justify-normal md:justify-center items-center">
@@ -126,8 +134,8 @@ export default function HomePage() {
           <ChatInput
             onSubmit={handleSubmit}
             onAddResource={() => setIsModalOpen(true)}
-            onRemoveResource={removeResource}
-            selectedResources={selectedResources}
+            // onRemoveResource={removeResource}
+            // selectedResources={selectedResources}
             isLoading={isLoading}
             placeholder="Ask AI anything..."
             defaultValue={startMessage ?? ''}

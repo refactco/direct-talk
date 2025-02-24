@@ -11,7 +11,7 @@ export async function getResources(params?: {
   topic?: string;
   authorId?: string;
   query?: string;
-  sort?: 'popular' | 'latest';
+  sort?: 'popularity' | 'date';
   limit?: number;
 }): Promise<{ resources: IResource[] }> {
   const searchParams = new URLSearchParams();
@@ -19,11 +19,7 @@ export async function getResources(params?: {
   if (params?.topic) searchParams.set('topic', params.topic);
   if (params?.authorId) searchParams.set('author', params.authorId);
   if (params?.query) searchParams.set('s', params.query);
-  if (params?.sort)
-    searchParams.set(
-      'orderby',
-      params.sort === 'popular' ? 'popularity' : 'date'
-    );
+  if (params?.sort) searchParams.set('orderby', params.sort);
   if (params?.limit) searchParams.set('per_page', params.limit.toString());
 
   const response = await fetch(`${API_BASE_URL}/resources?${searchParams}`);

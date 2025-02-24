@@ -61,7 +61,7 @@ export function ChatInput({
         {/* Input Area */}
         <div
           className={cn(
-            'flex items-center p-3',
+            'flex items-center p-3 gap-4',
             hideResources ? 'flex-row' : 'flex-col'
           )}
         >
@@ -70,8 +70,9 @@ export function ChatInput({
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
+            rows={1}
             className={cn(
-              'w-full flex-grow bg-background border-0 focus:outline-none focus:ring-0 placeholder-[#a2a2a4] text-xs md:text-xsm pt-2 resize-none',
+              'w-full flex-grow bg-background border-0 focus:outline-none focus:ring-0 placeholder-[#a2a2a4] text-xs md:text-sm resize-none',
               hideResources ? 'flex-1' : ''
             )}
             disabled={isLoading}

@@ -1,5 +1,6 @@
 'use client';
 
+import { IResource } from '@/types/resources';
 import { createContext, useContext, useState } from 'react';
 
 interface ResourceData {
@@ -7,7 +8,7 @@ interface ResourceData {
 }
 
 interface ResourceContextType {
-  resources: ResourceData;
+  resources: IResource[];
   fetchResource: (contentIds: string[] | number[]) => Promise<void>;
   isLoading: boolean;
   errorMessage: string | null;
@@ -24,30 +25,37 @@ export function useResource(): ResourceContextType {
 }
 const BASE_API_URL = 'https://dt-api.refact.co/wp-json/direct-talk/v1';
 export function ResourceProvider({ children }: { children: React.ReactNode }) {
-  const [resources, setResources] = useState<ResourceData>({});
+  const [resources, setResources] = useState<IResource[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const fetchResource = async (contentIds: string[]) => {
-    const newContentIds = contentIds.filter((id) => !resources[id]);
+  const fetchResource = async (contentIds: string[] | number[]) => {
+    const newContentIds = contentIds.filter((id) => {
+      const foundIndex = resources.findIndex((res) => res.id === id);
+
+      return foundIndex < 0;
+    });
     if (newContentIds.length === 0) return;
 
     setIsLoading(true);
+
     try {
       const resourcePromises = newContentIds.map(async (id) => {
         const response = await fetch(`${BASE_API_URL}/resources/${id}`);
         if (!response.ok) throw new Error(`Failed to fetch resource: ${id}`);
         const data = await response.json();
-        return { id, data };
+
+        return data;
       });
 
       const results = await Promise.all(resourcePromises);
-      const resourceMap = results.reduce((acc, { id, data }) => {
-        acc[id] = data;
-        return acc;
-      }, {} as ResourceData);
+      console.log({ results });
+      // const resourceMap = results.reduce((acc, { id, data }) => {
+      //   acc[id] = data;
+      //   return acc;
+      // }, {} as ResourceData);
 
-      setResources((prev) => ({ ...prev, ...resourceMap }));
+      setResources(results);
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : 'Unknown error');
     } finally {

@@ -1,4 +1,4 @@
-import { authors } from '@/lib/data';
+import { authors } from '@/lib/mocked/data';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {

@@ -1,4 +1,4 @@
-import { resources } from '@/lib/data';
+import { resources } from '@/lib/mocked/data';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {

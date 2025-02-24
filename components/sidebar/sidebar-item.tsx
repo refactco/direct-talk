@@ -1,9 +1,9 @@
 'use client';
 
-import { cn } from '@/lib/utils';
-import Link from 'next/link';
 import { TrashIcon } from '@/components/icons/TrashIcon';
 import { HistoryItem, useHistory } from '@/contexts/HistoryContext';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 export function SidebarItem(props: { item: HistoryItem }) {
@@ -25,7 +25,7 @@ export function SidebarItem(props: { item: HistoryItem }) {
         href={`/conversation?id=${item.session_id}`}
         className="truncate max-w-40 text-sm"
       >
-        {item.session_title}
+        {item.session_title.replace('"', '').replace('"', '')}
       </Link>
       <TrashIcon
         onClick={() => removeHistoryItem(item.session_id, activeSessionId)}

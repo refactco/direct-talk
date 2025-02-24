@@ -1,4 +1,4 @@
-import { topics } from '@/lib/data';
+import { topics } from '@/lib/mocked/data';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {

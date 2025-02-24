@@ -58,7 +58,6 @@ export function DetailSheetResourceBody(
   }, [resource]);
 
   const isResourceSelected = isSelected(id);
-  const [firstPerson, ...rest] = people ?? [];
 
   return (
     <>
@@ -67,7 +66,7 @@ export function DetailSheetResourceBody(
         <div className="p-0">
           <div className="relative aspect-square w-36 h-36 overflow-hidden rounded-[0.5rem] border border-border">
             <Image
-              src={image_url ?? '/placeholder.svg'}
+              src={image_url ? image_url : '/placeholder.svg'}
               alt={title}
               fill
               className="object-cover w-36 h-36"

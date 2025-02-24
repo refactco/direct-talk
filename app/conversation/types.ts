@@ -11,3 +11,8 @@ export interface ChatData {
   session_title: string;
   user_id: string;
 }
+
+export interface IChatHistory {
+  question: string;
+  answer: string;
+}

@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAuth } from '@/contexts/AuthContext';
 import { useHistory } from '@/contexts/HistoryContext';
+import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { cn } from '@/lib/utils';
 import { MenuIcon } from 'lucide-react';
 import Link from 'next/link';
@@ -35,6 +36,7 @@ export function Sidebar() {
   const { historyItems, isLoading, updateHistory } = useHistory();
   const router = useRouter();
   const isNotHomePage: boolean = pathname !== '/';
+  const { resetSelectedResources } = useSelectedResources();
 
   useEffect(() => {
     updateHistory();
@@ -108,7 +110,7 @@ export function Sidebar() {
           )}
         >
           <Link
-            href="/public"
+            href="/"
             className="flex items-center gap-3"
             onClick={(e) => {
               if (isCollapsed) {
@@ -172,7 +174,10 @@ export function Sidebar() {
             {isNotHomePage ? (
               <Button
                 variant="default"
-                onClick={() => router.push('/')}
+                onClick={() => {
+                  resetSelectedResources();
+                  router.push('/');
+                }}
                 className="bg-foreground w-full mb-3 font-semibold max-h-9 hover:bg-foreground/90 rounded-[6px]"
               >
                 <SearchIcon className="fill-primary-foreground" />
@@ -217,15 +222,15 @@ export function Sidebar() {
                   {showTopFade ? (
                     <div className="w-full h-32 bg-history-top-fade absolute top-0"></div>
                   ) : null}
-                    <div
-                        className={cn(
-                            'transition-opacity duration-200',
-                            showContent ? 'opacity-0' : 'opacity-100'
-                        )}
-                    >
-                  <SidebarList list={historyItems} isLoading={isLoading} />
-                    </div>
-                        {showBottomFade ? (
+                  <div
+                    className={cn(
+                      'transition-opacity duration-200',
+                      showContent ? 'opacity-0' : 'opacity-100'
+                    )}
+                  >
+                    <SidebarList list={historyItems} isLoading={isLoading} />
+                  </div>
+                  {showBottomFade ? (
                     <div className="w-full h-32 bg-history-bottom-fade absolute bottom-0"></div>
                   ) : null}
                 </div>

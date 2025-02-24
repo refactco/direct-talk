@@ -1,6 +1,6 @@
 'use client';
 
-import { ChatData, Message } from '@/app/chat/conversation/types';
+import { ChatData } from '@/app/conversation/types';
 import { ChatInput } from '@/components/ChatInput';
 import { Icons } from '@/components/icons';
 import { Logo } from '@/components/icons/Logo';
@@ -12,6 +12,7 @@ import { useResource } from '@/contexts/ResourcesContext';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react'; // Add Suspense
 import ReactMarkdown from 'react-markdown';
+import { IChatHistory } from './types';
 
 export default function ChatConversationPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -36,10 +37,11 @@ export default function ChatConversationPage() {
     return () => clearTimeout(timeout);
   };
   useEffect(() => {
+    console.log({ chatDatas });
     setChatData(chatDatas);
     scrollToLastMessage();
-    // const contentIds = chatData?.content_ids;
-    const contentIds = [11];
+    const contentIds = chatData?.content_ids;
+    // const contentIds = [11];
     if (contentIds?.length) {
       fetchResource(contentIds);
     }
@@ -80,48 +82,56 @@ export default function ChatConversationPage() {
     return <Icons.spinner className="m-auto mt-[6%] h-4 w-4 animate-spin" />;
   }
 
+  const chatHistory: IChatHistory[] = [];
+  let history: any = {};
+
+  chatData?.chat_history?.forEach((message: any) => {
+    if (message.question) {
+      history.question = message.question;
+    } else if (message.answer) {
+      history.answer = message.answer;
+
+      chatHistory.push(history);
+      history = {};
+    }
+  });
+
   return (
     <div className="flex gap-10 justify-center">
       <div className="fixed top-0 left-0 h-16 bg-fade-inverse z-[1] w-[calc(100vw-1rem)]"></div>
       <div className="relative flex flex-col h-[calc(100vh-3rem)] justify-between bg-background animate-in fade-in duration-500 pt-8">
         <div>
           <div className="w-[732px] mx-auto pr-0 md:pr-12">
-            <div className="mb-6 px-3 md:px-4 flex flex-col gap-6">
-              {chatData?.chat_history?.map(
-                (message: Message, index: number) => (
-                  <div
-                    key={index}
-                    className={`rounded-lg ${
-                      message.role === 'user'
-                        ? 'bg-background-secondary mt-16 md:mt-10'
-                        : 'bg-background-highlight'
-                    }`}
-                  >
+            <div className="mb-6 px-3 md:px-4 flex flex-col">
+              {chatHistory.map((message: IChatHistory, index: number) => {
+                const { question, answer } = message;
+
+                return (
+                  <div key={index} className="rounded-lg">
                     <div className="flex flex-col items-start gap-[14px]">
-                      {message.question ? (
-                        <div>
-                          <p className="text-foreground text-lg font-bold">
-                            <ReactMarkdown>{message.question}</ReactMarkdown>
+                      <div>
+                        <p className="text-foreground text-lg font-bold">
+                          <ReactMarkdown>{question}</ReactMarkdown>
+                        </p>
+                      </div>
+                      <div className="flex flex-col gap-3">
+                        <div className="flex gap-2">
+                          <Logo />
+                          <span className="text-sm">Answer</span>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-foreground text-base">
+                            <ReactMarkdown>{answer}</ReactMarkdown>
                           </p>
                         </div>
-                      ) : null}
-                      {message.answer ? (
-                        <div className="flex flex-col gap-3">
-                          <div className="flex gap-2">
-                            <Logo />
-                            <span>Answer</span>
-                          </div>
-                          <div className="flex-1">
-                            <p className="text-foreground text-base">
-                              <ReactMarkdown>{message.answer}</ReactMarkdown>
-                            </p>
-                          </div>
-                        </div>
-                      ) : null}
+                      </div>
                     </div>
+                    {index < chatHistory.length - 1 ? (
+                      <hr className="w-full my-6" />
+                    ) : null}
                   </div>
-                )
-              )}
+                );
+              })}
               {isLoading && <TextLoading />}
               {errorMessage && (
                 <div className="text-red-500 text-xs sm:text-sm">
@@ -151,7 +161,7 @@ export default function ChatConversationPage() {
         <div className="sticky top-10 left-0 flex flex-col gap-3">
           <p className="text-sm font-bold">Resources</p>
           <ResourcesList
-            selectedResources={[resources[11]]}
+            selectedResources={resources}
             hideRemoveButton
             direction="vertical"
             wrapTitle
