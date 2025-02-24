@@ -27,7 +27,7 @@ export function ResourcesList(props: IResourcesListProps) {
         'flex items-center gap-2',
         direction === 'horizontal'
           ? 'flex-row md:grid md:grid-cols-4 overflow-x-auto'
-          : 'flex-col',
+          : 'flex-row md:flex-col overflow-x-auto',
         customClassName
       )}
     >
@@ -39,7 +39,7 @@ export function ResourcesList(props: IResourcesListProps) {
               className={cn(
                 direction === 'horizontal'
                   ? 'w-[45%] sm:w-[48%] md:w-auto'
-                  : 'w-full'
+                  : 'w-[45%] sm:w-[48%] md:w-full'
               )}
             >
               <SelectedResourceCard

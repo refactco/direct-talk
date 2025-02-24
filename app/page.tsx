@@ -123,7 +123,7 @@ export default function HomePage() {
   return (
     <div className="flex flex-col items-center gap-16 md:gap-16 justify-normal md:justify-center min-h-[calc(100vh-4rem)] p-0 md:p-4">
       <div className="w-full max-w-3xl flex flex-col justify-normal md:justify-center items-center">
-        <h1 className="text-2xl md:text-[2rem] font-semibold text-center text-white mb-4 sm:mb-6 mt-28 md:mt-0">
+        <h1 className="text-2xl md:text-[2rem] font-semibold text-center text-white mb-4 sm:mb-6 mt-12 md:mt-0">
           What do you want to know?
         </h1>
         <div className="w-full">

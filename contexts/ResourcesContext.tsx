@@ -29,7 +29,7 @@ const BASE_API_URL = 'https://dt-api.refact.co/wp-json/direct-talk/v1';
 
 export function ResourceProvider({ children }: { children: React.ReactNode }) {
   const [resources, setResources] = useState<IResource[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { toast } = useToast();
 
   const fetchResource = async (contentIds: string[] | number[]) => {
