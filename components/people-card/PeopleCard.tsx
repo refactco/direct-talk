@@ -32,7 +32,7 @@ export function PeopleCard({
     if (selected) {
       removeResource(id);
     } else {
-      addResource(people);
+      addResource(people, 'people');
     }
   };
 
