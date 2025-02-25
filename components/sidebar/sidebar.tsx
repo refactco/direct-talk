@@ -234,7 +234,7 @@ export function Sidebar() {
                   )}
                 >
                   {showTopFade ? (
-                    <div className="w-full h-32 bg-history-top-fade absolute top-0"></div>
+                    <div className="w-full h-8 bg-history-top-fade absolute top-0"></div>
                   ) : null}
                   <div
                     className={cn(
@@ -251,7 +251,7 @@ export function Sidebar() {
                     />
                   </div>
                   {showBottomFade ? (
-                    <div className="w-full h-32 bg-history-bottom-fade absolute bottom-0"></div>
+                    <div className="w-full h-8 bg-history-bottom-fade absolute bottom-0"></div>
                   ) : null}
                 </div>
               </ScrollArea>

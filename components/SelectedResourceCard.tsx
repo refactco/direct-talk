@@ -8,6 +8,7 @@ interface SelectedResourceCardProps {
   onRemoveResource?: (id: string) => void;
   hideRemove?: boolean;
   wrapTitle?: boolean;
+  isLoading?: boolean;
 }
 
 function SelectedResourceCard({
