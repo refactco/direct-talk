@@ -86,7 +86,7 @@ export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
               isResourceSelected ? 'bg-primary' : 'bg-white'
             )}
             onClick={() =>
-              isResourceSelected ? removeResource(id) : addResource(person)
+              isResourceSelected ? removeResource(id) : addResource(person, 'people')
             }
           >
             {isResourceSelected ? (
