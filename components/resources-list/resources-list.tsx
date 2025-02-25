@@ -3,8 +3,8 @@ import { TSelectedResource } from '@/types/resources';
 import Image from 'next/image';
 import { useState } from 'react';
 import SelectedResourceCard from '../SelectedResourceCard';
-import { MoreResourcesModal } from '../more-resources-modal/more-resources-modal';
 import { IResourcesListProps } from './resources-list-type';
+import { MoreResourcesSheet } from '@/components/more-resources-modal/more-resources-modal';
 
 export function ResourcesList(props: IResourcesListProps) {
   const {
@@ -15,7 +15,7 @@ export function ResourcesList(props: IResourcesListProps) {
     direction = 'horizontal',
     wrapTitle = false
   } = props;
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
 
   if (selectedResources.length === 0) {
     return null;
@@ -57,7 +57,7 @@ export function ResourcesList(props: IResourcesListProps) {
         <div
           className="flex items-center bg-accent rounded-lg px-2 py-1 relative gap-2 cursor-pointer"
           onClick={() => {
-            setIsModalOpen(true);
+            setIsSheetOpen(true);
           }}
         >
           <div className="flex">
@@ -68,6 +68,7 @@ export function ResourcesList(props: IResourcesListProps) {
 
                   return (
                     <div
+                      key={index}
                       className={cn(
                         'h-6 w-6 overflow-hidden flex-shrink-0 border-2 border-accent box-content rounded-md',
                         index > 3 ? '-ml-3' : ''
@@ -94,10 +95,10 @@ export function ResourcesList(props: IResourcesListProps) {
           </div>
         </div>
       ) : null}
-      <MoreResourcesModal
-        open={isModalOpen}
+      <MoreResourcesSheet
+        open={isSheetOpen}
         onOpenChange={(open) => {
-          setIsModalOpen(open);
+          setIsSheetOpen(open);
         }}
         {...props}
       />
