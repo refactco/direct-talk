@@ -197,7 +197,9 @@ export function DetailSheetResourceBody(
               isResourceSelected ? 'bg-primary' : 'bg-white'
             )}
             onClick={() =>
-              isResourceSelected ? removeResource(id) : addResource(resource, 'people')
+              isResourceSelected
+                ? removeResource(id)
+                : addResource(resource, 'people')
             }
           >
             {isResourceSelected ? (

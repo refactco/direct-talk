@@ -1,7 +1,7 @@
 'use client';
 
 import { useToast } from '@/hooks/use-toast';
-import type {IAuthor, IResource, TSelectedResource} from '@/types/resources';
+import type { IAuthor, IResource, TSelectedResource } from '@/types/resources';
 import type React from 'react';
 import { createContext, useContext, useState } from 'react';
 import toastConfig from '@/lib/toast-config';
@@ -9,7 +9,10 @@ import toastConfig from '@/lib/toast-config';
 type SelectedResourcesContextType = {
   authorResourcesIds: string[] | number[];
   selectedResources: TSelectedResource[];
-  addResource: (resource: TSelectedResource, type?: 'people' | 'resource') => void;
+  addResource: (
+    resource: TSelectedResource,
+    type?: 'people' | 'resource'
+  ) => void;
   removeResource: (resourceId: string | number) => void;
   resetSelectedResources: () => void;
   isSelected: (resourceId: string | number) => boolean;
@@ -27,12 +30,16 @@ export function SelectedResourcesProvider({
   const [selectedResources, setSelectedResources] = useState<
     TSelectedResource[]
   >([]);
-  const [authorResourcesIds, setAuthorResourcesIds] = useState<string[] | number[]>([]);
+  const [authorResourcesIds, setAuthorResourcesIds] = useState<
+    string[] | number[]
+  >([]);
   const { toast } = useToast();
 
   const getAuthorResource = async (author: IAuthor) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_PUBLIC_API_URL}/people/${author.id}?per_page=99999`);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_PUBLIC_API_URL}/people/${author.id}?per_page=99999`
+      );
       if (!response.ok) {
         throw new Error('Failed to fetch author resources');
       }
@@ -40,10 +47,10 @@ export function SelectedResourcesProvider({
 
       // Extract content IDs from all resource types (books, shows, episodes)
       const extractRefIds = (items: IResource[]) =>
-          items.reduce<string[]>((acc, item) => {
-            if (item.ref_id) acc.push(item.ref_id);
-            return acc;
-          }, []);
+        items.reduce<string[]>((acc, item) => {
+          if (item.ref_id) acc.push(item.ref_id);
+          return acc;
+        }, []);
       const contentIds: string[] = [
         ...extractRefIds(authorResources.resources.items.books),
         ...extractRefIds(authorResources.resources.items.shows),
@@ -51,14 +58,21 @@ export function SelectedResourcesProvider({
       ];
 
       setAuthorResourcesIds(contentIds);
-
     } catch (error) {
-      toast(toastConfig({ message: 'Error fetching author resources.', toastType: 'destructive'}));
+      toast(
+        toastConfig({
+          message: 'Error fetching author resources.',
+          toastType: 'destructive'
+        })
+      );
       return;
     }
-  }
+  };
 
-  const addResource = async (resource: TSelectedResource, type: 'people' | 'resource' = 'resource') => {
+  const addResource = async (
+    resource: TSelectedResource,
+    type: 'people' | 'resource' = 'resource'
+  ) => {
     if (type === 'people') {
       getAuthorResource(resource as IAuthor);
     }
