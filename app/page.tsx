@@ -24,12 +24,16 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingPopular, setIsLoadingPopular] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const { selectedResources, addResource, authorResourcesIds } = useSelectedResources();
+  const { selectedResources, addResource, authorResourcesIds } =
+    useSelectedResources();
   const router = useRouter();
   const { isAuthenticated, openAuthModal } = useAuth();
   const { updateStartChatDate } = useChat();
   const { toast } = useToast();
-  let startMessage: any, startResources: any, startResourceIds: any, startAuthorResourcesIds:any;
+  let startMessage: any,
+    startResources: any,
+    startResourceIds: any,
+    startAuthorResourcesIds: any;
   try {
     if (typeof window !== 'undefined') {
       startMessage = localStorage.getItem('startMessage');
@@ -70,13 +74,17 @@ export default function HomePage() {
   // }, []);
 
   useEffect(() => {
-    if (isAuthenticated && startMessage && (startResourceIds || startAuthorResourcesIds)) {
+    if (
+      isAuthenticated &&
+      startMessage &&
+      (startResourceIds || startAuthorResourcesIds)
+    ) {
       if (startResources && JSON.parse(startResources).length > 0) {
         JSON.parse(startResources)?.map((el: IResource) => addResource(el));
       }
       console.log({ startResources });
-      const resourceIds = JSON.parse(startResourceIds)
-      const authorResourceIds = JSON.parse(startAuthorResourcesIds)
+      const resourceIds = JSON.parse(startResourceIds);
+      const authorResourceIds = JSON.parse(startAuthorResourcesIds);
       startNewChat(startMessage, [...authorResourceIds, ...resourceIds]);
     }
   }, [isAuthenticated]);
@@ -97,7 +105,10 @@ export default function HomePage() {
       localStorage.setItem('startMessage', message);
       localStorage.setItem('startResources', JSON.stringify(selectedResources));
       localStorage.setItem('startResourceIds', JSON.stringify(contentIds));
-      localStorage.setItem('startAuthorResourcesIds', JSON.stringify(authorResourcesIds));
+      localStorage.setItem(
+        'startAuthorResourcesIds',
+        JSON.stringify(authorResourcesIds)
+      );
 
       openAuthModal();
       return;
