@@ -1,21 +1,32 @@
 'use client';
 
-import { ChatInput } from '@/components/ChatInput';
-import { Icons } from '@/components/icons';
-import { Logo } from '@/components/icons/Logo';
+import { ConversationPageLoading } from '@/components/conversation-page-loading/conversation-page-loading';
 import { ResourcesList } from '@/components/resources-list/resources-list';
-import { TextLoading } from '@/components/text-loading/text-loading';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/contexts/AuthContext';
 import { useChat } from '@/contexts/ChatContext';
 import { useHistory } from '@/contexts/HistoryContext';
 import { useResource } from '@/contexts/ResourcesContext';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Book, MessageCircleQuestion, Send } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react'; // Add Suspense
+import { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { IChatHistory } from './types';
+import { IChatHistory } from '../conversation/types';
 
-export default function ChatConversationPage() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+interface Resource {
+  type: string;
+  title: string;
+  image: string;
+}
+
+export default function SearchResults() {
+  // const [isLoading, setIsLoading] = useState(true);
+  const [inputValue, setInputValue] = useState('');
+
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isStartChatting, setIsStartChatting] = useState<boolean>(false);
   const [chatHistory, setChatHistory] = useState<IChatHistory[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -130,88 +141,169 @@ export default function ChatConversationPage() {
     }
   };
 
-  return (
-    <div className="flex flex-col md:flex-row gap-10 justify-center mt-4 md:mt-0">
-      <div className="hidden md:fixed top-0 left-0 h-16 bg-fade-inverse z-[1] w-[calc(100vw-1rem)]"></div>
-      <div className="relative flex flex-col order-2 md:order-1 min-h-[calc(100vh-3rem)] justify-between bg-background animate-in fade-in duration-500 md:pt-8">
-        <div>
-          <div className="w-full md:w-[732px] mx-auto pr-0 md:pr-12">
-            <div className="mb-6 px-3 md:px-4 flex flex-col">
-              {chatHistory.map((message: IChatHistory, index: number) => {
-                const { question, answer } = message;
+  // const resources: Resource[] = [
+  //   {
+  //     type: 'BOOK',
+  //     title: 'Harry Potter',
+  //     image: '/placeholder.svg?height=40&width=40'
+  //   },
+  //   {
+  //     type: 'BOOK',
+  //     title: 'Fabrics of sepien',
+  //     image: '/placeholder.svg?height=40&width=40'
+  //   },
+  //   {
+  //     type: 'BOOK',
+  //     title: 'Harry Potter',
+  //     image: '/placeholder.svg?height=40&width=40'
+  //   }
+  // ];
 
-                return (
-                  <div key={index} className="rounded-lg">
-                    <div className="flex flex-col items-start gap-[14px]">
-                      <div>
-                        <p className="text-foreground text-lg font-bold">
-                          <ReactMarkdown>{question}</ReactMarkdown>
-                        </p>
-                        <div ref={messagesEndRef} />
-                      </div>
-                      <div className="flex flex-col gap-3">
-                        <div className="flex gap-2">
-                          <Logo />
-                          <span className="text-sm">Answer</span>
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-foreground text-base">
-                            <ReactMarkdown>{answer}</ReactMarkdown>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    {index < chatHistory.length - 1 ? (
-                      <hr className="w-full my-6" />
-                    ) : null}
+  const paragraphs = [
+    'Harry Potter is a fictional character and the protagonist of the Harry Potter series, created by British author J.K. Rowling. His full name is Harry James Potter, and he is introduced as an orphan living with his neglectful aunt and uncle, the Dursleys. On his eleventh birthday, Harry discovers that he is a wizard and receives an invitation to attend Hogwarts School of Witchcraft and Wizardry.',
+    "The series chronicles Harry's journey over seven years as he learns about magic, makes close friends like Ron Weasley and Hermione Granger, and confronts the dark wizard Lord Voldemort, who murdered his parents. Harry's survival from Voldemort's killing curse as a baby left him with a distinctive lightning-bolt-shaped scar on his forehead, earning him the title of \"The Boy Who Lived\" in the wizarding world.",
+    'The Harry Potter series consists of seven books, starting with Harry Potter and the Philosopher\'s Stone (1997), and has been adapted into eight successful films. The books have sold over 600 million copies worldwide, making them the best-selling book series in history. Harry Potter has become a cultural icon, influencing various aspects of society and inspiring a dedicated fan base known as "Potterheads"'
+  ];
+
+  // Simulate loading delay
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading || isLoadingChats || isLoadingResources) {
+    return <ConversationPageLoading />;
+  }
+
+  return (
+    <div className="">
+      {/* Main Content */}
+      <div className="flex gap-8 min-h-[calc(100vh-117px)]">
+        <div className="flex flex-1 flex-col">
+          {chatHistory.map((chat: IChatHistory, index: number) => {
+            const { question, answer } = chat;
+
+            return (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-6 max-w-5xl"
+              >
+                <div className="flex-1 flex flex-col">
+                  <div className="flex items-center gap-4 mb-6">
+                    <MessageCircleQuestion className="h-6 w-6" />
+                    <h2 className="text-2xl font-semibold">{question}</h2>
                   </div>
-                );
-              })}
-              {isLoading || isStartChatting ? (
-                <>
-                  {!isStartChatting ? <hr className="w-full my-6" /> : null}
-                  <TextLoading text="AI is thinking" />
-                </>
-              ) : null}
-              {isLoadingChats && !isStartChatting ? (
-                <TextLoading text="Is Fetching" />
-              ) : null}
-              {errorMessage && (
-                <div className="text-red-500 text-xs sm:text-sm">
-                  {errorMessage}
+
+                  {/* Answer Section */}
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Book className="h-5 w-5" />
+                      <div className="font-medium">Answer</div>
+                    </div>
+
+                    <AnimatePresence mode="wait">
+                      {isLoading ? (
+                        <motion.div
+                          key="loading"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="space-y-4"
+                        >
+                          <Skeleton className="h-4 w-[90%]" />
+                          <Skeleton className="h-4 w-[80%]" />
+                          <Skeleton className="h-4 w-[85%]" />
+                          <Skeleton className="h-4 w-[75%]" />
+                          <Skeleton className="h-4 w-[88%]" />
+                        </motion.div>
+                      ) : (
+                        <motion.div
+                          key="content"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          className="space-y-4"
+                        >
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.5 }}
+                            className="leading-relaxed text-gray-200"
+                          >
+                            <ReactMarkdown>{answer}</ReactMarkdown>
+                          </motion.div>
+                          {/* {paragraphs.map((text, index) => (
+                        ))} */}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
-              )}
-            </div>
-          </div>
+              </motion.div>
+            );
+          })}
         </div>
-        {/* Empty div for scrolling to bottom */}
-        <div className="sticky bottom-0 w-full">
-          <div className="h-10 w-full bg-fade"></div>
-          <div className="max-w-[732px] mx-auto px-4 bg-background pb-3 md:pb-20">
-            <ChatInput
-              onSubmit={handleSubmit}
-              hideResources
-              isLoading={isLoading}
-              placeholder="Ask follow-up..."
-              resetAfterSubmit
-            />
+        {/* Resources Section */}
+        <div className="w-60 mt-6">
+          <div className="sticky top-0">
+            <div className="text-sm text-gray-400 mb-4">Resources</div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key="content"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="space-y-2"
+              >
+                <ResourcesList
+                  selectedResources={resources}
+                  hideRemoveButton
+                  direction="vertical"
+                  wrapTitle
+                />
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </div>
-      <div className="w-full md:w-44 md:mt-10 order-1 md:order-2">
-        <div className="sticky top-10 left-0 flex flex-col gap-3">
-          <p className="text-sm font-bold">Resources</p>
-          {isLoadingResources ? (
-            <Icons.spinner className="m-auto mt-[6%] h-4 w-4 animate-spin" />
-          ) : (
-            <ResourcesList
-              selectedResources={resources}
-              hideRemoveButton
-              direction="vertical"
-              wrapTitle
-            />
-          )}
-        </div>
+      {/* Search Input */}
+      <div className="p-4 border-t border-white/10 sticky flex bottom-0 items-center justify-center w-full bg-background">
+        <motion.div
+          className="max-w-3xl relative"
+          initial={false}
+          animate={inputValue ? { width: '100%' } : { width: '66.666667%' }}
+          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        >
+          <Input
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder="Ask a follow-up question..."
+            maxLength={200}
+            className="bg-[#1c1917] border-2 border-[#27272a] text-white placeholder-gray-400 pr-24 pl-4 py-6 rounded-full transition-all duration-300 focus:border-[#4a4a4f] focus:outline-none outline-none ring-0"
+            onKeyUp={(e) => {
+              if (e.key === 'Enter') {
+                handleSubmit(inputValue);
+              }
+            }}
+          />
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center">
+            <span className="text-sm text-gray-400 mr-2">
+              {inputValue.length}/200
+            </span>
+            <Button
+              size="icon"
+              className="h-10 w-10 rounded-full bg-[#4a4a4f] hover:bg-[#5a5a5f] transition-colors duration-300"
+              onClick={() => {
+                handleSubmit(inputValue);
+              }}
+            >
+              <Send className="h-5 w-5 stroke-white" />
+            </Button>
+          </div>
+        </motion.div>
       </div>
     </div>
   );

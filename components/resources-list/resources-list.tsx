@@ -13,7 +13,8 @@ export function ResourcesList(props: IResourcesListProps) {
     customClassName = '',
     hideRemoveButton = false,
     direction = 'horizontal',
-    wrapTitle = false
+    wrapTitle = false,
+    isLoading = false
   } = props;
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
 
