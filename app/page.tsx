@@ -24,17 +24,18 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingPopular, setIsLoadingPopular] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const { selectedResources, addResource } = useSelectedResources();
+  const { selectedResources, addResource, authorResourcesIds } = useSelectedResources();
   const router = useRouter();
   const { isAuthenticated, openAuthModal } = useAuth();
   const { updateStartChatDate } = useChat();
   const { toast } = useToast();
-  let startMessage: any, startResources: any, startResourceIds: any;
+  let startMessage: any, startResources: any, startResourceIds: any, startAuthorResourcesIds:any;
   try {
     if (typeof window !== 'undefined') {
       startMessage = localStorage.getItem('startMessage');
       startResources = localStorage.getItem('startResources');
       startResourceIds = localStorage.getItem('startResourceIds');
+      startAuthorResourcesIds = localStorage.getItem('startAuthorResourcesIds');
     }
   } catch (error) {
     console.error('localStorage is not available', error);
@@ -69,12 +70,14 @@ export default function HomePage() {
   // }, []);
 
   useEffect(() => {
-    if (isAuthenticated && startMessage && startResourceIds) {
+    if (isAuthenticated && startMessage && (startResourceIds || startAuthorResourcesIds)) {
       if (startResources && JSON.parse(startResources).length > 0) {
         JSON.parse(startResources)?.map((el: IResource) => addResource(el));
       }
       console.log({ startResources });
-      startNewChat(startMessage, JSON.parse(startResourceIds));
+      const resourceIds = JSON.parse(startResourceIds)
+      const authorResourceIds = JSON.parse(startAuthorResourcesIds)
+      startNewChat(startMessage, [...authorResourceIds, ...resourceIds]);
     }
   }, [isAuthenticated]);
 
@@ -94,14 +97,15 @@ export default function HomePage() {
       localStorage.setItem('startMessage', message);
       localStorage.setItem('startResources', JSON.stringify(selectedResources));
       localStorage.setItem('startResourceIds', JSON.stringify(contentIds));
+      localStorage.setItem('startAuthorResourcesIds', JSON.stringify(authorResourcesIds));
 
       openAuthModal();
       return;
     }
 
     if (message.trim()) {
-      if (selectedResources.length > 0) {
-        await startNewChat(message, contentIds);
+      if (selectedResources.length > 0 || authorResourcesIds.length > 0) {
+        await startNewChat(message, [...authorResourcesIds, ...contentIds]);
       } else {
         setIsModalOpen(true);
         setShowWarning(true);
@@ -117,6 +121,7 @@ export default function HomePage() {
       localStorage.removeItem('startMessage');
       localStorage.removeItem('startResources');
       localStorage.removeItem('startResourceIds');
+      localStorage.removeItem('startAuthorResourcesIds');
     }
   };
 
