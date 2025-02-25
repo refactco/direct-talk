@@ -8,13 +8,15 @@ interface SelectedResourceCardProps {
   onRemoveResource?: (id: string) => void;
   hideRemove?: boolean;
   wrapTitle?: boolean;
+  noDetail?: boolean;
 }
 
 function SelectedResourceCard({
   resource,
   onRemoveResource,
   hideRemove = false,
-  wrapTitle = false
+  wrapTitle = false,
+  noDetail = false
 }: SelectedResourceCardProps) {
   const { id, image_url, title, name, type } = resource;
   const displayName = title ?? name;
@@ -32,10 +34,14 @@ function SelectedResourceCard({
         />
       </div>
       <div
-        className="flex flex-col flex-grow min-w-0 pr-6 cursor-pointer"
-        onClick={() => {
-          pushDetailItem(resource);
-        }}
+        className={`flex flex-col flex-grow min-w-0 pr-6 ${!noDetail && 'cursor-pointer'}`}
+        onClick={
+          noDetail
+            ? () => {}
+            : () => {
+                pushDetailItem(resource);
+              }
+        }
       >
         <span className="text-xxs leading-[normal] text-muted-foreground uppercase">
           {type ?? 'Person'}
