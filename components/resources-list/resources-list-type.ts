@@ -7,4 +7,5 @@ export interface IResourcesListProps {
   customClassName?: string;
   direction?: 'horizontal' | 'vertical';
   wrapTitle?: boolean;
+  isLoading?: boolean;
 }
