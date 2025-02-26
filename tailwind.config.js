@@ -96,7 +96,7 @@ module.exports = {
     'prose-h2:text-3xl',
     'prose-h3:text-2xl',
     'prose-p:text-base',
-    'prose-p:leading-7',
+    'prose-p:leading-7'
   ],
-  plugins: [require('@tailwindcss/typography'),require('tailwindcss-animate')]
+  plugins: [require('@tailwindcss/typography'), require('tailwindcss-animate')]
 };

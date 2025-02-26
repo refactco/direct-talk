@@ -1,5 +1,5 @@
 const markdownSample = () => {
-    return `
+  return `
     # Markdown Syntax Reference
 
 # Heading 1  
@@ -95,6 +95,6 @@ This is a reference to a footnote[^1].
 
 \\*This is not italic\\*
 
-`
-}
+`;
+};
 export default markdownSample;

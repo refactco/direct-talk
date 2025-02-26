@@ -14,7 +14,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { MessageCircleQuestion, Send } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import ReactMarkdown from 'react-markdown';
 import { IChatHistory } from '../conversation/types';
 
 interface Resource {
