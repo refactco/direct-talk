@@ -85,5 +85,18 @@ module.exports = {
       }
     }
   },
-  plugins: [require('tailwindcss-animate')]
+  safelist: [
+    'prose',
+    'prose-slate',
+    'dark:prose-invert',
+    'prose-headings:font-bold',
+    'prose-headings:tracking-tight',
+    'prose-h1:text-4xl',
+    'prose-h1:font-extrabold',
+    'prose-h2:text-3xl',
+    'prose-h3:text-2xl',
+    'prose-p:text-base',
+    'prose-p:leading-7',
+  ],
+  plugins: [require('@tailwindcss/typography'),require('tailwindcss-animate')]
 };

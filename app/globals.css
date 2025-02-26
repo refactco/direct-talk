@@ -64,6 +64,12 @@
   body {
     @apply bg-background text-foreground;
   }
+  .prose-invert {
+    --tw-prose-invert-body: hsl(0deg 0% 94.9%);
+    --tw-prose-invert-counters: hsl(0deg 0% 100%);
+    --tw-prose-invert-bullets: hsl(0deg 0% 100%);
+    --tw-prose-invert-headings: hsl(0deg 0% 94.9%);
+  }
 }
 
 .scrollbar-hide::-webkit-scrollbar {
