@@ -13,9 +13,9 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react'; // Add Suspense
 import ReactMarkdown from 'react-markdown';
 import { IChatHistory } from './types';
-import markdownSample from "@/lib/markdown-sample";
-import remarkGfm from 'remark-gfm'
-import MarkdownRenderer from "@/lib/markdown-render";
+import markdownSample from '@/lib/markdown-sample';
+import remarkGfm from 'remark-gfm';
+import MarkdownRenderer from '@/lib/markdown-render';
 
 export default function ChatConversationPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -159,7 +159,7 @@ export default function ChatConversationPage() {
                         </div>
                         <div className="flex-1">
                           <p className="text-foreground text-base">
-                           {/* <MarkdownRenderer content={markdownSample()} />*/}
+                            {/* <MarkdownRenderer content={markdownSample()} />*/}
                             <MarkdownRenderer content={answer as string} />
                           </p>
                         </div>
