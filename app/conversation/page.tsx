@@ -14,7 +14,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { MessageCircleQuestion, Send } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import ReactMarkdown from 'react-markdown';
 import { IChatHistory } from '../conversation/types';
 
 interface Resource {
@@ -22,6 +21,7 @@ interface Resource {
   title: string;
   image: string;
 }
+import MarkdownRenderer from "@/lib/markdown-render";
 
 export default function SearchResults() {
   // const [isLoading, setIsLoading] = useState(true);
@@ -212,7 +212,7 @@ export default function SearchResults() {
                             transition={{ delay: index * 0.5 }}
                             className="leading-relaxed text-gray-200"
                           >
-                            <ReactMarkdown>{answer}</ReactMarkdown>
+                              <MarkdownRenderer content={answer as string} />
                           </motion.div>
                           {/* {paragraphs.map((text, index) => (
                         ))} */}
