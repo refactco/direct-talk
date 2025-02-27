@@ -1,6 +1,7 @@
 'use client';
 
 import { ConversationPageLoading } from '@/components/conversation-page-loading/conversation-page-loading';
+import { Logo } from '@/components/icons/Logo';
 import { ResourcesList } from '@/components/resources-list/resources-list';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,7 +11,7 @@ import { useChat } from '@/contexts/ChatContext';
 import { useHistory } from '@/contexts/HistoryContext';
 import { useResource } from '@/contexts/ResourcesContext';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Book, MessageCircleQuestion, Send } from 'lucide-react';
+import { MessageCircleQuestion, Send } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -141,30 +142,6 @@ export default function SearchResults() {
     }
   };
 
-  // const resources: Resource[] = [
-  //   {
-  //     type: 'BOOK',
-  //     title: 'Harry Potter',
-  //     image: '/placeholder.svg?height=40&width=40'
-  //   },
-  //   {
-  //     type: 'BOOK',
-  //     title: 'Fabrics of sepien',
-  //     image: '/placeholder.svg?height=40&width=40'
-  //   },
-  //   {
-  //     type: 'BOOK',
-  //     title: 'Harry Potter',
-  //     image: '/placeholder.svg?height=40&width=40'
-  //   }
-  // ];
-
-  const paragraphs = [
-    'Harry Potter is a fictional character and the protagonist of the Harry Potter series, created by British author J.K. Rowling. His full name is Harry James Potter, and he is introduced as an orphan living with his neglectful aunt and uncle, the Dursleys. On his eleventh birthday, Harry discovers that he is a wizard and receives an invitation to attend Hogwarts School of Witchcraft and Wizardry.',
-    "The series chronicles Harry's journey over seven years as he learns about magic, makes close friends like Ron Weasley and Hermione Granger, and confronts the dark wizard Lord Voldemort, who murdered his parents. Harry's survival from Voldemort's killing curse as a baby left him with a distinctive lightning-bolt-shaped scar on his forehead, earning him the title of \"The Boy Who Lived\" in the wizarding world.",
-    'The Harry Potter series consists of seven books, starting with Harry Potter and the Philosopher\'s Stone (1997), and has been adapted into eight successful films. The books have sold over 600 million copies worldwide, making them the best-selling book series in history. Harry Potter has become a cultural icon, influencing various aspects of society and inspiring a dedicated fan base known as "Potterheads"'
-  ];
-
   // Simulate loading delay
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -201,7 +178,8 @@ export default function SearchResults() {
                   {/* Answer Section */}
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-4">
-                      <Book className="h-5 w-5" />
+                      {/* <Book className="h-5 w-5" /> */}
+                      <Logo />
                       <div className="font-medium">Answer</div>
                     </div>
 
