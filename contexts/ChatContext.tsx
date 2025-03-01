@@ -11,6 +11,7 @@ interface ChatContextType {
   chatDatas: ChatData | null;
   isLoading: boolean;
   isLoadingChats: boolean;
+  isLoadingStartChat: boolean;
   error: string | null;
   doChat: (
     prompt: string,
@@ -38,6 +39,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
     null
   );
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingStartChat, setIsLoadingStartChat] = useState(false);
   const [isLoadingChats, setIsLoadingChats] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
@@ -60,6 +62,8 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
       const formData: any = { question: prompt };
       if (sessionId) {
         formData['session_id'] = sessionId;
+      } else {
+        setIsLoadingStartChat(true);
       }
       if (contentIds && contentIds?.length > 0) {
         formData['content_ids'] = contentIds;
@@ -78,6 +82,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
         throw err;
       } finally {
         setIsLoading(false);
+        setIsLoadingStartChat(false);
       }
     },
     []
@@ -121,6 +126,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
     chatDatas,
     isLoading,
     isLoadingChats,
+    isLoadingStartChat,
     error,
     doChat,
     fetchChat,
