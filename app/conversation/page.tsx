@@ -19,7 +19,7 @@ import MarkdownRenderer from '@/components/markdown-render';
 import { cn } from '@/lib/utils';
 import { ResourcesConversationPageLoading } from '@/app/conversation/resources-list/resources-loading';
 import { ResourcesConversationPage } from '@/app/conversation/resources-list/resources-list';
-import {Icons} from "@/components/icons";
+import { Icons } from '@/components/icons';
 
 export default function SearchResults() {
   const [inputValue, setInputValue] = useState('');
@@ -103,7 +103,6 @@ export default function SearchResults() {
   };
 
   useEffect(() => {
-
     if (chatId) {
       resetChatData();
       updateStartChatDate(null, null);
@@ -136,7 +135,6 @@ export default function SearchResults() {
     }
   };
 
-
   return (
     <Fragment>
       {isLoadingResources ? (
@@ -145,9 +143,9 @@ export default function SearchResults() {
         <ResourcesConversationPage resources={resources} />
       )}
       {/* Main Content */}
-      {
-        isLoadingChats || isLoadingStartChat ? <ConversationPageLoading/> : null
-      }
+      {isLoadingChats || isLoadingStartChat ? (
+        <ConversationPageLoading />
+      ) : null}
       <div className="flex gap-8 min-h-[calc(100vh-117px)] w-full md:w-[732px] mx-auto">
         <div className="flex flex-1 flex-col">
           {chatHistory.map((chat: IChatHistory, index: number) => {
@@ -245,14 +243,18 @@ export default function SearchResults() {
                 handleSubmit(inputValue);
               }}
             >
-              {
-                isLoadingFollowUp ? <Icons.spinner className="h-4 w-4 animate-spin text-white" /> :  <ArrowRightIcon
-                    className={cn(
-                        'w-5 h-5',
-                        !inputValue?.trim() ? 'text-white' : 'text-primary-foreground'
-                    )}
+              {isLoadingFollowUp ? (
+                <Icons.spinner className="h-4 w-4 animate-spin text-white" />
+              ) : (
+                <ArrowRightIcon
+                  className={cn(
+                    'w-5 h-5',
+                    !inputValue?.trim()
+                      ? 'text-white'
+                      : 'text-primary-foreground'
+                  )}
                 />
-              }
+              )}
             </Button>
           </div>
         </motion.div>
