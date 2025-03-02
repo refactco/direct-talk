@@ -2,7 +2,6 @@
 
 import { ConversationPageLoading } from '@/components/conversation-page-loading/conversation-page-loading';
 import { Logo } from '@/components/icons/Logo';
-import { ResourcesList } from '@/components/resources-list/resources-list';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -11,26 +10,22 @@ import { useChat } from '@/contexts/ChatContext';
 import { useHistory } from '@/contexts/HistoryContext';
 import { useResource } from '@/contexts/ResourcesContext';
 import { AnimatePresence, motion } from 'framer-motion';
-import { MessageCircleQuestion, Send } from 'lucide-react';
+import { ArrowRightIcon } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { IChatHistory } from '../conversation/types';
 
-interface Resource {
-  type: string;
-  title: string;
-  image: string;
-}
-import MarkdownRenderer from "@/lib/markdown-render";
+import MarkdownRenderer from '@/components/markdown-render';
+import { cn } from '@/lib/utils';
+import { ResourcesConversationPageLoading } from '@/app/conversation/resources-list/resources-loading';
+import { ResourcesConversationPage } from '@/app/conversation/resources-list/resources-list';
+import { Icons } from '@/components/icons';
 
 export default function SearchResults() {
-  // const [isLoading, setIsLoading] = useState(true);
   const [inputValue, setInputValue] = useState('');
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isStartChatting, setIsStartChatting] = useState<boolean>(false);
+  const [isLoadingFollowUp, setIsLoadingFollowUp] = useState<boolean>(false);
   const [chatHistory, setChatHistory] = useState<IChatHistory[]>([]);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const chatId = searchParams.get('id');
   const { openAuthModal, isAuthenticated } = useAuth();
@@ -42,7 +37,8 @@ export default function SearchResults() {
     startChatData,
     updateStartChatDate,
     resetChatData,
-    isLoadingChats
+    isLoadingChats,
+    isLoadingStartChat
   } = useChat();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const hasStartedChat = useRef(false);
@@ -93,7 +89,6 @@ export default function SearchResults() {
   const startNewChat = async () => {
     console.log({ startNewChat: true });
     if (startChatData.message) {
-      setIsStartChatting(true);
       addMessage({ question: startChatData.message });
 
       const retrievedChatData = await doChat(
@@ -104,13 +99,10 @@ export default function SearchResults() {
 
       updateHistory();
       updateStartChatDate(null, null);
-      setIsStartChatting(false);
     }
   };
 
   useEffect(() => {
-    console.log({ chatId });
-
     if (chatId) {
       resetChatData();
       updateStartChatDate(null, null);
@@ -127,10 +119,9 @@ export default function SearchResults() {
   }, [chatId]);
 
   const handleSubmit = async (message: string) => {
-    if (!message.trim() || isLoading) return;
+    if (!message.trim() || isLoadingFollowUp) return;
 
-    setIsLoading(true);
-    setErrorMessage(null);
+    setIsLoadingFollowUp(true);
 
     try {
       addMessage({ question: message });
@@ -138,27 +129,24 @@ export default function SearchResults() {
       const result = await doChat(message, undefined, chatId?.toString());
       addMessage({ answer: result?.answer });
     } finally {
-      setIsLoading(false);
+      setIsLoadingFollowUp(false);
+      setInputValue('');
+      scrollToLastMessage();
     }
   };
 
-  // Simulate loading delay
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (isLoading || isLoadingChats || isLoadingResources) {
-    return <ConversationPageLoading />;
-  }
-
   return (
-    <div className="">
+    <Fragment>
+      {isLoadingResources ? (
+        <ResourcesConversationPageLoading />
+      ) : (
+        <ResourcesConversationPage resources={resources} />
+      )}
       {/* Main Content */}
-      <div className="flex gap-8 min-h-[calc(100vh-117px)]">
+      {isLoadingChats || isLoadingStartChat ? (
+        <ConversationPageLoading />
+      ) : null}
+      <div className="flex gap-8 min-h-[calc(100vh-117px)] w-full md:w-[732px] mx-auto">
         <div className="flex flex-1 flex-col">
           {chatHistory.map((chat: IChatHistory, index: number) => {
             const { question, answer } = chat;
@@ -170,10 +158,7 @@ export default function SearchResults() {
                 className="p-6 max-w-5xl"
               >
                 <div className="flex-1 flex flex-col">
-                  <div className="flex items-center gap-4 mb-6">
-                    <MessageCircleQuestion className="h-6 w-6" />
-                    <h2 className="text-2xl font-semibold">{question}</h2>
-                  </div>
+                  <h2 className="text-lg font-bold mb-6">{question}</h2>
 
                   {/* Answer Section */}
                   <div className="flex-1">
@@ -184,7 +169,7 @@ export default function SearchResults() {
                     </div>
 
                     <AnimatePresence mode="wait">
-                      {isLoading ? (
+                      {isLoadingChats ? (
                         <motion.div
                           key="loading"
                           initial={{ opacity: 0 }}
@@ -212,10 +197,8 @@ export default function SearchResults() {
                             transition={{ delay: index * 0.5 }}
                             className="leading-relaxed text-gray-200"
                           >
-                              <MarkdownRenderer content={answer as string} />
+                            <MarkdownRenderer content={answer as string} />
                           </motion.div>
-                          {/* {paragraphs.map((text, index) => (
-                        ))} */}
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -225,30 +208,10 @@ export default function SearchResults() {
             );
           })}
         </div>
-        {/* Resources Section */}
-        <div className="w-60 mt-6">
-          <div className="sticky top-0">
-            <div className="text-sm text-gray-400 mb-4">Resources</div>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key="content"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="space-y-2"
-              >
-                <ResourcesList
-                  selectedResources={resources}
-                  hideRemoveButton
-                  direction="vertical"
-                  wrapTitle
-                />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
       </div>
       {/* Search Input */}
-      <div className="p-4 border-t border-white/10 sticky flex bottom-0 items-center justify-center w-full bg-background">
+      <div className="p-4 sticky flex flex-col bottom-0 items-center justify-center w-full">
+        <div className="h-10 w-full bg-fade"></div>
         <motion.div
           className="max-w-3xl relative"
           initial={false}
@@ -260,7 +223,8 @@ export default function SearchResults() {
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Ask a follow-up question..."
             maxLength={200}
-            className="bg-[#1c1917] border-2 border-[#27272a] text-white placeholder-gray-400 pr-24 pl-4 py-6 rounded-full transition-all duration-300 focus:border-[#4a4a4f] focus:outline-none outline-none ring-0"
+            disabled={isLoadingFollowUp}
+            className="border border-border text-white placeholder-gray-400 pr-24 pl-4 py-6 rounded-full transition-all duration-300 focus:border-[#4a4a4f] focus:outline-none outline-none ring-0"
             onKeyUp={(e) => {
               if (e.key === 'Enter') {
                 handleSubmit(inputValue);
@@ -273,16 +237,28 @@ export default function SearchResults() {
             </span>
             <Button
               size="icon"
-              className="h-10 w-10 rounded-full bg-[#4a4a4f] hover:bg-[#5a5a5f] transition-colors duration-300"
+              className="w-8 h-8 sm:w-10 md:h-10 rounded-full bg-primary hover:bg-primary/90 focus:bg:primary/70 flex items-center justify-center shrink-0 disabled:bg-accent-light disabled:cursor-not-allowed"
+              disabled={isLoadingFollowUp || !inputValue?.trim()}
               onClick={() => {
                 handleSubmit(inputValue);
               }}
             >
-              <Send className="h-5 w-5 stroke-white" />
+              {isLoadingFollowUp ? (
+                <Icons.spinner className="h-4 w-4 animate-spin text-white" />
+              ) : (
+                <ArrowRightIcon
+                  className={cn(
+                    'w-5 h-5',
+                    !inputValue?.trim()
+                      ? 'text-white'
+                      : 'text-primary-foreground'
+                  )}
+                />
+              )}
             </Button>
           </div>
         </motion.div>
       </div>
-    </div>
+    </Fragment>
   );
 }
