@@ -2,6 +2,8 @@
 
 // import { ArrowRightIcon } from '@/components/icons/ArrowRightIcon';
 // import { PlusIcon } from '@/components/icons/PlusIcon';
+import { useToast } from '@/hooks/use-toast';
+import toastConfig from '@/lib/toast-config';
 import { cn } from '@/lib/utils';
 import { ArrowRightIcon, PlusIcon } from 'lucide-react';
 import type React from 'react';
@@ -16,6 +18,7 @@ interface ChatInputProps {
   placeholder?: string;
   resetAfterSubmit?: boolean;
   defaultValue?: string;
+  disabled?: boolean;
 }
 
 export function ChatInput({
@@ -25,12 +28,15 @@ export function ChatInput({
   isLoading,
   placeholder = 'Ask AI anything...',
   resetAfterSubmit = false,
-  defaultValue
+  defaultValue,
+  disabled = false
 }: ChatInputProps) {
   const [input, setInput] = useState(defaultValue ?? '');
+  const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
     if (input?.trim() && !isLoading) {
       onSubmit(input?.trim());
       if (resetAfterSubmit) {
@@ -50,9 +56,20 @@ export function ChatInput({
     <form onSubmit={handleSubmit} className="relative">
       <div
         className={cn(
-          'rounded-3xl border border-border bg-background overflow-hidden',
-          hideResources ? 'rounded-[62.4375rem]' : 'rounded-3xl'
+          'rounded-3xl border bg-background overflow-hidden transition-all duration-300',
+          hideResources ? 'rounded-[62.4375rem]' : 'rounded-3xl',
+          disabled ? 'border-border' : 'border-neutral-700'
         )}
+        onPointerDown={(e) => {
+          if (disabled) {
+            e.preventDefault();
+            const tConfig: any = toastConfig({
+              message: 'Please select a resource first',
+              toastType: 'destructive'
+            });
+            toast(tConfig);
+          }
+        }}
       >
         {/* Selected Resources */}
         {hideResources ? null : (
@@ -72,10 +89,11 @@ export function ChatInput({
             placeholder={placeholder}
             rows={1}
             className={cn(
-              'w-full flex-grow bg-background border-0 focus:outline-none focus:ring-0 placeholder-[#a2a2a4] text-xs md:text-sm resize-none',
-              hideResources ? 'flex-1' : ''
+              'w-full flex-grow bg-background border-0 focus:outline-none focus:ring-0 text-xs md:text-sm resize-none',
+              hideResources ? 'flex-1' : '',
+              disabled ? 'placeholder-neutral-700' : 'placeholder-[#a2a2a4]'
             )}
-            disabled={isLoading}
+            disabled={isLoading || disabled}
             defaultValue={defaultValue}
           />
           <div
@@ -99,10 +117,13 @@ export function ChatInput({
             <button
               type="submit"
               disabled={isLoading || !input.trim()}
-              className="w-8 h-8 sm:w-10 md:h-10 rounded-full bg-primary hover:bg-primary/90 focus:bg:primary/70 flex items-center justify-center shrink-0 disabled:bg-accent-light disabled:cursor-not-allowed"
+              className="w-8 h-8 sm:w-10 md:h-10 rounded-full bg-primary hover:bg-primary/90 focus:bg:primary/70 flex items-center justify-center shrink-0 disabled:bg-neutral-900 disabled:cursor-not-allowed"
             >
               <ArrowRightIcon
-                className={cn('w-5 h-5', !input.trim() ? '' : 'text-black')}
+                className={cn(
+                  'w-5 h-5',
+                  !input.trim() ? 'text-neutral-500' : 'text-black'
+                )}
               />
             </button>
           </div>

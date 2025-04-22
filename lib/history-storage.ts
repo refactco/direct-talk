@@ -106,7 +106,7 @@ export async function getPreviousChat(chatId: string): Promise<any> {
   }
 
   const data = await response.json();
-  console.log('getPreviousChat response:', data);
+
   return data;
 }
 

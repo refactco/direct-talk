@@ -3,7 +3,7 @@
 import { ChevronLeftIcon } from '@/components/icons/ChevronLeft';
 import { ChevronRightIcon } from '@/components/icons/ChevronRight';
 import { cn } from '@/lib/utils';
-import { type ReactNode, useState, useEffect, useRef } from 'react';
+import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { Navigation } from 'swiper/modules';
 import { Swiper } from 'swiper/react';
 
@@ -132,7 +132,7 @@ export function CardSlider({
             spaceBetween: 0
           },
           420: {
-            slidesPerView: 5,
+            slidesPerView: 4,
             spaceBetween: spaceBetween ?? 0
           }
         }}

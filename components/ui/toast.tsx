@@ -1,12 +1,11 @@
 'use client';
 
-import * as React from 'react';
 import * as ToastPrimitives from '@radix-ui/react-toast';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { X } from 'lucide-react';
+import * as React from 'react';
 
-import { cn } from '@/lib/utils';
 import { CloseIcon } from '@/components/icons/CloseIcon';
+import { cn } from '@/lib/utils';
 
 const ToastProvider = ToastPrimitives.Provider;
 
@@ -45,13 +44,26 @@ const Toast = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> &
     VariantProps<typeof toastVariants>
->(({ className, variant, ...props }, ref) => {
+>(({ className, variant, image_url, ...props }, ref) => {
   return (
-    <ToastPrimitives.Root
-      ref={ref}
-      className={cn(toastVariants({ variant }), className)}
-      {...props}
-    />
+    <div>
+      {image_url && (
+        <div className="h-12 w-12 overflow-hidden rounded-md flex-shrink-0">
+          <img
+            src={image_url}
+            alt="Toast image"
+            width={48}
+            height={48}
+            className="h-full w-full object-cover"
+          />
+        </div>
+      )}
+      <ToastPrimitives.Root
+        ref={ref}
+        className={cn(toastVariants({ variant }), className)}
+        {...props}
+      />
+    </div>
   );
 });
 Toast.displayName = ToastPrimitives.Root.displayName;
@@ -118,13 +130,13 @@ type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>;
 type ToastActionElement = React.ReactElement<typeof ToastAction>;
 
 export {
-  type ToastProps,
-  type ToastActionElement,
-  ToastProvider,
-  ToastViewport,
   Toast,
-  ToastTitle,
-  ToastDescription,
+  ToastAction,
   ToastClose,
-  ToastAction
+  ToastDescription,
+  ToastProvider,
+  ToastTitle,
+  ToastViewport,
+  type ToastActionElement,
+  type ToastProps
 };

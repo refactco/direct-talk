@@ -33,8 +33,6 @@ export function DetailSheetResourceEpisodes(
           resourceId: id.toString()
         });
 
-        // console.log({ fetchedEpisodes });
-
         setEpisodes(resources);
         setEpisodesInfo(rest);
       } catch (err) {

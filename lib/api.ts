@@ -3,8 +3,7 @@ import {
   IGetResourceEpisodesParams,
   IGetResourceEpisodesResponse
 } from './api/api-type';
-
-const API_BASE_URL = 'https://dt-api.refact.co/wp-json/direct-talk/v1';
+import { API_BASE_URL } from './constants';
 
 export async function getResources(params?: {
   type?: string;

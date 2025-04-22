@@ -1,7 +1,6 @@
 'use client';
 
 import { ChatInput } from '@/components/ChatInput';
-import { Icons } from '@/components/icons';
 import { Logo } from '@/components/icons/Logo';
 import { ResourcesList } from '@/components/resources-list/resources-list';
 import { TextLoading } from '@/components/text-loading/text-loading';
@@ -79,7 +78,6 @@ export default function ChatConversationPage() {
   }, [chatDatas?.chat_history]);
 
   const startNewChat = async () => {
-    console.log({ startNewChat: true });
     if (startChatData.message) {
       setIsStartChatting(true);
       addMessage({ question: startChatData.message });
@@ -97,8 +95,6 @@ export default function ChatConversationPage() {
   };
 
   useEffect(() => {
-    console.log({ chatId });
-
     if (chatId) {
       resetChatData();
       updateStartChatDate(null, null);
