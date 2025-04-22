@@ -193,7 +193,7 @@ export default function HomePage() {
                   opacity: 1,
                   x: `${(selectedPersonIndex ?? 0) * 25}%`
                 }}
-                animate={{ opacity: 1, x: '40%' }}
+                animate={{ opacity: 1, x: 'calc(40% - 2rem)' }}
                 exit={{ opacity: 1, x: `${(selectedPersonIndex ?? 0) * 25}%` }}
                 transition={{ duration: 0.4 }}
                 className="flex justify-start"
@@ -249,7 +249,11 @@ export default function HomePage() {
             // onRemoveResource={removeResource}
             // selectedResources={selectedResources}
             isLoading={isLoading}
-            placeholder="Ask AI anything..."
+            placeholder={
+              selectedResources.length > 0
+                ? `I'm ${selectedResources[0].name}, ask me anything...`
+                : 'Select an author to start'
+            }
             defaultValue={startMessage ?? ''}
           />
         </div>

@@ -52,7 +52,7 @@ export function PeopleCard({
   return (
     <>
       <div
-        className="relative w-full transition-colors group/people cursor-pointer hover:bg-accent p-2 rounded-[8px]"
+        className="relative w-full transition-colors group/people cursor-pointer hover:bg-accent p-4 rounded-[8px]"
         onClick={handleAddClick}
       >
         <div className="relative bg-background rounded-full w-full aspect-square">

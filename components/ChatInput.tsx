@@ -89,7 +89,7 @@ export function ChatInput({
             placeholder={placeholder}
             rows={1}
             className={cn(
-              'w-full flex-grow bg-background border-0 focus:outline-none focus:ring-0 text-xs md:text-sm resize-none',
+              'w-full flex-grow bg-background border-0 focus:outline-none focus:ring-0 text-xs md:text-sm resize-none pl-5',
               hideResources ? 'flex-1' : '',
               disabled ? 'placeholder-neutral-700' : 'placeholder-[#a2a2a4]'
             )}
