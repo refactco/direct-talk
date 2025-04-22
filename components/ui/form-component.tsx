@@ -283,7 +283,6 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = ({
                   <DropdownMenuItem
                     key={model.value}
                     onSelect={() => {
-                      console.log('Selected model:', model.value);
                       setSelectedModel(model.value.trim());
                     }}
                     className={cn(

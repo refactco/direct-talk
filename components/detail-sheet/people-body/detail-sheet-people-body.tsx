@@ -1,18 +1,16 @@
 'use client';
 
-import { DetailItemList } from '@/components/detail-item-list/detail-item-list';
 import { Button } from '@/components/ui/button';
 import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
+import { useToast } from '@/hooks/use-toast';
 import { getAuthor } from '@/lib/api';
-import { toCapitalize } from '@/lib/text-modifier';
+import toastConfig from '@/lib/toast-config';
 import { cn } from '@/lib/utils';
 import { IAuthor } from '@/types/resources';
 import { Check, Plus } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { IDetailSheetPeopleBodyTypeProps } from './detail-sheet-people-body-type';
-import { useToast } from '@/hooks/use-toast';
-import toastConfig from '@/lib/toast-config';
 
 export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
   const { person } = props;
@@ -55,8 +53,6 @@ export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
   }, []);
 
   const isResourceSelected = isSelected(id);
-
-  console.log({ isResourceSelected });
 
   return (
     <>
@@ -111,7 +107,7 @@ export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
           </div>
         </div>
       ) : null}
-      {Object.entries(resources.items).map(([key, value], index) => {
+      {/* {Object.entries(resources.items).map(([key, value], index) => {
         return (
           <DetailItemList
             title={toCapitalize(key)}
@@ -119,7 +115,7 @@ export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
             isLoading={isLoading}
           />
         );
-      })}
+      })} */}
     </>
   );
 }

@@ -2,14 +2,16 @@
 
 import { CardSlider } from '@/components/card-slider/card-slider';
 import { ChatInput } from '@/components/ChatInput';
-import { ResourceCard } from '@/components/resource-card/ResourceCard';
+import { PeopleCard } from '@/components/people-card/PeopleCard';
 import { SearchModal } from '@/components/search-modal/search-modal';
 import { useAuth } from '@/contexts/AuthContext';
 import { useChat } from '@/contexts/ChatContext';
+import { useInitialMessage } from '@/contexts/InitialMessageContext';
 import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { useToast } from '@/hooks/use-toast';
-import { mockedPopularResources } from '@/lib/mocked/popular-resources';
-import type { IResource } from '@/types/resources';
+import toastConfig from '@/lib/toast-config';
+import type { IAuthor, IResource } from '@/types/resources';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { SwiperSlide } from 'swiper/react';
@@ -17,15 +19,18 @@ import { SwiperSlide } from 'swiper/react';
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
-  const [popularResources, setPopularResources] = useState<IResource[]>(
-    mockedPopularResources
-  );
+  const [popularResources, setPopularResources] = useState<IAuthor[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingPopular, setIsLoadingPopular] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [selectedPerson, setSelectedPerson] = useState<IAuthor | null>(null);
+  const [selectedPersonIndex, setSelectedPersonIndex] = useState<number | null>(
+    null
+  );
   const { selectedResources, addResource, authorResourcesIds } =
     useSelectedResources();
+  const { setInitialMessage } = useInitialMessage();
   const router = useRouter();
   const { isAuthenticated, openAuthModal } = useAuth();
   const { updateStartChatDate } = useChat();
@@ -44,6 +49,32 @@ export default function HomePage() {
   } catch (error) {
     console.error('localStorage is not available', error);
   }
+  useEffect(() => {
+    const fetchAuthors = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_PUBLIC_API_URL}/wp-json/direct-talk/v1/people?per_page=4`
+        );
+        if (!response.ok) throw new Error('Failed to fetch content creators');
+        const authors = await response.json();
+        setPopularResources(authors.people);
+      } catch (err) {
+        const toastLimitConf = toastConfig({
+          message:
+            err instanceof Error
+              ? err.message
+              : 'Error fetching content creators',
+          toastType: 'destructive'
+        });
+        toast(toastLimitConf);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAuthors();
+  }, []);
 
   useEffect(() => {
     setIsMounted(true);
@@ -82,7 +113,7 @@ export default function HomePage() {
       if (startResources && JSON.parse(startResources).length > 0) {
         JSON.parse(startResources)?.map((el: IResource) => addResource(el));
       }
-      console.log({ startResources });
+
       const resourceIds = JSON.parse(startResourceIds);
       const authorResourceIds = JSON.parse(startAuthorResourcesIds);
       startNewChat(startMessage, [...authorResourceIds, ...resourceIds]);
@@ -128,6 +159,7 @@ export default function HomePage() {
     if (contentIds.length > 0) {
       setIsLoading(true);
       updateStartChatDate(message, contentIds);
+      setInitialMessage(message);
       router.push(`/conversation`);
       localStorage.removeItem('startMessage');
       localStorage.removeItem('startResources');
@@ -136,16 +168,84 @@ export default function HomePage() {
     }
   };
 
+  const handlePersonClick = (person: IAuthor, index: number | null) => {
+    if (selectedPerson?.id === person.id) {
+      setSelectedPerson(null);
+      setSelectedPersonIndex(null);
+    } else {
+      setSelectedPerson(person);
+      setSelectedPersonIndex(index);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center gap-16 md:gap-16 justify-normal md:justify-center min-h-[calc(100vh-4rem)] p-0 md:p-4">
-      <div className="w-full max-w-3xl flex flex-col justify-normal md:justify-center items-center">
-        <h1 className="text-2xl md:text-[2rem] font-semibold text-center text-white mb-4 sm:mb-6 mt-12 md:mt-0">
-          What do you want to know?
+      <div className="w-full max-w-3xl mt-0">
+        <h1 className="text-2xl md:text-[2rem] font-semibold text-center text-white mb-4 sm:mb-12">
+          Who do you want to talk to?
         </h1>
+        {isMounted ? (
+          <AnimatePresence mode="wait">
+            {selectedResources.length > 0 && selectedPerson ? (
+              <motion.div
+                key="selected"
+                initial={{
+                  opacity: 1,
+                  x: `${(selectedPersonIndex ?? 0) * 25}%`
+                }}
+                animate={{ opacity: 1, x: '40%' }}
+                exit={{ opacity: 1, x: `${(selectedPersonIndex ?? 0) * 25}%` }}
+                transition={{ duration: 0.4 }}
+                className="flex justify-start"
+              >
+                <div
+                  className="w-1/4"
+                  onClick={() =>
+                    handlePersonClick(selectedPerson, selectedPersonIndex)
+                  }
+                >
+                  <PeopleCard
+                    people={selectedPerson}
+                    isLoading={isLoadingPopular}
+                  />
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="carousel"
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 1 }}
+                transition={{ duration: 0.4 }}
+              >
+                <CardSlider>
+                  {popularResources.map((show, index) => (
+                    <SwiperSlide
+                      key={index}
+                      className="flex justify-center items-center"
+                    >
+                      <div onClick={() => handlePersonClick(show, index)}>
+                        <PeopleCard
+                          people={show}
+                          isLoading={isLoadingPopular}
+                        />
+                      </div>
+                    </SwiperSlide>
+                  ))}
+                </CardSlider>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        ) : null}
+      </div>
+
+      <div className="w-full max-w-3xl flex flex-col justify-normal md:justify-center items-center">
         <div className="w-full">
           <ChatInput
             onSubmit={handleSubmit}
             onAddResource={() => setIsModalOpen(true)}
+            hideResources
+            disabled={selectedResources.length === 0}
             // onRemoveResource={removeResource}
             // selectedResources={selectedResources}
             isLoading={isLoading}
@@ -158,24 +258,6 @@ export default function HomePage() {
             {errorMessage}
           </div>
         )}
-      </div>
-
-      <div className="w-full max-w-3xl mt-0">
-        <h2 className="text-lg sm:text-xl md:text-xl font-semibold mb-6 text-center text-foreground">
-          Popular resources
-        </h2>
-        {isMounted ? (
-          <CardSlider>
-            {popularResources.map((show, index) => (
-              <SwiperSlide
-                key={index}
-                className="flex justify-center items-center"
-              >
-                <ResourceCard resource={show} isLoading={isLoadingPopular} />
-              </SwiperSlide>
-            ))}
-          </CardSlider>
-        ) : null}
       </div>
 
       <SearchModal

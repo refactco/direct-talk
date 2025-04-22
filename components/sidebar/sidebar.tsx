@@ -52,8 +52,6 @@ export function Sidebar() {
 
   const handleScroll = (event) => {
     const { scrollTop, scrollHeight, clientHeight } = event.target;
-
-    console.log({ scrollTop, scrollHeight, clientHeight });
     // Show/hide top fade based on scroll position
     setShowTopFade(scrollTop > 0);
 
@@ -135,7 +133,7 @@ export function Sidebar() {
                 )}
               >
                 <span className="text-lg font-semibold whitespace-nowrap">
-                  Ask Archive
+                  Ask Author
                 </span>
               </div>
             )}

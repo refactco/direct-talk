@@ -8,8 +8,7 @@ export const mockedPopularResources: IResource[] = [
     title:
       'Marc Andreessen: Trump, Power, Tech, AI, Immigration & Future of America | Lex Fridman Podcast #458',
     description: '',
-    image_url:
-      'https://dt-api.refact.co/wp-content/uploads/2025/02/ab6765630000ba8a563ebb538d297875b10114b7.jpeg',
+    image_url: `${process.env.NEXT_PUBLIC_BASE_PUBLIC_API_URL}/wp-content/uploads/2025/02/ab6765630000ba8a563ebb538d297875b10114b7.jpeg`,
     episodes: []
   },
   {
@@ -19,8 +18,7 @@ export const mockedPopularResources: IResource[] = [
     title:
       'Jennifer Burns: Milton Friedman, Ayn Rand, Economics, Capitalism, Freedom | Lex Fridman Podcast #457',
     description: '',
-    image_url:
-      'https://dt-api.refact.co/wp-content/uploads/2025/02/ab6765630000ba8a563ebb538d297875b10114b7.jpeg',
+    image_url: `${process.env.NEXT_PUBLIC_BASE_PUBLIC_API_URL}/wp-content/uploads/2025/02/ab6765630000ba8a563ebb538d297875b10114b7.jpeg`,
     episodes: []
   },
   {
@@ -30,8 +28,7 @@ export const mockedPopularResources: IResource[] = [
     title:
       'Volodymyr Zelenskyy: Ukraine, War, Peace, Putin, Trump, NATO, and Freedom | Lex Fridman Podcast #456',
     description: '',
-    image_url:
-      'https://dt-api.refact.co/wp-content/uploads/2025/02/ab6765630000ba8a563ebb538d297875b10114b7.jpeg',
+    image_url: `${process.env.NEXT_PUBLIC_BASE_PUBLIC_API_URL}/wp-content/uploads/2025/02/ab6765630000ba8a563ebb538d297875b10114b7.jpeg`,
     episodes: []
   },
   {
@@ -41,8 +38,7 @@ export const mockedPopularResources: IResource[] = [
     title:
       'Adam Frank: Alien Civilizations and the Search for Extraterrestrial Life | Lex Fridman Podcast #455',
     description: '',
-    image_url:
-      'https://dt-api.refact.co/wp-content/uploads/2025/02/ab6765630000ba8a563ebb538d297875b10114b7.jpeg',
+    image_url: `${process.env.NEXT_PUBLIC_BASE_PUBLIC_API_URL}/wp-content/uploads/2025/02/ab6765630000ba8a563ebb538d297875b10114b7.jpeg`,
     episodes: []
   },
   {
@@ -52,8 +48,7 @@ export const mockedPopularResources: IResource[] = [
     title:
       'Saagar Enjeti: Trump, MAGA, DOGE, Obama, FDR, JFK, History & Politics | Lex Fridman Podcast #454',
     description: '',
-    image_url:
-      'https://dt-api.refact.co/wp-content/uploads/2025/02/ab6765630000ba8a563ebb538d297875b10114b7.jpeg',
+    image_url: `${process.env.NEXT_PUBLIC_BASE_PUBLIC_API_URL}/wp-content/uploads/2025/02/ab6765630000ba8a563ebb538d297875b10114b7.jpeg`,
     episodes: []
   }
 ];

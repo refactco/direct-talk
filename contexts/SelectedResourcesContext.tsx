@@ -1,10 +1,11 @@
 'use client';
 
 import { useToast } from '@/hooks/use-toast';
+import { API_BASE_URL } from '@/lib/constants';
+import toastConfig from '@/lib/toast-config';
 import type { IAuthor, IResource, TSelectedResource } from '@/types/resources';
 import type React from 'react';
 import { createContext, useContext, useState } from 'react';
-import toastConfig from '@/lib/toast-config';
 
 type SelectedResourcesContextType = {
   authorResourcesIds: string[] | number[];
@@ -38,23 +39,37 @@ export function SelectedResourcesProvider({
   const getAuthorResource = async (author: IAuthor) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_PUBLIC_API_URL}/people/${author.id}?per_page=99999`
+        `${API_BASE_URL}/people/${author.id}?per_page=99999`
       );
+
       if (!response.ok) {
         throw new Error('Failed to fetch author resources');
       }
-      const authorResources: IAuthor = await response.json();
 
+      const authorResources: IAuthor = await response.json();
       // Extract content IDs from all resource types (books, shows, episodes)
-      const extractRefIds = (items: IResource[]) =>
-        items.reduce<string[]>((acc, item) => {
-          if (item.ref_id) acc.push(item.ref_id);
+      const extractRefIds = (items: IResource[]) => {
+        return items.reduce<string[]>((acc, item) => {
+          if (item.ref_id) {
+            acc.push(item.ref_id);
+          }
           return acc;
         }, []);
+      };
+
+      const bookContentIds = extractRefIds(
+        authorResources.resources.items.books
+      );
+      const showContentIds = extractRefIds(
+        authorResources.resources.items.shows
+      );
+      const episodeContentIds = extractRefIds(
+        authorResources.resources.items.episodes
+      );
       const contentIds: string[] = [
-        ...extractRefIds(authorResources.resources.items.books),
-        ...extractRefIds(authorResources.resources.items.shows),
-        ...extractRefIds(authorResources.resources.items.episodes)
+        ...bookContentIds,
+        ...showContentIds,
+        ...episodeContentIds
       ];
 
       setAuthorResourcesIds(contentIds);
@@ -77,13 +92,14 @@ export function SelectedResourcesProvider({
       getAuthorResource(resource as IAuthor);
     }
     setSelectedResources((prev) => {
-      if (prev.length >= 10) {
-        const toastLimitConf: any = toastConfig({
-          message: 'You can only select up to 10 resources.',
-          toastType: 'destructive'
-        });
-        toast(toastLimitConf);
-        return prev; // Prevent adding more than 10 resources
+      if (selectedResources.length === 1) {
+        removeResource(selectedResources[0].id);
+        // const toastLimitConf: any = toastConfig({
+        //   message: 'You can only select up to 10 resources.',
+        //   toastType: 'destructive'
+        // });
+        // toast(toastLimitConf);
+        // return prev; // Prevent adding more than 10 resources
       }
       if (!prev.some((r) => r.id === resource.id)) {
         const toastConf: any = toastConfig({

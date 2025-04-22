@@ -4,7 +4,6 @@ export const useSendMessage = async (
   contentId: string | number
 ) => {
   try {
-    console.log('Sending message to API:', { prompt, chatId, contentId });
     const response = await fetch('/api/chat', {
       method: 'POST',
       headers: {
@@ -17,12 +16,10 @@ export const useSendMessage = async (
       })
     });
 
-    console.log('API response status:', response.status);
     const data = await response.json();
-    console.log('API response data:', data);
+
     return data.messages[0].content;
   } catch (error) {
-    console.error('Error in sendMessage:', error);
     throw error;
   }
 };

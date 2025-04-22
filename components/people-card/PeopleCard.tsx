@@ -2,16 +2,7 @@ import { useResourceDetail } from '@/contexts/ResourceDetailContext';
 import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { cn } from '@/lib/utils';
 import type { IAuthor } from '@/types/resources';
-import {
-  Check,
-  CheckIcon,
-  InfoIcon,
-  Minus,
-  MinusCircleIcon,
-  Plus,
-  PlusIcon,
-  UserIcon
-} from 'lucide-react';
+import { Check, Minus, Plus, UserIcon } from 'lucide-react';
 import Image from 'next/image';
 import { Skeleton } from '../ui/skeleton';
 

@@ -1,12 +1,18 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { Book } from 'lucide-react';
+import { Logo } from '../icons/Logo';
 import { Skeleton } from '../ui/skeleton';
 
-export function ConversationPageLoading() {
+interface ConversationPageLoadingProps {
+  initialMessage?: string | null;
+}
+
+export function ConversationPageLoading({
+  initialMessage
+}: ConversationPageLoadingProps) {
   return (
-    <div className="flex gap-8 min-h-[calc(100vh-117px)] w-full md:w-[732px] mx-auto">
+    <div className="flex gap-8 min-h-[calc(100vh-117px)] w-full mx-auto">
       <div className="flex flex-1 flex-col">
         {[1].map((chat: number, index: number) => {
           return (
@@ -17,13 +23,18 @@ export function ConversationPageLoading() {
             >
               <div className="flex-1 flex flex-col">
                 <div className="flex items-center gap-4 mb-6">
-                  <Skeleton className="h-4 w-[90%]" />
+                  {initialMessage ? (
+                    <h2 className="text-lg font-bold">{initialMessage}</h2>
+                  ) : (
+                    <Skeleton className="h-4 w-[90%]" />
+                  )}
                 </div>
 
                 {/* Answer Section */}
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-4">
-                    <Book className="h-5 w-5" />
+                    {/* <Book className="h-5 w-5" /> */}
+                    <Logo />
                     <div className="font-medium">Answer</div>
                   </div>
 

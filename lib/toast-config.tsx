@@ -1,6 +1,5 @@
-import Image from 'next/image';
 import { ToastAction } from '@/components/ui/toast';
-import type React from 'react';
+import Image from 'next/image';
 interface toastConfigProps {
   image_url?: string;
   message: string;
@@ -19,14 +18,19 @@ const toastConfig = (props: toastConfigProps) => {
   return {
     variant: 'default',
     description: (
-      <div className="flex align-center gap-2">
+      <div className="flex items-center gap-2">
         {image_url ? (
           <Image
             width={24}
             height={24}
-            src={image_url || '/placeholder.svg'}
+            src={image_url ?? '/placeholder.svg'}
             alt="Toast Image"
-            style={{ marginRight: 8, borderRadius: '50%' }}
+            style={{
+              marginRight: 8,
+              height: 24,
+              objectFit: 'cover',
+              borderRadius: '50%'
+            }}
           />
         ) : null}
         {message}
