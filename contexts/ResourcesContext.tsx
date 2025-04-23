@@ -2,16 +2,17 @@
 
 import { useToast } from '@/hooks/use-toast';
 import toastConfig from '@/lib/toast-config';
-import { IResource } from '@/types/resources';
+import { TSelectedResource } from '@/types/resources';
 import { createContext, useCallback, useContext, useState } from 'react';
+import { useSelectedResources } from './SelectedResourcesContext';
 
 interface ResourceData {
   [key: string]: any;
 }
 
 interface ResourceContextType {
-  resources: IResource[];
-  fetchResource: (contentIds: string[] | number[]) => Promise<void>;
+  resources: TSelectedResource[];
+  fetchResource: (authorId?: number) => Promise<void>;
   isLoading: boolean;
   errorMessage: string | null;
   clearResources: () => void;
@@ -26,13 +27,13 @@ export function useResource(): ResourceContextType {
   }
   return context;
 }
-const BASE_API_URL = `${process.env.NEXT_PUBLIC_BASE_PUBLIC_API_URL}/wp-json/direct-talk/v1`;
 
 export function ResourceProvider({ children }: { children: React.ReactNode }) {
-  const [resources, setResources] = useState<IResource[]>([]);
+  const [resources, setResources] = useState<TSelectedResource[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { toast } = useToast();
+  const { selectedResources } = useSelectedResources();
 
   const clearResources = useCallback(() => {
     setResources([]);
@@ -40,37 +41,47 @@ export function ResourceProvider({ children }: { children: React.ReactNode }) {
     setErrorMessage(null);
   }, []);
 
-  const fetchResource = async (contentIds: string[] | number[]) => {
-    const newContentIds = contentIds.filter((id) => {
-      const foundIndex = resources.findIndex((res) => res.id === id);
+  const fetchResource = async (authorId?: number) => {
+    console.log({ authorId, selectedResources });
+    if (selectedResources.length > 0) {
+      setResources(selectedResources);
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+      // const newContentIds = contentIds.filter((id) => {
+      //   const foundIndex = resources.findIndex((res) => res.id === id);
 
-      return foundIndex < 0;
-    });
+      //   return foundIndex < 0;
+      // });
 
-    if (newContentIds.length === 0) return;
+      // if (newContentIds.length === 0) return;
 
-    setIsLoading(true);
-
-    try {
-      const resourcePromises = newContentIds.slice(0, 2).map(async (id) => {
-        const response = await fetch(`${BASE_API_URL}/resources/${id}`);
-        if (!response.ok) throw new Error(`Failed to fetch resource: ${id}`);
+      try {
+        const response = await fetch(`/api/people/${authorId}`);
         const data = await response.json();
 
-        return data;
-      });
+        setResources([data]);
+        console.log({ data });
+        // const resourcePromises = newContentIds.slice(0, 2).map(async (id) => {
+        //   const response = await fetch(`/api/resources/${id}`);
+        //   if (!response.ok) throw new Error(`Failed to fetch resource: ${id}`);
+        //   const data = await response.json();
 
-      const results = await Promise.all(resourcePromises);
+        //   return data;
+        // });
 
-      setResources(results);
-    } catch (error) {
-      const toastLimitConf: any = toastConfig({
-        message: error instanceof Error ? error.message : 'Unknown error',
-        toastType: 'destructive'
-      });
-      toast(toastLimitConf);
-    } finally {
-      setIsLoading(false);
+        // const results = await Promise.all(resourcePromises);
+
+        // setResources(results);
+      } catch (error) {
+        const toastLimitConf: any = toastConfig({
+          message: error instanceof Error ? error.message : 'Unknown error',
+          toastType: 'destructive'
+        });
+        toast(toastLimitConf);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 

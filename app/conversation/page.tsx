@@ -15,8 +15,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { IChatHistory } from '../conversation/types';
 
-import { ResourcesConversationPage } from '@/app/conversation/resources-list/resources-list';
-import { ResourcesConversationPageLoading } from '@/app/conversation/resources-list/resources-loading';
 import { Icons } from '@/components/icons';
 import MarkdownRenderer from '@/components/markdown-render';
 import { useInitialMessage } from '@/contexts/InitialMessageContext';
@@ -53,6 +51,8 @@ export default function SearchResults() {
   const { updateHistory } = useHistory();
   const router = useRouter();
 
+  console.log({ chatDatasHere: chatDatas });
+
   useEffect(() => {
     return () => {
       clearResources();
@@ -71,16 +71,18 @@ export default function SearchResults() {
   };
   useEffect(() => {
     scrollToLastMessage();
-    const contentIds = chatDatas?.content_ids;
-
-    if (contentIds?.length) {
-      fetchResource(contentIds);
+    // const contentIds = chatDatas?.content_ids;
+    const authorId = chatDatas?.author_id;
+    if (authorId) {
+      fetchResource(authorId);
     }
   }, [chatDatas?.session_id]);
 
   useEffect(() => {
     let history: any = {};
     const historyList: IChatHistory[] = [];
+
+    console.log({ chatDatasUseEffect: chatDatas });
 
     chatDatas?.chat_history?.forEach((message: any) => {
       if (message.question) {
@@ -92,6 +94,8 @@ export default function SearchResults() {
         history = {};
       }
     });
+
+    console.log({ historyList });
 
     setChatHistory(historyList);
   }, [chatDatas?.chat_history]);
@@ -133,10 +137,13 @@ export default function SearchResults() {
     setIsLoadingFollowUp(true);
 
     try {
-      addMessage({ question: message });
+      setChatHistory([...chatHistory, { question: message }]);
       scrollToLastMessage();
       const result = await doChat(message, undefined, chatId?.toString());
+      addMessage({ question: message });
+      // setChatHistory([...chatHistory, { question: message, answer: result?.answer }]);
       addMessage({ answer: result?.answer });
+      // setTimeout(scrollToLastMessage, 100);
     } finally {
       setIsLoadingFollowUp(false);
       setInputValue('');
@@ -146,7 +153,7 @@ export default function SearchResults() {
 
   return (
     <Fragment>
-      <div className="flex gap-8 min-h-[calc(100vh-154px)] max-w-5xl mx-auto">
+      <div className="flex gap-8 min-h-[calc(100vh-154px)] max-w-4xl mx-auto">
         {/* Main Content */}
         {isLoadingChats || isLoadingStartChat ? (
           <ConversationPageLoading initialMessage={initialMessage} />
@@ -161,55 +168,73 @@ export default function SearchResults() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="p-6 max-w-5xl"
+                    ref={
+                      index === chatHistory.length - 1 ? messagesEndRef : null
+                    }
                   >
                     <div className="flex-1 flex flex-col">
                       <h2 className="text-lg font-bold mb-6">{question}</h2>
 
                       {/* Answer Section */}
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-4">
-                          {/* <Book className="h-5 w-5" /> */}
-                          <Logo />
-                          <div className="font-medium">Answer</div>
-                        </div>
-
-                        <AnimatePresence mode="wait">
-                          {isLoadingChats ? (
-                            <motion.div
-                              key="loading"
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              className="space-y-4"
-                            >
-                              <Skeleton className="h-4 w-[90%]" />
-                              <Skeleton className="h-4 w-[80%]" />
-                              <Skeleton className="h-4 w-[85%]" />
-                              <Skeleton className="h-4 w-[75%]" />
-                              <Skeleton className="h-4 w-[88%]" />
-                            </motion.div>
+                      <div className="flex gap-4 flex-1 bg-neutral-900 p-4 rounded-xl">
+                        <div className="w-10">
+                          {resources?.[0] ? (
+                            <img
+                              src={resources[0].image_url}
+                              width={40}
+                              height={40}
+                              className="rounded-md object-cover w-10 h-10"
+                            />
                           ) : (
-                            <motion.div
-                              key="content"
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              className="space-y-4"
-                            >
-                              <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.5 }}
-                                className="leading-relaxed text-gray-200"
-                              >
-                                <MarkdownRenderer
-                                  content={answer as string}
-                                  className="prose prose-invert max-w-none"
-                                />
-                              </motion.div>
-                            </motion.div>
+                            <Logo />
                           )}
-                        </AnimatePresence>
+                        </div>
+                        <div className="flex-1">
+                          <div className="inline-flex items-center gap-2 text-neutral-400 mb-0 rounded-xl">
+                            {/* <Book className="h-5 w-5" /> */}
+                            <div className="font-medium">
+                              {chatDatas?.author_name ?? 'Answer'}
+                            </div>
+                          </div>
+
+                          <AnimatePresence mode="wait">
+                            {!answer ? (
+                              <motion.div
+                                key="loading"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="space-y-4"
+                              >
+                                <Skeleton className="h-4 w-[90%]" />
+                                <Skeleton className="h-4 w-[80%]" />
+                                <Skeleton className="h-4 w-[85%]" />
+                                <Skeleton className="h-4 w-[75%]" />
+                                <Skeleton className="h-4 w-[88%]" />
+                              </motion.div>
+                            ) : (
+                              <motion.div
+                                key="content"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                className="space-y-4"
+                              >
+                                <motion.div
+                                  key={index}
+                                  initial={{ opacity: 0, y: 10 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  // transition={{ delay: index * 0.5 }}
+                                  className="leading-relaxed text-gray-200"
+                                >
+                                  <MarkdownRenderer
+                                    content={answer as string}
+                                    className="prose prose-invert max-w-none [&>p:first-child]:mt-1"
+                                  />
+                                </motion.div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
                       </div>
                     </div>
                   </motion.div>
@@ -218,11 +243,11 @@ export default function SearchResults() {
             </div>
           </div>
         )}
-        {isLoadingResources ? (
+        {/* {isLoadingResources ? (
           <ResourcesConversationPageLoading />
         ) : (
           <ResourcesConversationPage resources={resources} />
-        )}
+        )} */}
       </div>
       {/* Search Input */}
       <div className="px-4 pt-4 sticky flex flex-col bottom-0 items-center justify-center w-full">

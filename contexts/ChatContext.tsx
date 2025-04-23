@@ -6,6 +6,7 @@ import apiClient from '@/lib/axiosInstance';
 import toastConfig from '@/lib/toast-config';
 import type React from 'react';
 import { createContext, useCallback, useContext, useState } from 'react';
+import { useSelectedResources } from './SelectedResourcesContext';
 
 interface ChatContextType {
   chatDatas: ChatData | null;
@@ -43,6 +44,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isLoadingChats, setIsLoadingChats] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
+  const { selectedResources } = useSelectedResources();
 
   const updateStartChatDate = (
     message: string | null,
@@ -68,6 +70,13 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
       if (contentIds && contentIds?.length > 0) {
         formData['content_ids'] = contentIds;
       }
+
+      console.log({ selectedResourcesDoChat: selectedResources });
+
+      if (selectedResources && selectedResources?.length > 0) {
+        formData['author_name'] = selectedResources[0].name;
+        formData['author_id'] = selectedResources[0].id;
+      }
       try {
         const response = await apiClient.post(`${baseURL}/search`, formData);
         const data = await response.data;
@@ -85,7 +94,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
         setIsLoadingStartChat(false);
       }
     },
-    []
+    [selectedResources]
   );
 
   const fetchChat = useCallback(async (sessionId: string): Promise<void> => {

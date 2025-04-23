@@ -3,22 +3,26 @@ import https from 'https';
 import { NextResponse } from 'next/server';
 import fetch from 'node-fetch';
 
-export async function GET(request: Request) {
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
   try {
     const { searchParams } = new URL(request.url);
-    const query = searchParams.get('q');
-    const params = new URLSearchParams();
-
-    if (query) params.set('s', query);
+    const pageNum = searchParams.get('page') ?? '1';
+    const perPage = searchParams.get('per_page') ?? '10';
 
     const agent = new https.Agent({
       rejectUnauthorized: false
     });
 
-    const response = await fetch(`${API_BASE_URL}/topics?${params}`, { agent });
+    const response = await fetch(
+      `${API_BASE_URL}/resources/${params.id}/episodes?page=${pageNum}&per_page=${perPage}`,
+      { agent }
+    );
 
     if (!response.ok) {
-      return new NextResponse('Failed to fetch topics', {
+      return new NextResponse('Failed to fetch resource episodes', {
         status: response.status
       });
     }

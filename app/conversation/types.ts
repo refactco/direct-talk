@@ -10,11 +10,13 @@ export interface ChatData {
   created_at: string;
   session_title: string;
   user_id: string;
+  author_id: number | null;
+  author_name: string | null;
 }
 
 export interface IChatHistory {
   question: string;
-  answer: string;
+  answer?: string;
 }
 
 export interface StartChatData {

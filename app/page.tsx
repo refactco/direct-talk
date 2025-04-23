@@ -3,7 +3,6 @@
 import { CardSlider } from '@/components/card-slider/card-slider';
 import { ChatInput } from '@/components/ChatInput';
 import { PeopleCard } from '@/components/people-card/PeopleCard';
-import { SearchModal } from '@/components/search-modal/search-modal';
 import { useAuth } from '@/contexts/AuthContext';
 import { useChat } from '@/contexts/ChatContext';
 import { useInitialMessage } from '@/contexts/InitialMessageContext';
@@ -53,12 +52,11 @@ export default function HomePage() {
     const fetchAuthors = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_PUBLIC_API_URL}/wp-json/direct-talk/v1/people?per_page=4`
-        );
+        const response = await fetch('/api/people');
         if (!response.ok) throw new Error('Failed to fetch content creators');
-        const authors = await response.json();
-        setPopularResources(authors.people);
+        const data = await response.json();
+        if (data.error) throw new Error(data.error);
+        setPopularResources(data.people);
       } catch (err) {
         const toastLimitConf = toastConfig({
           message:
@@ -264,14 +262,14 @@ export default function HomePage() {
         )}
       </div>
 
-      <SearchModal
+      {/* <SearchModal
         open={isModalOpen}
         onOpenChange={(open) => {
           setIsModalOpen(open);
           if (!open) setShowWarning(false);
         }}
         showWarning={showWarning}
-      />
+      /> */}
     </div>
   );
 }

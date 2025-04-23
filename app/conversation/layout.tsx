@@ -6,5 +6,15 @@ export default function ChatLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <Suspense fallback={<ConversationPageLoading />}>{children}</Suspense>;
+  return (
+    <Suspense
+      fallback={
+        <div className="flex gap-8 min-h-[calc(100vh-154px)] max-w-5xl mx-auto">
+          <ConversationPageLoading />
+        </div>
+      }
+    >
+      {children}
+    </Suspense>
+  );
 }

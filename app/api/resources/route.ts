@@ -1,57 +1,42 @@
-import { resources } from '@/lib/mocked/data';
+import { API_BASE_URL } from '@/lib/constants';
+import https from 'https';
 import { NextResponse } from 'next/server';
-
+import fetch from 'node-fetch';
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const type = searchParams.get('type');
-  const topic = searchParams.get('topic');
-  const authorId = searchParams.get('authorId');
-  const query = searchParams.get('q')?.toLowerCase();
-  const sort = searchParams.get('sort');
-  const limit = searchParams.get('limit')
-    ? Number.parseInt(searchParams.get('limit')!)
-    : undefined;
+  try {
+    const { searchParams } = new URL(request.url);
+    const params = new URLSearchParams();
 
-  let filteredResources = [...resources];
+    // Map the parameters to match the main API's expected format
+    if (searchParams.get('type')) params.set('type', searchParams.get('type')!);
+    if (searchParams.get('topic'))
+      params.set('topic', searchParams.get('topic')!);
+    if (searchParams.get('authorId'))
+      params.set('author', searchParams.get('authorId')!);
+    if (searchParams.get('q')) params.set('s', searchParams.get('q')!);
+    if (searchParams.get('sort'))
+      params.set('orderby', searchParams.get('sort')!);
+    if (searchParams.get('limit'))
+      params.set('per_page', searchParams.get('limit')!);
 
-  if (type) {
-    filteredResources = filteredResources.filter(
-      (resource) => resource.type === type
-    );
+    const agent = new https.Agent({
+      rejectUnauthorized: false
+    });
+
+    const response = await fetch(`${API_BASE_URL}/resources?${params}`, {
+      agent
+    });
+
+    if (!response.ok) {
+      return new NextResponse('Failed to fetch resources', {
+        status: response.status
+      });
+    }
+
+    const data = await response.json();
+    return NextResponse.json(data);
+  } catch (error) {
+    console.log({ error });
+    return new NextResponse('Internal Server Error', { status: 500 });
   }
-
-  if (topic) {
-    filteredResources = filteredResources.filter((resource) =>
-      resource.topics.includes(topic)
-    );
-  }
-
-  if (authorId) {
-    filteredResources = filteredResources.filter(
-      (resource) => resource.authorId === authorId
-    );
-  }
-
-  if (query) {
-    filteredResources = filteredResources.filter(
-      (resource) =>
-        resource.title.toLowerCase().includes(query) ||
-        resource.description.toLowerCase().includes(query)
-    );
-  }
-
-  if (sort === 'popular') {
-    filteredResources.sort((a, b) => b.id.localeCompare(a.id)); // This is a placeholder sorting logic
-  } else if (sort === 'latest') {
-    filteredResources.sort(
-      (a, b) =>
-        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-    );
-  }
-
-  if (limit) {
-    filteredResources = filteredResources.slice(0, limit);
-  }
-
-  return NextResponse.json(filteredResources);
 }

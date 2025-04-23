@@ -1,7 +1,6 @@
 'use client';
 
 import { useToast } from '@/hooks/use-toast';
-import { API_BASE_URL } from '@/lib/constants';
 import toastConfig from '@/lib/toast-config';
 import type { IAuthor, IResource, TSelectedResource } from '@/types/resources';
 import type React from 'react';
@@ -38,9 +37,8 @@ export function SelectedResourcesProvider({
 
   const getAuthorResource = async (author: IAuthor) => {
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/people/${author.id}?per_page=99999`
-      );
+      const response = await fetch(`/api/people/${author.id}?per_page=99999`);
+      console.log({ authorResp: response });
 
       if (!response.ok) {
         throw new Error('Failed to fetch author resources');
