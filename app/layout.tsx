@@ -11,6 +11,7 @@ import { InitialMessageProvider } from '@/contexts/InitialMessageContext';
 import { ResourceDetailEpisodesProvider } from '@/contexts/resource-detail-episodes-context';
 import { ResourceDetailProvider } from '@/contexts/ResourceDetailContext';
 import { ResourceProvider } from '@/contexts/ResourcesContext';
+import { SearchProvider } from '@/contexts/SearchContext';
 import { SelectedResourcesProvider } from '@/contexts/SelectedResourcesContext';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
@@ -49,18 +50,20 @@ export default function RootLayout({
                     <ResourceDetailProvider>
                       <ChatProvider>
                         <ResourceProvider>
-                          <div className="flex h-screen">
-                            <Sidebar />
-                            {/* <ThemeToggle className="hidden md:flex absolute top-4 md:top-8 right-4 md:right-8 z-10" /> */}
-                            <main className="flex-1 overflow-y-auto px-4 py-4 md:px-8 md:py-8 mt-16 md:mt-0 !pb-0">
-                              {children}
-                            </main>
-                            <Toaster />
-                            <AuthModal />
-                            <ResourceDetailEpisodesProvider>
-                              <DetailSheet />
-                            </ResourceDetailEpisodesProvider>
-                          </div>
+                          <SearchProvider>
+                            <div className="flex h-screen">
+                              <Sidebar />
+                              {/* <ThemeToggle className="hidden md:flex absolute top-4 md:top-8 right-4 md:right-8 z-10" /> */}
+                              <main className="flex-1 overflow-y-auto px-4 py-4 md:px-8 md:py-8 mt-16 md:mt-0 !pb-0">
+                                {children}
+                              </main>
+                              <Toaster />
+                              <AuthModal />
+                              <ResourceDetailEpisodesProvider>
+                                <DetailSheet />
+                              </ResourceDetailEpisodesProvider>
+                            </div>
+                          </SearchProvider>
                         </ResourceProvider>
                       </ChatProvider>
                     </ResourceDetailProvider>
