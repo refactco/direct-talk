@@ -6,8 +6,11 @@ export default function PrivacyPage() {
       <div className="space-y-8">
         <p className="mb-4">
           Privacy notice discloses the privacy practices for{' '}
-          <a href="https://www.refact.co" className="text-blue-500 underline">
-            www.refact.co
+          <a
+            href="https://www.refact.co"
+            className="text-primary hover:underline"
+          >
+            askauthor.com
           </a>
           . This privacy notice applies solely to information collected by this
           website. It will notify you of the following:
@@ -95,8 +98,11 @@ export default function PrivacyPage() {
         <p className="mb-4">
           If you feel that we are not abiding by this privacy policy, you should
           contact us immediately via email at{' '}
-          <a href="mailto:info@refact.co" className="text-blue-500 underline">
-            info@refact.co
+          <a
+            href="mailto:info@refact.co"
+            className="text-primary hover:underline"
+          >
+            hi@refact.co
           </a>
           .
         </p>

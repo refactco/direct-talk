@@ -95,15 +95,15 @@ export function PeopleCard({
             </div>
           ) : null}
         </div>
-        <div className="w-full pt-2 pb-1">
+        <div className="w-full pt-2">
           <h3 className="text-sm font-bold text-foreground text-left truncate max-w-[calc(100%-28px)] transition-all duration-300">
             {name}
           </h3>
         </div>
         <div
           className={cn(
-            'flex items-center space-x-2 absolute bottom-2 right-2 opacity-100 md:opacity-0 group-hover/people:opacity-100 transition-opacity duration-300',
-            selected && 'md:opacity-100'
+            'flex items-center space-x-2 absolute bottom-4 right-2 opacity-100 md:opacity-0 group-hover/people:opacity-100 transition-opacity duration-300',
+            selected ? 'md:opacity-100' : ''
           )}
         >
           {selected ? (

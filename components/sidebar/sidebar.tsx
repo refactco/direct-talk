@@ -307,7 +307,14 @@ export function Sidebar() {
               >
                 <div className="flex flex-col gap-2">
                   <p className="text-xs text-muted-foreground">
-                    Copyright &copy; 2025 Refact, LLC
+                    Copyright &copy; 2025{' '}
+                    <a
+                      href="https://refact.co"
+                      target="_blank"
+                      className="text-primary"
+                    >
+                      Refact, LLC
+                    </a>
                   </p>
                   <div className="flex flex-col gap-1 text-xs text-muted-foreground [&_a:hover]:text-white">
                     <div className="flex gap-[0.38rem] items-center">
@@ -315,9 +322,9 @@ export function Sidebar() {
                       <div className="w-1 h-1 rounded-full bg-muted-foreground" />
                       <Link href="/terms">Terms of Use</Link>
                     </div>
-                    <div>
+                    {/* <div>
                       <Link href="/about">About</Link>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
