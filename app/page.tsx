@@ -8,7 +8,7 @@ import { useChat } from '@/contexts/ChatContext';
 import { useInitialMessage } from '@/contexts/InitialMessageContext';
 import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { useToast } from '@/hooks/use-toast';
-import toastConfig from '@/lib/toast-config';
+import { cn } from '@/lib/utils';
 import type { IAuthor, IResource } from '@/types/resources';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
@@ -18,11 +18,9 @@ import { SwiperSlide } from 'swiper/react';
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
-  const [popularResources, setPopularResources] = useState<IAuthor[]>([]);
+  const [popularResources, setPopularResources] = useState<IAuthor[]>();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingPopular, setIsLoadingPopular] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState<IAuthor | null>(null);
   const [selectedPersonIndex, setSelectedPersonIndex] = useState<number | null>(
     null
@@ -50,7 +48,6 @@ export default function HomePage() {
   }
   useEffect(() => {
     const fetchAuthors = async () => {
-      setIsLoading(true);
       try {
         const response = await fetch('/api/people');
         if (!response.ok) throw new Error('Failed to fetch content creators');
@@ -58,25 +55,21 @@ export default function HomePage() {
         if (data.error) throw new Error(data.error);
         setPopularResources(data.people);
       } catch (err) {
-        const toastLimitConf = toastConfig({
-          message:
+        toast({
+          variant: 'destructive',
+          description:
             err instanceof Error
               ? err.message
-              : 'Error fetching content creators',
-          toastType: 'destructive'
+              : 'Error fetching content creators'
         });
-        toast(toastLimitConf);
       } finally {
-        setIsLoading(false);
       }
     };
 
     fetchAuthors();
   }, []);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  // console.log({ isLoading, isMounted });
 
   // useEffect(() => {
   //   const fetchPopularResources = async () => {
@@ -176,13 +169,28 @@ export default function HomePage() {
     }
   };
 
+  console.log({ selectedPerson });
+
   return (
-    <div className="flex flex-col items-center gap-16 md:gap-16 justify-normal md:justify-center min-h-[calc(100vh-4rem)] p-0 md:p-4">
+    <div className="flex flex-col items-center gap-16 md:gap-8 justify-normal md:justify-center min-h-[calc(100vh-4rem)] p-0 md:p-4">
       <div className="w-full max-w-3xl mt-0">
         <h1 className="text-2xl md:text-[2rem] font-semibold text-center text-white mb-4 sm:mb-12">
           Who do you want to talk to?
         </h1>
-        {isMounted ? (
+        {!popularResources ? (
+          <div className="flex">
+            {new Array(4).fill(null).map((show, index) => (
+              <div
+                key={index}
+                className="justify-center items-center w-1/4 p-4"
+              >
+                <div onClick={() => handlePersonClick(show, index)}>
+                  <PeopleCard people={{} as any} isLoading />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
           <AnimatePresence mode="wait">
             {selectedResources.length > 0 && selectedPerson ? (
               <motion.div
@@ -202,13 +210,11 @@ export default function HomePage() {
                     handlePersonClick(selectedPerson, selectedPersonIndex)
                   }
                 >
-                  <PeopleCard
-                    people={selectedPerson}
-                    isLoading={isLoadingPopular}
-                  />
+                  <PeopleCard people={selectedPerson} />
                 </div>
               </motion.div>
             ) : (
+              // <div className='bg-red-500 h-24 w-full'>hello world</div>
               <motion.div
                 key="carousel"
                 initial={{ opacity: 1 }}
@@ -223,10 +229,7 @@ export default function HomePage() {
                       className="flex justify-center items-center"
                     >
                       <div onClick={() => handlePersonClick(show, index)}>
-                        <PeopleCard
-                          people={show}
-                          isLoading={isLoadingPopular}
-                        />
+                        <PeopleCard people={show} />
                       </div>
                     </SwiperSlide>
                   ))}
@@ -234,10 +237,17 @@ export default function HomePage() {
               </motion.div>
             )}
           </AnimatePresence>
-        ) : null}
+        )}
       </div>
 
-      <div className="w-full max-w-3xl flex flex-col justify-normal md:justify-center items-center">
+      <div
+        className={cn(
+          'w-full max-w-3xl flex flex-col justify-normal md:justify-center items-center transition-opacity duration-75',
+          selectedPerson
+            ? 'opacity-100 pointer-events-auto'
+            : 'opacity-0 pointer-events-none'
+        )}
+      >
         <div className="w-full">
           <ChatInput
             onSubmit={handleSubmit}
@@ -248,7 +258,7 @@ export default function HomePage() {
             // selectedResources={selectedResources}
             isLoading={isLoading}
             placeholder={
-              selectedResources.length > 0
+              selectedResources.length > 0 && 'name' in selectedResources[0]
                 ? `I'm ${selectedResources[0].name}, ask me anything...`
                 : 'Select an author to start'
             }

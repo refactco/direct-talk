@@ -28,7 +28,7 @@ export function DetailSheetBody(props: IDetailSheetBodyProps) {
           <Button
             variant="ghost"
             size="icon"
-            className="h-6 w-6 rounded-full bg-accent hover:bg-accent/90"
+            className="h-6 w-6 rounded-full bg-accent hover:bg-accent/90 focus-visible:shadow-none"
           >
             <X className="h-4 w-4" />
           </Button>

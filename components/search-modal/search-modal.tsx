@@ -7,7 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useToast } from '@/hooks/use-toast';
 import { getAuthors, getResources, searchAll } from '@/lib/api';
+import toastConfig from '@/lib/toast-config';
 import { Loader2, Search, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import 'swiper/css';
@@ -15,8 +17,6 @@ import { SwiperSlide } from 'swiper/react';
 import { PeopleCard } from '../people-card/PeopleCard';
 import { SelectedResourcesList } from '../selected-resources-list/selected-resources-list';
 import { ResourceSelectorProps, SearchResults } from './search-modal-types';
-import toastConfig from '@/lib/toast-config';
-import { useToast } from '@/hooks/use-toast';
 
 export function SearchModal({
   open,
@@ -123,7 +123,7 @@ export function SearchModal({
             {showWarning && (
               <Alert variant="warning" className="my-6 rounded-full">
                 <AlertDescription>
-                  Please select at least one resource before starting a chat.
+                  Please select at least one person before starting a chat.
                 </AlertDescription>
               </Alert>
             )}

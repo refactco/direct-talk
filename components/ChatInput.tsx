@@ -64,7 +64,7 @@ export function ChatInput({
           if (disabled) {
             e.preventDefault();
             const tConfig: any = toastConfig({
-              message: 'Please select a resource first',
+              message: 'Please select a person first',
               toastType: 'destructive'
             });
             toast(tConfig);
@@ -78,7 +78,7 @@ export function ChatInput({
         {/* Input Area */}
         <div
           className={cn(
-            'flex items-center p-3 gap-4',
+            'flex items-center px-3 gap-4',
             hideResources ? 'flex-row' : 'flex-col'
           )}
         >
@@ -89,7 +89,7 @@ export function ChatInput({
             placeholder={placeholder}
             rows={1}
             className={cn(
-              'w-full flex-grow bg-background border-0 focus:outline-none focus:ring-0 text-xs md:text-sm resize-none pl-5',
+              'w-full py-6 flex-grow bg-background border-0 focus:outline-none focus:ring-0 text-xs md:text-sm resize-none pl-5',
               hideResources ? 'flex-1' : '',
               disabled ? 'placeholder-neutral-700' : 'placeholder-[#a2a2a4]'
             )}

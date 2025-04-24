@@ -1,5 +1,6 @@
 'use client';
 
+import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Logo } from '../icons/Logo';
 import { Skeleton } from '../ui/skeleton';
@@ -11,6 +12,10 @@ interface ConversationPageLoadingProps {
 export function ConversationPageLoading({
   initialMessage
 }: ConversationPageLoadingProps) {
+  const { selectedResources } = useSelectedResources();
+
+  console.log({ selectedResourcesInConvPageLoading: selectedResources });
+
   return (
     <div className="flex gap-8 min-h-[calc(100vh-117px)] w-full mx-auto">
       <div className="flex flex-1 flex-col">
@@ -33,13 +38,26 @@ export function ConversationPageLoading({
                 {/* Answer Section */}
                 <div className="flex gap-4 flex-1 bg-neutral-900 p-4 rounded-xl">
                   <div className="w-10">
-                    <Logo width={40} height={40} />
+                    {selectedResources ? (
+                      <img
+                        width={40}
+                        height={40}
+                        className="w-10 h-10 object-cover rounded-full"
+                        src={selectedResources[0].image_url}
+                      />
+                    ) : (
+                      <Logo width={40} height={40} />
+                    )}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-4 text-neutral-400">
                       {/* <Book className="h-5 w-5" /> */}
                       {/* <Logo /> */}
-                      <div className="font-medium">Answer</div>
+                      <div className="font-medium">
+                        {selectedResources
+                          ? selectedResources[0].name
+                          : 'Answer'}
+                      </div>
                     </div>
 
                     <AnimatePresence mode="wait">

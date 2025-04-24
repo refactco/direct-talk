@@ -1,15 +1,16 @@
 export default function AboutPage() {
   return (
     <div className="container mx-auto max-w-4xl p-6">
-      <h1 className="mb-8 text-4xl font-bold">About Ask Author</h1>
+      <h1 className="mb-8 text-4xl font-bold">About Our AI Chatbot</h1>
 
       <div className="space-y-8">
         <section>
           <h2 className="mb-4 text-2xl font-semibold">Our Mission</h2>
           <p className="text-muted-foreground">
-            Carrot is your gateway to curated knowledge and meaningful
-            conversations. We bring together the best resources across various
-            topics and enable AI-powered discussions to help you learn and grow.
+            Our platform allows you to engage in lifelike conversations with
+            authors, podcasters, and other creators. Using AI, we simulate
+            interactions based on their content, making it feel like you're
+            speaking directly with them.
           </p>
         </section>
 
@@ -17,31 +18,32 @@ export default function AboutPage() {
           <h2 className="mb-4 text-2xl font-semibold">Key Features</h2>
           <div className="grid gap-6 md:grid-cols-2">
             <div className="rounded-lg border p-4">
-              <h3 className="mb-2 font-semibold">Curated Resources</h3>
+              <h3 className="mb-2 font-semibold">AI-Driven Conversations</h3>
               <p className="text-sm text-muted-foreground">
-                Access a handpicked collection of high-quality books, articles,
-                and podcasts.
+                Chat with AI representations of your favorite creators, gaining
+                insights and perspectives as if they were speaking to you
+                directly.
               </p>
             </div>
             <div className="rounded-lg border p-4">
-              <h3 className="mb-2 font-semibold">AI-Powered Chat</h3>
+              <h3 className="mb-2 font-semibold">Content-Based Interaction</h3>
               <p className="text-sm text-muted-foreground">
-                Engage in meaningful conversations about your selected resources
-                with our AI assistant.
+                Our AI uses the creator's content to provide accurate and
+                meaningful responses.
               </p>
             </div>
             <div className="rounded-lg border p-4">
-              <h3 className="mb-2 font-semibold">Advanced Search</h3>
+              <h3 className="mb-2 font-semibold">Curated Creator Selection</h3>
               <p className="text-sm text-muted-foreground">
-                Find exactly what you're looking for with our powerful search
-                and filter system.
+                Choose from a wide range of creators to interact with, each
+                offering unique insights and knowledge.
               </p>
             </div>
             <div className="rounded-lg border p-4">
-              <h3 className="mb-2 font-semibold">Resource Management</h3>
+              <h3 className="mb-2 font-semibold">Seamless User Experience</h3>
               <p className="text-sm text-muted-foreground">
-                Easily organize and manage your selected resources for quick
-                access.
+                Enjoy a smooth and intuitive interface designed to enhance your
+                conversational experience.
               </p>
             </div>
           </div>
@@ -56,11 +58,11 @@ export default function AboutPage() {
               </span>
               <div>
                 <p className="font-semibold text-foreground">
-                  Browse and Select Resources
+                  Select a Creator
                 </p>
                 <p>
-                  Explore our curated collection and select the resources that
-                  interest you.
+                  Browse our curated list of creators and select the one whose
+                  content you wish to explore.
                 </p>
               </div>
             </li>
@@ -70,11 +72,12 @@ export default function AboutPage() {
               </span>
               <div>
                 <p className="font-semibold text-foreground">
-                  Start a Conversation
+                  Engage in Conversation
                 </p>
                 <p>
-                  Begin chatting with our AI about your selected resources to
-                  gain deeper insights.
+                  Start a chat with our AI, which will respond based on the
+                  creator's content, providing a unique conversational
+                  experience.
                 </p>
               </div>
             </li>
@@ -84,15 +87,33 @@ export default function AboutPage() {
               </span>
               <div>
                 <p className="font-semibold text-foreground">
-                  Learn and Discover
+                  Discover and Learn
                 </p>
                 <p>
-                  Get cited responses and explore connections between different
-                  resources.
+                  Gain new insights and explore the depth of the creator's work
+                  through interactive dialogue.
                 </p>
               </div>
             </li>
           </ol>
+        </section>
+
+        <section>
+          <h2 className="mb-4 text-2xl font-semibold">Contact Information</h2>
+          <ul className="space-y-2 text-muted-foreground">
+            <li>
+              Email:{' '}
+              <a href="mailto:hi@refact.co" className="text-primary">
+                hi@refact.co
+              </a>
+            </li>
+            <li>
+              Website:{' '}
+              <a href="https://refact.co" className="text-primary">
+                https://refact.co
+              </a>
+            </li>
+          </ul>
         </section>
       </div>
     </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { PeopleCard } from '@/components/PeopleCard';
+import { PeopleCard } from '@/components/people-card/PeopleCard';
 import { ResourceCard } from '@/components/resource-card/ResourceCard';
 import { SearchResultSection } from '@/components/search/SearchResultSection';
 import { TopResult } from '@/components/search/TopResult';

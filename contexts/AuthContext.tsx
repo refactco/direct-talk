@@ -1,15 +1,16 @@
 'use client';
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  ReactNode
-} from 'react';
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabaseClient';
 import toastConfig from '@/lib/toast-config';
-import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState
+} from 'react';
 
 interface User {
   id: string;
@@ -37,6 +38,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   useEffect(() => {
     const checkUserSession = async () => {
@@ -121,6 +123,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
     setIsAuthenticated(false);
     setIsLoading(false);
+    router.push('/');
   };
 
   const openAuthModal = () => setIsAuthModalOpen(true);

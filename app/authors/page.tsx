@@ -1,4 +1,4 @@
-import { PeopleCard } from '@/components/PeopleCard';
+import { PeopleCard } from '@/components/people-card/PeopleCard';
 import { getAuthors } from '@/lib/api';
 
 export default async function AllAuthorsPage() {

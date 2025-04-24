@@ -15,7 +15,11 @@ export interface HistoryItem {
 
 interface HistoryContextType {
   historyItems: HistoryItem[];
-  removeHistoryItem: (id: string, active_session_id: string | null) => void;
+  removeHistoryItem: (
+    id: string,
+    active_session_id: string | null,
+    onRemoveComplete: () => void
+  ) => void;
   updateHistory: () => void;
   isLoading: boolean;
 }
@@ -65,7 +69,8 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const removeHistoryItem = async (
     session_id: string,
-    active_session_id: string
+    active_session_id: string,
+    onRemoveComplete: () => void
   ) => {
     try {
       const response = await apiClient.delete(
@@ -82,6 +87,7 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
           router.push('/');
         }
       }
+      onRemoveComplete();
     } catch (err) {
       const toastLimitConf: any = toastConfig({
         message:

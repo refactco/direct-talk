@@ -183,7 +183,7 @@ export default function SearchResults() {
                               src={resources[0].image_url}
                               width={40}
                               height={40}
-                              className="rounded-md object-cover w-10 h-10"
+                              className="rounded-full object-cover w-10 h-10"
                             />
                           ) : (
                             <Logo />

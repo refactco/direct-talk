@@ -17,7 +17,7 @@ export function PeopleCard({
   isLoading = false,
   showDetails = true
 }: PeopleCardProps) {
-  const { id, image_url, name } = people;
+  const { id, name } = people ?? {};
   const { addResource, removeResource, isSelected } = useSelectedResources();
   const selected = isSelected(id);
   const { setSelectedDetailItems } = useResourceDetail();
@@ -35,14 +35,16 @@ export function PeopleCard({
     setSelectedDetailItems([people]);
   };
 
+  console.log({ peopleCardIsLoading: isLoading });
+
   if (isLoading) {
     return (
       <>
         <div className="flex flex-col space-y-3">
           <Skeleton className="aspect-square w-full rounded-full" />
           <div className="space-y-2">
-            <Skeleton className="h-2 w-[50%]" />
-            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-5 w-full" />
+            {/* <Skeleton className="h-4 w-full" /> */}
           </div>
         </div>
       </>
@@ -61,7 +63,10 @@ export function PeopleCard({
               src={people.image_url || '/placeholder.svg'}
               alt={people.name}
               fill
-              className="object-cover transition-all duration-300 group-hover/people:scale-105 rounded-full"
+              className={cn(
+                'object-cover transition-all duration-300 group-hover/people:scale-105 grayscale group-hover/people:grayscale-0 rounded-full',
+                selected ? 'grayscale-0' : 'grayscale'
+              )}
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-accent rounded-full">

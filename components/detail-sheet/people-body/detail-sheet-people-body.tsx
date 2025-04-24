@@ -1,13 +1,10 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { useToast } from '@/hooks/use-toast';
 import { getAuthor } from '@/lib/api';
 import toastConfig from '@/lib/toast-config';
-import { cn } from '@/lib/utils';
 import { IAuthor } from '@/types/resources';
-import { Check, Plus } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { IDetailSheetPeopleBodyTypeProps } from './detail-sheet-people-body-type';
@@ -74,7 +71,7 @@ export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
           <div className="flex-1">
             <h2 className="text-2xl font-bold mb-1">{name}</h2>
           </div>
-          <Button
+          {/* <Button
             size="icon"
             variant="ghost"
             className={cn(
@@ -92,7 +89,7 @@ export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
             ) : (
               <Plus className="h-4 w-4" />
             )}
-          </Button>
+          </Button> */}
         </div>
       </div>
 
@@ -101,9 +98,12 @@ export function DetailSheetPeopleBody(props: IDetailSheetPeopleBodyTypeProps) {
           {/* Description */}
           <div className="space-y-1">
             <h3 className="text-[#f2f2f2] text-base font-normal">About</h3>
-            <p className="text-sm leading-relaxed text-[#A7A7A7]">
-              {description}
-            </p>
+            <div
+              className="text-xsm leading-relaxed text-[#A7A7A7] [&>p]:my-2"
+              dangerouslySetInnerHTML={{
+                __html: description
+              }}
+            />
           </div>
         </div>
       ) : null}

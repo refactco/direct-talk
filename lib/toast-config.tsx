@@ -52,7 +52,8 @@ const toastConfig = (props: toastConfigProps) => {
     style: {
       position: 'fixed',
       bottom: '20px',
-      left: '20px',
+      right: '20px',
+      // transform: 'translateX(-50%)',
       maxWidth: 'max-content',
       paddingRight: '34px',
       paddingLeft: image_url ? '16px' : '34px'
