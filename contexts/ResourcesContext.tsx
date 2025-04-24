@@ -42,7 +42,6 @@ export function ResourceProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const fetchResource = async (authorId?: number) => {
-    console.log({ authorId, selectedResources });
     if (selectedResources.length > 0) {
       setResources(selectedResources);
       setIsLoading(false);
@@ -61,7 +60,6 @@ export function ResourceProvider({ children }: { children: React.ReactNode }) {
         const data = await response.json();
 
         setResources([data]);
-        console.log({ data });
         // const resourcePromises = newContentIds.slice(0, 2).map(async (id) => {
         //   const response = await fetch(`/api/resources/${id}`);
         //   if (!response.ok) throw new Error(`Failed to fetch resource: ${id}`);

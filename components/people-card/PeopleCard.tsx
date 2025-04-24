@@ -35,8 +35,6 @@ export function PeopleCard({
     setSelectedDetailItems([people]);
   };
 
-  console.log({ peopleCardIsLoading: isLoading });
-
   if (isLoading) {
     return (
       <>

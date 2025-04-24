@@ -69,8 +69,6 @@ export default function HomePage() {
     fetchAuthors();
   }, []);
 
-  // console.log({ isLoading, isMounted });
-
   // useEffect(() => {
   //   const fetchPopularResources = async () => {
   //     setIsLoadingPopular(true);
@@ -168,8 +166,6 @@ export default function HomePage() {
       setSelectedPersonIndex(index);
     }
   };
-
-  console.log({ selectedPerson });
 
   return (
     <div className="flex flex-col items-center gap-16 md:gap-8 justify-normal md:justify-center min-h-[calc(100vh-4rem)] p-0 md:p-4">

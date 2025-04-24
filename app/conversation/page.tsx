@@ -51,8 +51,6 @@ export default function SearchResults() {
   const { updateHistory } = useHistory();
   const router = useRouter();
 
-  console.log({ chatDatasHere: chatDatas });
-
   useEffect(() => {
     return () => {
       clearResources();
@@ -82,8 +80,6 @@ export default function SearchResults() {
     let history: any = {};
     const historyList: IChatHistory[] = [];
 
-    console.log({ chatDatasUseEffect: chatDatas });
-
     chatDatas?.chat_history?.forEach((message: any) => {
       if (message.question) {
         history.question = message.question;
@@ -94,8 +90,6 @@ export default function SearchResults() {
         history = {};
       }
     });
-
-    console.log({ historyList });
 
     setChatHistory(historyList);
   }, [chatDatas?.chat_history]);

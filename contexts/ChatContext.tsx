@@ -71,8 +71,6 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
         formData['content_ids'] = contentIds;
       }
 
-      console.log({ selectedResourcesDoChat: selectedResources });
-
       if (selectedResources && selectedResources?.length > 0) {
         formData['author_name'] = selectedResources[0].name;
         formData['author_id'] = selectedResources[0].id;

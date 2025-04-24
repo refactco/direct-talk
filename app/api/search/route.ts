@@ -42,7 +42,6 @@ export async function GET(request: Request) {
       episodes: data.episodes ?? []
     });
   } catch (error) {
-    console.log({ error });
     return new NextResponse('Internal Server Error', { status: 500 });
   }
 }

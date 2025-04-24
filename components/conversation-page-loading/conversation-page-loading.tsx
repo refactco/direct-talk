@@ -14,8 +14,6 @@ export function ConversationPageLoading({
 }: ConversationPageLoadingProps) {
   const { selectedResources } = useSelectedResources();
 
-  console.log({ selectedResourcesInConvPageLoading: selectedResources });
-
   return (
     <div className="flex gap-8 min-h-[calc(100vh-117px)] w-full mx-auto">
       <div className="flex flex-1 flex-col">
@@ -38,7 +36,7 @@ export function ConversationPageLoading({
                 {/* Answer Section */}
                 <div className="flex gap-4 flex-1 bg-neutral-900 p-4 rounded-xl">
                   <div className="w-10">
-                    {selectedResources ? (
+                    {selectedResources?.[0] ? (
                       <img
                         width={40}
                         height={40}
@@ -54,7 +52,7 @@ export function ConversationPageLoading({
                       {/* <Book className="h-5 w-5" /> */}
                       {/* <Logo /> */}
                       <div className="font-medium">
-                        {selectedResources
+                        {selectedResources?.[0]
                           ? selectedResources[0].name
                           : 'Answer'}
                       </div>
