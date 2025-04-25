@@ -187,52 +187,70 @@ export default function HomePage() {
             ))}
           </div>
         ) : (
-          <AnimatePresence mode="wait">
-            {selectedResources.length > 0 && selectedPerson ? (
-              <motion.div
-                key="selected"
-                initial={{
-                  opacity: 1,
-                  x: `${(selectedPersonIndex ?? 0) * 25}%`
-                }}
-                animate={{ opacity: 1, x: 'calc(40% - 2rem)' }}
-                exit={{ opacity: 1, x: `${(selectedPersonIndex ?? 0) * 25}%` }}
-                transition={{ duration: 0.4 }}
-                className="flex justify-start"
-              >
+          <>
+            <div className="flex md:hidden flex-wrap gap-8">
+              {popularResources.map((show, index) => (
                 <div
-                  className="w-1/4"
-                  onClick={() =>
-                    handlePersonClick(selectedPerson, selectedPersonIndex)
-                  }
+                  key={index}
+                  className="flex-1 justify-center items-center w-1/2"
                 >
-                  <PeopleCard people={selectedPerson} />
+                  <div onClick={() => handlePersonClick(show, index)}>
+                    <PeopleCard people={show} />
+                  </div>
                 </div>
-              </motion.div>
-            ) : (
-              // <div className='bg-red-500 h-24 w-full'>hello world</div>
-              <motion.div
-                key="carousel"
-                initial={{ opacity: 1 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 1 }}
-                transition={{ duration: 0.4 }}
-              >
-                <CardSlider>
-                  {popularResources.map((show, index) => (
-                    <SwiperSlide
-                      key={index}
-                      className="flex justify-center items-center"
-                    >
-                      <div onClick={() => handlePersonClick(show, index)}>
-                        <PeopleCard people={show} />
-                      </div>
-                    </SwiperSlide>
-                  ))}
-                </CardSlider>
-              </motion.div>
-            )}
-          </AnimatePresence>
+              ))}
+            </div>
+            <AnimatePresence mode="wait">
+              {selectedResources.length > 0 && selectedPerson ? (
+                <motion.div
+                  key="selected"
+                  initial={{
+                    opacity: 1,
+                    x: `${(selectedPersonIndex ?? 0) * 25}%`
+                  }}
+                  animate={{ opacity: 1, x: 'calc(40% - 2rem)' }}
+                  exit={{
+                    opacity: 1,
+                    x: `${(selectedPersonIndex ?? 0) * 25}%`
+                  }}
+                  transition={{ duration: 0.4 }}
+                  className="hidden md:flex justify-start"
+                >
+                  <div
+                    className="w-1/4"
+                    onClick={() =>
+                      handlePersonClick(selectedPerson, selectedPersonIndex)
+                    }
+                  >
+                    <PeopleCard people={selectedPerson} />
+                  </div>
+                </motion.div>
+              ) : (
+                // <div className='bg-red-500 h-24 w-full'>hello world</div>
+                <motion.div
+                  key="carousel"
+                  initial={{ opacity: 1 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 1 }}
+                  transition={{ duration: 0.4 }}
+                  className="hidden md:block"
+                >
+                  <CardSlider>
+                    {popularResources.map((show, index) => (
+                      <SwiperSlide
+                        key={index}
+                        className="flex justify-center items-center"
+                      >
+                        <div onClick={() => handlePersonClick(show, index)}>
+                          <PeopleCard people={show} />
+                        </div>
+                      </SwiperSlide>
+                    ))}
+                  </CardSlider>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </>
         )}
       </div>
 

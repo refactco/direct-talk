@@ -147,7 +147,7 @@ export default function SearchResults() {
 
   return (
     <Fragment>
-      <div className="flex gap-8 min-h-[calc(100vh-154px)] max-w-4xl mx-auto">
+      <div className="flex gap-8 min-h-[calc(100vh-154px)] max-w-[600px] mx-auto">
         {/* Main Content */}
         {isLoadingChats || isLoadingStartChat ? (
           <ConversationPageLoading initialMessage={initialMessage} />
@@ -170,7 +170,7 @@ export default function SearchResults() {
                       <h2 className="text-lg font-bold mb-6">{question}</h2>
 
                       {/* Answer Section */}
-                      <div className="flex gap-4 flex-1 bg-neutral-900 p-4 rounded-xl">
+                      <div className="flex gap-4 flex-1 p-4 rounded-xl">
                         <div className="w-10">
                           {resources?.[0] ? (
                             <img
@@ -218,7 +218,7 @@ export default function SearchResults() {
                                   initial={{ opacity: 0, y: 10 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   // transition={{ delay: index * 0.5 }}
-                                  className="leading-relaxed text-gray-200"
+                                  className="leading-relaxed text-gray-200 text-sm"
                                 >
                                   <MarkdownRenderer
                                     content={answer as string}

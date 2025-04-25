@@ -90,7 +90,7 @@ export function PeopleCard({
               </svg>
               {/* <InfoIcon className="fill-foreground w-4 h-4" /> */}
               <span className="text-[0.5625rem] text-accent font-semibold">
-                More Info
+                About
               </span>
             </div>
           ) : null}

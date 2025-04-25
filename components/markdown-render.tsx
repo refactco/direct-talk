@@ -1,10 +1,9 @@
-import React from 'react';
+import { cn } from '@/lib/utils';
 import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import emoji from 'remark-emoji';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { cn } from '@/lib/utils';
+import emoji from 'remark-emoji';
+import remarkGfm from 'remark-gfm';
 
 const MarkdownRenderer = ({ content, className }) => {
   return (
@@ -19,7 +18,7 @@ const MarkdownRenderer = ({ content, className }) => {
         'prose-h5:text-lg prose-h5:font-medium prose-h5:mt-4 prose-h5:mb-2',
         'prose-h6:text-base prose-h6:font-medium prose-h6:mt-4 prose-h6:mb-2',
         // Improved paragraph spacing
-        'prose-p:text-base font-normal prose-p:leading-7 prose-p:my-4',
+        'prose-p:text-sm font-light prose-p:leading-7 prose-p:my-4',
         // Improved spacing between different elements
         '[&>h1+p]:mt-3 [&>h2+p]:mt-2 [&>h3+p]:mt-2 [&>p+h1]:mt-10 [&>p+h2]:mt-8 [&>p+h3]:mt-6',
         // Blockquote styling
@@ -177,7 +176,7 @@ const MarkdownRenderer = ({ content, className }) => {
         },
         p({ node, className, children, ...props }) {
           return (
-            <p className="text-base leading-7 my-4" {...props}>
+            <p className="text-sm leading-7 my-4" {...props}>
               {children}
             </p>
           );

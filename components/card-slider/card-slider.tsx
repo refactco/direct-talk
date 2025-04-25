@@ -113,6 +113,9 @@ export function CardSlider({
         modules={[Navigation]}
         spaceBetween={22}
         slidesPerView={5}
+        navigation={{
+          enabled: false
+        }}
         onSwiper={(swiper) => {
           setSwiperInstance(swiper);
           setShowPrev(!swiper.isBeginning);
