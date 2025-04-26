@@ -16,6 +16,7 @@ interface User {
   id: string;
   email: string;
   name?: string;
+  avatar?: string;
 }
 
 interface AuthContextType {
@@ -30,6 +31,8 @@ interface AuthContextType {
   isLoading: boolean;
 }
 
+const AUTH_AVATAR_KEY = 'auth_user_avatar';
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -40,16 +43,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
   const router = useRouter();
 
+  // Helper function to store avatar in localStorage
+  const storeAvatarInLocalStorage = (avatar: string | undefined) => {
+    if (avatar) {
+      localStorage.setItem(AUTH_AVATAR_KEY, avatar);
+    }
+  };
+
+  // Helper function to get avatar from localStorage
+  const getAvatarFromLocalStorage = (): string | undefined => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem(AUTH_AVATAR_KEY) || undefined;
+    }
+    return undefined;
+  };
+
   useEffect(() => {
     const checkUserSession = async () => {
       setIsLoading(true);
       const { data, error } = await supabase.auth.getSession();
       if (data.session) {
         const { user } = data.session;
+        const avatar =
+          user.user_metadata?.avatar_url || getAvatarFromLocalStorage();
+
+        // Store avatar in localStorage if present
+        if (avatar) {
+          storeAvatarInLocalStorage(avatar);
+        }
+
         setUser({
           id: user.id,
           email: user.email || '',
-          name: user.user_metadata?.full_name || ''
+          name: user.user_metadata?.full_name || '',
+          avatar
         });
         setIsAuthenticated(true);
       } else {
@@ -71,10 +98,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         if (session?.user) {
+          console.log({ session });
+          const avatar =
+            session.user.user_metadata?.avatar_url ||
+            getAvatarFromLocalStorage();
+
+          // Store avatar in localStorage if present
+          if (avatar) {
+            storeAvatarInLocalStorage(avatar);
+          }
+
           setUser({
             id: session.user.id,
             email: session.user.email || '',
-            name: session.user.user_metadata?.full_name || ''
+            name: session.user.user_metadata?.full_name || '',
+            avatar
           });
           setIsAuthenticated(true);
         } else {
@@ -90,10 +128,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const loginWithGoogle = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { error, data } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: `${window.location.origin}` }
     });
+    console.log({ data });
     if (error) {
       const toastLimitConf: any = toastConfig({
         message: error.message ?? 'Google Login Error',
@@ -120,6 +159,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     setIsLoading(true);
     await supabase.auth.signOut();
+    // Clear avatar from localStorage on logout
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(AUTH_AVATAR_KEY);
+    }
     setUser(null);
     setIsAuthenticated(false);
     setIsLoading(false);

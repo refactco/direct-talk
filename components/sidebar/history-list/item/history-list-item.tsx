@@ -33,7 +33,7 @@ export function HistoryListItem(props: IHistoryItemProps) {
         <>
           <Link
             href={`/conversation?id=${item.session_id}`}
-            className="truncate max-w-40 text-sm py-2 flex-1"
+            className="truncate max-w-40 text-xs font-light py-1 flex-1"
             onClick={() => {
               onCloseSidebar();
             }}

@@ -2,15 +2,18 @@
 
 import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { AnimatePresence, motion } from 'framer-motion';
+import { CircleUserIcon } from 'lucide-react';
 import { Logo } from '../icons/Logo';
 import { Skeleton } from '../ui/skeleton';
 
 interface ConversationPageLoadingProps {
   initialMessage?: string | null;
+  userAvatar?: string | null;
 }
 
 export function ConversationPageLoading({
-  initialMessage
+  initialMessage,
+  userAvatar
 }: ConversationPageLoadingProps) {
   const { selectedResources } = useSelectedResources();
 
@@ -22,36 +25,50 @@ export function ConversationPageLoading({
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="p-6 max-w-5xl"
+              className="p-6 max-w-3xl"
             >
               <div className="flex-1 flex flex-col">
                 <div className="flex items-center gap-4 mb-6">
                   {initialMessage ? (
-                    <h2 className="text-lg font-bold">{initialMessage}</h2>
+                    <div className="flex items-center gap-3">
+                      {userAvatar ? (
+                        <img
+                          src={userAvatar}
+                          alt="User"
+                          className="w-8 h-8 rounded-full object-cover"
+                        />
+                      ) : (
+                        <CircleUserIcon className="w-8 h-8" />
+                      )}
+                      <h2 className="text-lg font-bold">{initialMessage}</h2>
+                    </div>
                   ) : (
-                    <Skeleton className="h-4 w-[90%]" />
+                    <div className="flex items-center gap-3 w-1/2">
+                      <Skeleton className="w-8 h-8 rounded-full" />
+                      <Skeleton className="flex-1 h-4 w-full" />
+                    </div>
                   )}
                 </div>
 
                 {/* Answer Section */}
-                <div className="flex gap-4 flex-1 bg-neutral-900 p-4 rounded-xl">
-                  <div className="w-10">
+                <div className="flex gap-3 py-4 rounded-xl">
+                  <div className="w-8">
                     {selectedResources?.[0] ? (
                       <img
                         width={40}
                         height={40}
-                        className="w-10 h-10 object-cover rounded-full"
+                        className="w-8 h-8 object-cover rounded-full"
                         src={selectedResources[0].image_url}
                       />
                     ) : (
-                      <Logo width={40} height={40} />
+                      <Logo className="w-8 h-8" />
                     )}
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-4 text-neutral-400">
+                    <div className="flex items-center gap-2 mb-4 text-neutral-500">
                       {/* <Book className="h-5 w-5" /> */}
                       {/* <Logo /> */}
-                      <div className="font-medium">
+                      <div className="font-light text-sm">
                         {selectedResources?.[0]
                           ? selectedResources[0].name
                           : 'Answer'}
@@ -66,11 +83,11 @@ export function ConversationPageLoading({
                         exit={{ opacity: 0 }}
                         className="space-y-4"
                       >
+                        <Skeleton className="h-4 w-[100%]" />
                         <Skeleton className="h-4 w-[90%]" />
-                        <Skeleton className="h-4 w-[80%]" />
+                        <Skeleton className="h-4 w-[95%]" />
                         <Skeleton className="h-4 w-[85%]" />
-                        <Skeleton className="h-4 w-[75%]" />
-                        <Skeleton className="h-4 w-[88%]" />
+                        <Skeleton className="h-4 w-[98%]" />
                       </motion.div>
                     </AnimatePresence>
                   </div>

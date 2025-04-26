@@ -132,7 +132,7 @@ export function Sidebar() {
                   showContent ? 'opacity-0' : 'opacity-100'
                 )}
               >
-                <span className="text-lg font-semibold whitespace-nowrap">
+                <span className="text-base font-medium whitespace-nowrap">
                   Ask Author
                 </span>
               </div>
@@ -188,10 +188,10 @@ export function Sidebar() {
                   resetSelectedResources();
                   router.push('/');
                 }}
-                className="bg-foreground w-full mb-3 font-semibold max-h-9 hover:bg-foreground/90 rounded-[6px]"
+                className="bg-foreground w-full mb-3 font-normal max-h-9 hover:bg-foreground/90 rounded-[6px] text-sm"
               >
-                <SearchIcon className="fill-primary-foreground" />
-                {isCollapsed ? '' : 'New Search'}
+                <SearchIcon className="fill-primary-foreground w-4 h-4" />
+                {isCollapsed ? '' : 'New Ask'}
               </Button>
             ) : null}
             <div

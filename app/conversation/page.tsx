@@ -10,7 +10,7 @@ import { useChat } from '@/contexts/ChatContext';
 import { useHistory } from '@/contexts/HistoryContext';
 import { useResource } from '@/contexts/ResourcesContext';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowRightIcon } from 'lucide-react';
+import { ArrowRightIcon, CircleUserIcon } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { IChatHistory } from '../conversation/types';
@@ -22,13 +22,13 @@ import { cn } from '@/lib/utils';
 
 export default function SearchResults() {
   const [inputValue, setInputValue] = useState('');
-
+  const [userAvatar, setUserAvatar] = useState<string | null>(null);
   const [isLoadingFollowUp, setIsLoadingFollowUp] = useState<boolean>(false);
   const [chatHistory, setChatHistory] = useState<IChatHistory[]>([]);
   const searchParams = useSearchParams();
   const chatId = searchParams.get('id');
   const { initialMessage } = useInitialMessage();
-  const { openAuthModal, isAuthenticated } = useAuth();
+  const { openAuthModal, isAuthenticated, user } = useAuth();
   const {
     fetchChat,
     chatDatas,
@@ -145,12 +145,30 @@ export default function SearchResults() {
     }
   };
 
+  // Load avatar from localStorage on component mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedAvatar = localStorage.getItem('auth_user_avatar');
+      setUserAvatar(storedAvatar);
+    }
+  }, []);
+
+  // Also update avatar when user changes
+  useEffect(() => {
+    if (user?.avatar) {
+      setUserAvatar(user.avatar);
+    }
+  }, [user]);
+
   return (
     <Fragment>
-      <div className="flex gap-8 min-h-[calc(100vh-154px)] max-w-[600px] mx-auto">
+      <div className="flex gap-8 min-h-[calc(100vh-154px)] max-w-[768px] mx-auto">
         {/* Main Content */}
         {isLoadingChats || isLoadingStartChat ? (
-          <ConversationPageLoading initialMessage={initialMessage} />
+          <ConversationPageLoading
+            initialMessage={initialMessage}
+            userAvatar={userAvatar}
+          />
         ) : (
           <div className="flex gap-8 w-full mx-auto">
             <div className="flex flex-1 flex-col">
@@ -159,6 +177,7 @@ export default function SearchResults() {
 
                 return (
                   <motion.div
+                    key={index}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="p-6 max-w-5xl"
@@ -167,26 +186,37 @@ export default function SearchResults() {
                     }
                   >
                     <div className="flex-1 flex flex-col">
-                      <h2 className="text-lg font-bold mb-6">{question}</h2>
+                      <div className="flex items-center gap-3 mb-4">
+                        {userAvatar ? (
+                          <img
+                            src={userAvatar}
+                            alt="User"
+                            className="w-8 h-8 rounded-full object-cover"
+                          />
+                        ) : (
+                          <CircleUserIcon className="w-8 h-8" />
+                        )}
+                        <h2 className="text-lg font-semibold">{question}</h2>
+                      </div>
 
                       {/* Answer Section */}
-                      <div className="flex gap-4 flex-1 p-4 rounded-xl">
-                        <div className="w-10">
+                      <div className="flex gap-3 flex-1 py-4 rounded-xl">
+                        <div className="w-8">
                           {resources?.[0] ? (
                             <img
                               src={resources[0].image_url}
-                              width={40}
-                              height={40}
-                              className="rounded-full object-cover w-10 h-10"
+                              width={32}
+                              height={32}
+                              className="rounded-full object-cover w-8 h-8"
                             />
                           ) : (
-                            <Logo />
+                            <Logo className="w-8 h-8" />
                           )}
                         </div>
                         <div className="flex-1">
-                          <div className="inline-flex items-center gap-2 text-neutral-400 mb-0 rounded-xl">
+                          <div className="inline-flex items-center gap-2 text-neutral-500 mb-0 rounded-xl">
                             {/* <Book className="h-5 w-5" /> */}
-                            <div className="font-medium">
+                            <div className="font-normal text-sm">
                               {chatDatas?.author_name ?? 'Answer'}
                             </div>
                           </div>
@@ -198,7 +228,7 @@ export default function SearchResults() {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
-                                className="space-y-4"
+                                className="space-y-4 mt-2"
                               >
                                 <Skeleton className="h-4 w-[90%]" />
                                 <Skeleton className="h-4 w-[80%]" />

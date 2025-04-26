@@ -1,8 +1,15 @@
-import { BotMessageSquareIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export function Logo(props: any) {
   return (
-    <BotMessageSquareIcon {...props} />
+    <div
+      {...props}
+      className={cn(
+        'w-6 h-6 rounded-full bg-white text-black text-xs flex items-center justify-center',
+        props.className
+      )}
+    ></div>
+    // <BotMessageSquareIcon {...props} />
     // <svg
     //   xmlns="http://www.w3.org/2000/svg"
     //   width="25"

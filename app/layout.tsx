@@ -25,7 +25,10 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'Ask Author - ask your favorite authors',
   description:
-    'Discover and engage with curated authors through AI-powered conversations'
+    'Discover and engage with curated authors through AI-powered conversations',
+  icons: {
+    icon: '/favicon.png'
+  }
 };
 
 export default function RootLayout({

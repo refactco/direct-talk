@@ -9,7 +9,7 @@ export default function ChatLayout({
   return (
     <Suspense
       fallback={
-        <div className="flex gap-8 min-h-[calc(100vh-154px)] max-w-5xl mx-auto">
+        <div className="flex gap-8 min-h-[calc(100vh-154px)] max-w-3xl mx-auto">
           <ConversationPageLoading />
         </div>
       }
