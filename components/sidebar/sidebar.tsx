@@ -188,10 +188,10 @@ export function Sidebar() {
                   resetSelectedResources();
                   router.push('/');
                 }}
-                className="bg-foreground w-full mb-3 font-normal max-h-9 hover:bg-foreground/90 rounded-[6px] text-sm"
+                className="bg-foreground w-full mb-3 font-normal max-h-9 hover:bg-foreground/90 rounded-[6px] text-md"
               >
                 <SearchIcon className="fill-primary-foreground w-4 h-4" />
-                {isCollapsed ? '' : 'New Ask'}
+                {isCollapsed ? '' : 'New Chat'}
               </Button>
             ) : null}
             <div

@@ -1,10 +1,10 @@
+import { MoreResourcesSheet } from '@/components/more-resources-modal/more-resources-modal';
 import { cn } from '@/lib/utils';
 import { TSelectedResource } from '@/types/resources';
 import Image from 'next/image';
 import { useState } from 'react';
 import SelectedResourceCard from '../SelectedResourceCard';
 import { IResourcesListProps } from './resources-list-type';
-import { MoreResourcesSheet } from '@/components/more-resources-modal/more-resources-modal';
 
 export function ResourcesList(props: IResourcesListProps) {
   const {
@@ -14,7 +14,8 @@ export function ResourcesList(props: IResourcesListProps) {
     hideRemoveButton = false,
     direction = 'horizontal',
     wrapTitle = false,
-    isLoading = false
+    isLoading = false,
+    noDetail = true
   } = props;
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
 
@@ -44,6 +45,7 @@ export function ResourcesList(props: IResourcesListProps) {
               )}
             >
               <SelectedResourceCard
+                noDetail={noDetail}
                 resource={resource}
                 hideRemove={hideRemoveButton}
                 onRemoveResource={onRemoveResource}
@@ -76,7 +78,7 @@ export function ResourcesList(props: IResourcesListProps) {
                       )}
                     >
                       <Image
-                        src={image_url ?? '/placeholder.svg'}
+                        src={image_url ?? '/youtube.png'}
                         alt={title ?? name}
                         width={24}
                         height={24}

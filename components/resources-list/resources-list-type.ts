@@ -8,4 +8,5 @@ export interface IResourcesListProps {
   direction?: 'horizontal' | 'vertical';
   wrapTitle?: boolean;
   isLoading?: boolean;
+  noDetail?: boolean;
 }

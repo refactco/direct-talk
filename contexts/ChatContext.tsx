@@ -4,6 +4,7 @@ import { ChatData, Message, StartChatData } from '@/app/conversation/types';
 import { useToast } from '@/hooks/use-toast';
 import apiClient from '@/lib/axiosInstance';
 import toastConfig from '@/lib/toast-config';
+import { TSelectedResource } from '@/types/resources';
 import type React from 'react';
 import { createContext, useCallback, useContext, useState } from 'react';
 import { useSelectedResources } from './SelectedResourcesContext';
@@ -13,6 +14,7 @@ interface ChatContextType {
   isLoading: boolean;
   isLoadingChats: boolean;
   isLoadingStartChat: boolean;
+  isLoadingResources: boolean;
   error: string | null;
   doChat: (
     prompt: string,
@@ -27,6 +29,8 @@ interface ChatContextType {
     message: string | null,
     contentIds: string[] | null
   ) => void;
+  resources: TSelectedResource[];
+  fetchRelatedResources: (resourceIds: string[]) => Promise<void>;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -39,9 +43,11 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   const [startChatData, setStartChatData] = useState<StartChatData | null>(
     null
   );
+  const [resources, setResources] = useState<TSelectedResource[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingStartChat, setIsLoadingStartChat] = useState(false);
   const [isLoadingChats, setIsLoadingChats] = useState(true);
+  const [isLoadingResources, setIsLoadingResources] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
   const { selectedResources } = useSelectedResources();
@@ -53,12 +59,43 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
     setStartChatData({ message, contentIds });
   };
 
+  const fetchRelatedResources = useCallback(
+    async (resourceIds: string[]): Promise<void> => {
+      if (!resourceIds.length) {
+        setResources([]);
+        return;
+      }
+
+      setIsLoadingResources(true);
+      try {
+        const fetchedResources = await Promise.all(
+          resourceIds.map(async (id) => {
+            const response = await apiClient.get(`/api/resource/${id}`);
+            return response.data;
+          })
+        );
+
+        setResources(fetchedResources);
+      } catch (err) {
+        toast({
+          title: 'Error',
+          description:
+            err instanceof Error ? err.message : 'Failed to fetch resources',
+          variant: 'destructive'
+        });
+      } finally {
+        setIsLoadingResources(false);
+      }
+    },
+    [toast]
+  );
+
   const doChat = useCallback(
     async (
       prompt: string,
-      contentIds?: string[],
+      contentId?: string[] | null,
       sessionId?: string
-    ): Promise<string> => {
+    ): Promise<any> => {
       setIsLoading(true);
       setError(null);
       const formData: any = { question: prompt };
@@ -67,8 +104,8 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
       } else {
         setIsLoadingStartChat(true);
       }
-      if (contentIds && contentIds?.length > 0) {
-        formData['content_ids'] = contentIds;
+      if (contentId && contentId?.length > 0) {
+        formData['content_ids'] = contentId;
       }
 
       if (selectedResources && selectedResources?.length > 0) {
@@ -77,7 +114,9 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
       }
       try {
         const response = await apiClient.post(`${baseURL}/search`, formData);
+
         const data = await response.data;
+
         return data;
       } catch (err) {
         const toastLimitConf: any = toastConfig({
@@ -92,28 +131,67 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
         setIsLoadingStartChat(false);
       }
     },
-    [selectedResources]
+    [selectedResources, fetchRelatedResources, toast]
   );
 
-  const fetchChat = useCallback(async (sessionId: string): Promise<void> => {
-    setIsLoadingChats(true);
-    setError(null);
-    try {
-      const response = await apiClient.get(`${baseURL}/search/${sessionId}`);
-      const data = await response.data;
-      setChatDatas(data);
-    } catch (err: any) {
-      const toastLimitConf: any = toastConfig({
-        message:
-          err instanceof Error ? err.message : 'An unknown error occurred',
-        toastType: 'destructive'
-      });
-      toast(toastLimitConf);
-      throw err;
-    } finally {
-      setIsLoadingChats(false);
-    }
-  }, []);
+  const fetchChat = useCallback(
+    async (sessionId: string): Promise<void> => {
+      setIsLoadingChats(true);
+      setError(null);
+      try {
+        const response = await apiClient.get(`${baseURL}/search/${sessionId}`);
+        const data = await response.data;
+
+        setChatDatas(data);
+        setIsLoadingChats(false);
+
+        // Process chat history items with resource_ids
+        if (data.chat_history && Array.isArray(data.chat_history)) {
+          const updatedChatHistory = await Promise.all(
+            data.chat_history.map(async (item: Message) => {
+              if (
+                item.resource_id &&
+                Array.isArray(item.resource_id) &&
+                item.resource_id.length > 0
+              ) {
+                try {
+                  const fetchedResources = await Promise.all(
+                    item.resource_id.map(async (id: string) => {
+                      const response = await fetch(`/api/resources/${id}`);
+                      const data = await response.json();
+
+                      return data;
+                    })
+                  );
+
+                  return {
+                    ...item,
+                    resources: fetchedResources
+                  };
+                } catch (error) {
+                  return item;
+                }
+              }
+              return item;
+            })
+          );
+
+          // Update data with the processed chat history
+          data.chat_history = updatedChatHistory;
+        }
+        setChatDatas(data);
+      } catch (err: any) {
+        const toastLimitConf: any = toastConfig({
+          message:
+            err instanceof Error ? err.message : 'An unknown error occurred',
+          toastType: 'destructive'
+        });
+        toast(toastLimitConf);
+        throw err;
+      }
+    },
+    [toast]
+  );
 
   const addMessage = (message: Message) => {
     setChatDatas((prevChatData) => {
@@ -127,6 +205,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const resetChatData = () => {
     setChatDatas(null);
+    setResources([]);
   };
 
   const value = {
@@ -134,13 +213,16 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
     isLoading,
     isLoadingChats,
     isLoadingStartChat,
+    isLoadingResources,
     error,
     doChat,
     fetchChat,
     addMessage,
-    startChatData,
+    startChatData: startChatData || { message: null, contentIds: null },
     updateStartChatDate,
-    resetChatData
+    resetChatData,
+    resources,
+    fetchRelatedResources
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;

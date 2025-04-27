@@ -6,7 +6,8 @@ export const mockAndrewHubermanEpisodes = [
     title:
       'Supercharge Exercise Performance & Recovery with Cooling | Huberman Lab Essentials',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=5--yogtN6oM'
   },
   {
     id: 1801,
@@ -14,7 +15,8 @@ export const mockAndrewHubermanEpisodes = [
     type: 'episode',
     title: 'How to Learn Skills Faster | Huberman Lab Essentials',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=VnEy78RL2YY'
   },
   {
     id: 1802,
@@ -23,7 +25,8 @@ export const mockAndrewHubermanEpisodes = [
     title:
       'Build Muscle Size, Increase Strength & Improve Recovery | Huberman Lab Essentials',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=jgaoLdS82vw'
   },
   {
     id: 1803,
@@ -32,7 +35,8 @@ export const mockAndrewHubermanEpisodes = [
     title:
       'Boost Your Energy & Immune System with Cortisol & Adrenaline | Huberman Lab Essentials',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=wFucddupQlk'
   },
   {
     id: 1804,
@@ -40,7 +44,8 @@ export const mockAndrewHubermanEpisodes = [
     type: 'episode',
     title: 'How Foods & Nutrients Control Our Moods | Huberman Lab Essentials',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=Q4qWzbP0q7I'
   },
   {
     id: 1805,
@@ -48,7 +53,8 @@ export const mockAndrewHubermanEpisodes = [
     type: 'episode',
     title: 'How to Focus to Change Your Brain | Huberman Lab Essentials',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=4AwyVTHEU3s'
   },
   {
     id: 1806,
@@ -56,7 +62,8 @@ export const mockAndrewHubermanEpisodes = [
     type: 'episode',
     title: 'How to Increase Motivation & Drive | Huberman Lab Essentials',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=OLQRAMZi--c'
   },
   {
     id: 1807,
@@ -64,7 +71,8 @@ export const mockAndrewHubermanEpisodes = [
     type: 'episode',
     title: 'The Science of Emotions & Relationships | Huberman Lab Essentials',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=qdk7XuBgSjw'
   },
   {
     id: 1808,
@@ -72,7 +80,8 @@ export const mockAndrewHubermanEpisodes = [
     type: 'episode',
     title: 'Lose Fat With Science-Based Tools | Huberman Lab Essentials',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=f4cdu-QiKHo'
   },
   {
     id: 1809,
@@ -81,7 +90,8 @@ export const mockAndrewHubermanEpisodes = [
     title:
       'How to Learn Faster by Using Failures, Movement & Balance | Huberman Lab Essentials',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=jwChiek_aRY'
   },
   {
     id: 1810,
@@ -89,7 +99,8 @@ export const mockAndrewHubermanEpisodes = [
     type: 'episode',
     title: 'Essentials: How Your Brain Works & Changes',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=HiyzzcuaAac'
   },
   {
     id: 1811,
@@ -98,7 +109,8 @@ export const mockAndrewHubermanEpisodes = [
     title:
       'Control Pain & Heal Faster With Your Brain | Huberman Lab Essentials',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=SjPJn4QP0dk'
   },
   {
     id: 1812,
@@ -107,7 +119,8 @@ export const mockAndrewHubermanEpisodes = [
     title:
       'Optimize Your Learning & Creativity With Science-Based Tools | Huberman Lab Essentials',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=D97TQuy946k'
   },
   {
     id: 1813,
@@ -116,7 +129,8 @@ export const mockAndrewHubermanEpisodes = [
     title:
       'Using Science to Optimize Sleep, Learning & Metabolism | Huberman Lab Essentials',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=q-H_A_dQUxQ'
   },
   {
     id: 1814,
@@ -124,7 +138,8 @@ export const mockAndrewHubermanEpisodes = [
     type: 'episode',
     title: 'Essentials: Master Your Sleep & Be More Alert When Awake',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=lIo9FcrljDk'
   },
   {
     id: 1815,
@@ -132,7 +147,8 @@ export const mockAndrewHubermanEpisodes = [
     type: 'episode',
     title: 'Tools for Managing Stress & Anxiety | Huberman Lab Essentials',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=qUz93CyNIz0'
   }
 ];
 
@@ -143,7 +159,8 @@ export const mockDavidDeutschEpisodes = [
     type: 'episode',
     title: 'David Deutsch - AI, America, Fun, & Bayes',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=EVwjofV5TgU&list=PLd7-bHaQwnthaNDpZ32TtYONGVk95-fhF&index=74'
   },
   {
     id: 1817,
@@ -151,7 +168,8 @@ export const mockDavidDeutschEpisodes = [
     type: 'episode',
     title: 'David Deutsch: The Era of Man, Popper, and Western Civilization',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=I3FzAjgPztU'
   },
   {
     id: 1818,
@@ -160,7 +178,8 @@ export const mockDavidDeutschEpisodes = [
     title:
       "You're Not Smarter Than a Caveman - How Did We Get So Clever? - David Deutsch",
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=rpP9sqbQzjs'
   },
   {
     id: 1819,
@@ -168,7 +187,8 @@ export const mockDavidDeutschEpisodes = [
     type: 'episode',
     title: 'The Multiverse is REAL - David Deutsch',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=bux0SjaUCY0'
   },
   {
     id: 1820,
@@ -177,7 +197,8 @@ export const mockDavidDeutschEpisodes = [
     title:
       'Mindscape 253 | David Deutsch on Science, Complexity, and Explanation',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=ldgK7EhEnto'
   },
   {
     id: 1821,
@@ -186,7 +207,8 @@ export const mockDavidDeutschEpisodes = [
     title:
       'Knowledge Creation and its Risks - David Deutsch on AGI - Centre for the Future of Intelligence',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=01C3a4fL1m0'
   },
   {
     id: 1822,
@@ -195,7 +217,8 @@ export const mockDavidDeutschEpisodes = [
     title:
       'David Deutsch and Naval Ravikant — The Fabric of Reality And Much More | The Tim Ferriss Show',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=FfWbcrObpUY'
   },
   {
     id: 1823,
@@ -204,7 +227,8 @@ export const mockDavidDeutschEpisodes = [
     title:
       'Physicist Dr. David Deutsch Returns - Science, Mathematics & Jew Hatred (THE SAAD TRUTH_1763)',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=ZcPExkCWzRM'
   },
   {
     id: 1824,
@@ -212,7 +236,8 @@ export const mockDavidDeutschEpisodes = [
     type: 'episode',
     title: 'David Deutsch: Knowledge Creation and The Human Race, Part 1',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=YyxepLfH1ZU'
   },
   {
     id: 1825,
@@ -220,7 +245,8 @@ export const mockDavidDeutschEpisodes = [
     type: 'episode',
     title: 'David Deutsch: Knowledge Creation and The Human Race, Part 2',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=aQfeYBa1MTk'
   },
   {
     id: 1826,
@@ -228,7 +254,8 @@ export const mockDavidDeutschEpisodes = [
     type: 'episode',
     title: 'AGI with David Deutsch | Reason Is Fun Podcast #-1',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=jQnoxhoWhXE'
   },
   {
     id: 1827,
@@ -237,7 +264,8 @@ export const mockDavidDeutschEpisodes = [
     title:
       'What are inexplicit ideas? Is cognition embodied? | Reason Is Fun #3',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=vxemBLZRgYI'
   },
   {
     id: 1828,
@@ -245,7 +273,8 @@ export const mockDavidDeutschEpisodes = [
     type: 'episode',
     title: 'How do we make decisions? | Reason Is Fun #4',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=F39FQnLjI6k'
   },
   {
     id: 1829,
@@ -253,7 +282,8 @@ export const mockDavidDeutschEpisodes = [
     type: 'episode',
     title: 'Creativity in decision making | Reason Is Fun #5',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=Sdgl_Z3Tc7Y'
   }
 ];
 
@@ -264,7 +294,8 @@ export const mockMarcAndreessenEpisodes = [
     type: 'episode',
     title: 'Joe Rogan Experience #2234 - Marc Andreessen',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=ye8MOfxD5nU'
   },
   {
     id: 1791,
@@ -273,7 +304,8 @@ export const mockMarcAndreessenEpisodes = [
     title:
       'Marc Andreessen: How Risk Taking, Innovation & Artificial Intelligence Transform Human Experience',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=yixIc1Ai6jM'
   },
   {
     id: 1792,
@@ -281,7 +313,8 @@ export const mockMarcAndreessenEpisodes = [
     type: 'episode',
     title: 'Why Technology Still Matters with Marc Andreessen',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=0jIqF2_PFFM'
   },
   {
     id: 1793,
@@ -289,7 +322,8 @@ export const mockMarcAndreessenEpisodes = [
     type: 'episode',
     title: "Marc Andreessen: It's Morning Again In America",
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=YqeI7iViRmE&t=13s'
   },
   {
     id: 1794,
@@ -298,7 +332,8 @@ export const mockMarcAndreessenEpisodes = [
     title:
       'Marc Andreessen: Trump, Power, Tech, AI, Immigration & Future of America | Lex Fridman Podcast #458',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=OHWnPOKh_S0'
   },
   {
     id: 1795,
@@ -306,7 +341,8 @@ export const mockMarcAndreessenEpisodes = [
     type: 'episode',
     title: 'Superintelligence is Upon Us | Marc Andreessen | EP 515',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=_Z1JFCARXpA'
   },
   {
     id: 1796,
@@ -314,7 +350,8 @@ export const mockMarcAndreessenEpisodes = [
     type: 'episode',
     title: 'Marc Andreessen on AI, Tech, Censorship and Dining With Trump',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=sgTeZXw-ytQ&t=13s'
   },
   {
     id: 1797,
@@ -322,7 +359,8 @@ export const mockMarcAndreessenEpisodes = [
     type: 'episode',
     title: 'Marc Andreessen',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=Wlx2oAeV4-8&'
   },
   {
     id: 1798,
@@ -331,7 +369,8 @@ export const mockMarcAndreessenEpisodes = [
     title:
       'Marc Andreessen: Future of the Internet, Technology, and AI | Lex Fridman Podcast #386',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=-hxeDjAxvJ8'
   },
   {
     id: 1799,
@@ -340,7 +379,8 @@ export const mockMarcAndreessenEpisodes = [
     title:
       'The Big AI Reset Is Here - Build Wealth & Get Ahead While Others Fall Behind | Marc Andreessen',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=6twxFu3bL0w&t=6209s'
   }
 ];
 
@@ -351,7 +391,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 21. Emergence',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=x6YWpe9xHMg'
   },
   {
     id: 1831,
@@ -359,7 +400,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - Q&A 11 - Renormalization',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=PaRGj5Phpm0'
   },
   {
     id: 1832,
@@ -367,7 +409,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - Q&A 16 - Gravity',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=kp1k90zNVLc'
   },
   {
     id: 1833,
@@ -375,7 +418,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 16. Gravity',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=hxR9RBujJUY'
   },
   {
     id: 1834,
@@ -383,7 +427,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - Q&A 7 - Quantum Mechanics',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=IB50S4J4c8k'
   },
   {
     id: 1835,
@@ -392,7 +437,8 @@ export const mockSeanCarrollEpisodes = [
     title:
       'The Biggest Ideas in the Universe - Q&A 20 - Entropy and Information',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=x4-65D3Selo'
   },
   {
     id: 1836,
@@ -400,7 +446,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 4. Space',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=AuqKsBQnE2A'
   },
   {
     id: 1837,
@@ -408,7 +455,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - Q&A 6 - Spacetime',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=Dy1LNk_B6IE'
   },
   {
     id: 1838,
@@ -416,7 +464,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - Q&A 14 - Symmetry',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=b0sSHn2jSqk'
   },
   {
     id: 1839,
@@ -424,7 +473,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 1. Conservation',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=4ov5hCkj3hQ'
   },
   {
     id: 1840,
@@ -432,7 +482,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 15. Gauge Theory',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=cm22AogSULg'
   },
   {
     id: 1841,
@@ -440,7 +491,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - Q&A 17 - Matter',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=m2qrXl0g0OE'
   },
   {
     id: 1842,
@@ -449,7 +501,8 @@ export const mockSeanCarrollEpisodes = [
     title:
       'The Biggest Ideas in the Universe - Q&A 19 - Probability and Randomness',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=tBWNRo7rmuQ'
   },
   {
     id: 1843,
@@ -457,7 +510,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 7. Quantum Mechanics',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=HI09kat_GeI'
   },
   {
     id: 1844,
@@ -465,7 +519,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 6. Spacetime',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=Cg2tOUTE2F4'
   },
   {
     id: 1845,
@@ -473,7 +528,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 9. Fields',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=KYfFCApo-Rg'
   },
   {
     id: 1846,
@@ -481,7 +537,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe: Introduction',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=353lEB63iyg'
   },
   {
     id: 1847,
@@ -489,7 +546,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - Q&A 8 - Entanglement',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=KIs5mYNZ15o'
   },
   {
     id: 1848,
@@ -497,7 +555,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - Q&A 5 - Time',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=BJlkkOIFjx4'
   },
   {
     id: 1849,
@@ -505,7 +564,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - Q&A 15 - Gauge Theory',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=dQWn9NzvX4s'
   },
   {
     id: 1850,
@@ -513,7 +573,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 5. Time',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=B-uungDRP6E'
   },
   {
     id: 1851,
@@ -521,7 +582,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 11. Renormalization',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=PZozMO3wWfo'
   },
   {
     id: 1852,
@@ -529,7 +591,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - Q&A 12 - Scale',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=TXgezspaGi8'
   },
   {
     id: 1853,
@@ -537,7 +600,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - Q&A 21 - Emergence',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=yCxacFBLHIY'
   },
   {
     id: 1854,
@@ -545,7 +609,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 2. Change',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=77LM_t19djI'
   },
   {
     id: 1855,
@@ -553,7 +618,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 10. Interactions',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=OGgQ4-Ak9ew'
   },
   {
     id: 1856,
@@ -561,7 +627,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - Q&A 22 - Cosmology',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=yj_ckNi_DCA'
   },
   {
     id: 1857,
@@ -569,7 +636,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - Q&A 13 - Geometry and Topology',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=ZqphkIO7yt4'
   },
   {
     id: 1858,
@@ -577,7 +645,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - Q&A 10 - Interactions',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=P2KPj7xS_Fo'
   },
   {
     id: 1859,
@@ -585,7 +654,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 24. Science',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=ZqphkIO7yt4'
   },
   {
     id: 1860,
@@ -593,7 +663,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 23. Criticality and Complexity',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=__aFwrR702U'
   },
   {
     id: 1861,
@@ -602,7 +673,8 @@ export const mockSeanCarrollEpisodes = [
     title:
       'The Biggest Ideas in the Universe - Q&A 23 - Criticality and Complexity',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=b0sSHn2jSqk'
   },
   {
     id: 1862,
@@ -610,7 +682,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 12. Scale',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=Qf_4vWO6UTk'
   },
   {
     id: 1863,
@@ -618,7 +691,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 17. Matter',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=liVg8LCU6i4'
   },
   {
     id: 1864,
@@ -626,7 +700,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - Q&A 9 - Fields',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=Nm8DRUgmjZc'
   },
   {
     id: 1865,
@@ -634,7 +709,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 13. Geometry and Topology',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=Xwpd_z-ipu4'
   },
   {
     id: 1866,
@@ -642,7 +718,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - Q&A 1 - Conservation',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=5F-2mJfCYFI'
   },
   {
     id: 1867,
@@ -650,7 +727,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - Q&A 2 - Change',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=7bCToECHXqY'
   },
   {
     id: 1868,
@@ -658,7 +736,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 19. Probability and Randomness',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=sZb64bZ07aE'
   },
   {
     id: 1869,
@@ -666,7 +745,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 20. Entropy and Information',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=tZQadPmTd84'
   },
   {
     id: 1870,
@@ -674,7 +754,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 3. Force, Energy, and Action',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=7m-USntpQh4'
   },
   {
     id: 1871,
@@ -682,7 +763,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - Q&A 4 - Space',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=AzYJTiQSGjw'
   },
   {
     id: 1872,
@@ -690,7 +772,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 22. Cosmology',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=yZ1KSJbJAng'
   },
   {
     id: 1873,
@@ -698,7 +781,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - Q&A 18 - Atoms',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=rBPPOI5UIe0'
   },
   {
     id: 1874,
@@ -707,7 +791,8 @@ export const mockSeanCarrollEpisodes = [
     title:
       'The Biggest Ideas in the Universe - Q&A 3 - Force, Energy, and Action',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=AeNSMJtKGc0'
   },
   {
     id: 1875,
@@ -715,7 +800,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 14. Symmetry',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=__aFwrR702U'
   },
   {
     id: 1876,
@@ -723,7 +809,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 8. Entanglement',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=IEBXFEQyPuw'
   },
   {
     id: 1877,
@@ -731,7 +818,8 @@ export const mockSeanCarrollEpisodes = [
     type: 'episode',
     title: 'The Biggest Ideas in the Universe - 18. Atoms',
     description: '',
-    image_url: null
+    image_url: null,
+    link: 'https://www.youtube.com/watch?v=mDUgPJrXqRc'
   }
 ];
 

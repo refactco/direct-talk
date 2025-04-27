@@ -1,6 +1,8 @@
 export interface Message {
   question?: string;
   answer?: string;
+  resource_id?: string[];
+  resources?: any[];
 }
 
 export interface ChatData {
@@ -17,6 +19,8 @@ export interface ChatData {
 export interface IChatHistory {
   question: string;
   answer?: string;
+  resource_id?: string[];
+  resources?: any[];
 }
 
 export interface StartChatData {

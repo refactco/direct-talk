@@ -98,7 +98,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         if (session?.user) {
-          console.log({ session });
           const avatar =
             session.user.user_metadata?.avatar_url ||
             getAvatarFromLocalStorage();
@@ -132,7 +131,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       provider: 'google',
       options: { redirectTo: `${window.location.origin}` }
     });
-    console.log({ data });
     if (error) {
       const toastLimitConf: any = toastConfig({
         message: error.message ?? 'Google Login Error',

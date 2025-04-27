@@ -17,6 +17,7 @@ import { IChatHistory } from '../conversation/types';
 
 import { Icons } from '@/components/icons';
 import MarkdownRenderer from '@/components/markdown-render';
+import { ResourcesList } from '@/components/resources-list/resources-list';
 import { useInitialMessage } from '@/contexts/InitialMessageContext';
 import { cn } from '@/lib/utils';
 
@@ -30,24 +31,21 @@ export default function SearchResults() {
   const { initialMessage } = useInitialMessage();
   const { openAuthModal, isAuthenticated, user } = useAuth();
   const {
-    fetchChat,
     chatDatas,
+    startChatData,
+    isLoadingChats,
+    isLoadingStartChat,
+    resources: answerResources,
+    fetchChat,
     addMessage,
     doChat,
-    startChatData,
     updateStartChatDate,
     resetChatData,
-    isLoadingChats,
-    isLoadingStartChat
+    fetchRelatedResources
   } = useChat();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const hasStartedChat = useRef(false);
-  const {
-    resources,
-    isLoading: isLoadingResources,
-    fetchResource,
-    clearResources
-  } = useResource();
+  const { resources, fetchResource, clearResources } = useResource();
   const { updateHistory } = useHistory();
   const router = useRouter();
 
@@ -85,6 +83,8 @@ export default function SearchResults() {
         history.question = message.question;
       } else if (message.answer) {
         history.answer = message.answer;
+        history.resource_id = message.resource_id;
+        history.resources = message.resources;
 
         historyList.push(history);
         history = {};
@@ -173,7 +173,12 @@ export default function SearchResults() {
           <div className="flex gap-8 w-full mx-auto">
             <div className="flex flex-1 flex-col">
               {chatHistory.map((chat: IChatHistory, index: number) => {
-                const { question, answer } = chat;
+                const {
+                  question,
+                  answer,
+                  resource_id: resourceIds,
+                  resources: answerResources
+                } = chat;
 
                 return (
                   <motion.div
@@ -196,7 +201,7 @@ export default function SearchResults() {
                         ) : (
                           <CircleUserIcon className="w-8 h-8" />
                         )}
-                        <h2 className="text-lg font-semibold">{question}</h2>
+                        <h2 className="text-base font-normal">{question}</h2>
                       </div>
 
                       {/* Answer Section */}
@@ -213,14 +218,22 @@ export default function SearchResults() {
                             <Logo className="w-8 h-8" />
                           )}
                         </div>
-                        <div className="flex-1">
+                        <div className="flex-1 flex flex-col gap-2">
                           <div className="inline-flex items-center gap-2 text-neutral-500 mb-0 rounded-xl">
                             {/* <Book className="h-5 w-5" /> */}
                             <div className="font-normal text-sm">
                               {chatDatas?.author_name ?? 'Answer'}
                             </div>
                           </div>
-
+                          {resourceIds && answerResources ? (
+                            <ResourcesList
+                              selectedResources={answerResources ?? []}
+                              noDetail
+                              hideRemoveButton
+                            />
+                          ) : resourceIds && !answerResources ? (
+                            <Icons.spinner />
+                          ) : null}
                           <AnimatePresence mode="wait">
                             {!answer ? (
                               <motion.div
