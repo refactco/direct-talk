@@ -128,9 +128,6 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
         const response = await apiClient.get(`${baseURL}/search/${sessionId}`);
         const data = await response.data;
 
-        setChatDatas(data);
-        setIsLoadingChats(false);
-
         // Process chat history items with resource_ids
         if (data.chat_history && Array.isArray(data.chat_history)) {
           const updatedChatHistory = await Promise.all(
@@ -160,6 +157,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
           // Update data with the processed chat history
           data.chat_history = updatedChatHistory;
         }
+
         setChatDatas(data);
       } catch (err: any) {
         const toastLimitConf: any = toastConfig({
@@ -169,6 +167,8 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
         });
         toast(toastLimitConf);
         throw err;
+      } finally {
+        setIsLoadingChats(false);
       }
     },
     [toast]
