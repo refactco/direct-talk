@@ -136,7 +136,12 @@ export default function SearchResults() {
       const result = await doChat(message, undefined, chatId?.toString());
       addMessage({ question: message });
       // setChatHistory([...chatHistory, { question: message, answer: result?.answer }]);
-      addMessage({ answer: result?.answer });
+      const relatedResources = await fetchRelatedResources(result?.resource_id);
+      addMessage({
+        answer: result?.answer,
+        resource_id: result?.resource_id,
+        resources: relatedResources
+      });
       // setTimeout(scrollToLastMessage, 100);
     } finally {
       setIsLoadingFollowUp(false);
@@ -231,8 +236,6 @@ export default function SearchResults() {
                               noDetail
                               hideRemoveButton
                             />
-                          ) : resourceIds && !answerResources ? (
-                            <Icons.spinner />
                           ) : null}
                           <AnimatePresence mode="wait">
                             {!answer ? (

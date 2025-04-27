@@ -30,7 +30,9 @@ interface ChatContextType {
     contentIds: string[] | null
   ) => void;
   resources: TSelectedResource[];
-  fetchRelatedResources: (resourceIds: string[]) => Promise<void>;
+  fetchRelatedResources: (
+    resourceIds: string[]
+  ) => Promise<TSelectedResource[]>;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -59,36 +61,20 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
     setStartChatData({ message, contentIds });
   };
 
-  const fetchRelatedResources = useCallback(
-    async (resourceIds: string[]): Promise<void> => {
-      if (!resourceIds.length) {
-        setResources([]);
-        return;
-      }
+  const fetchRelatedResources = async (
+    resourceIds: string[]
+  ): Promise<TSelectedResource[]> => {
+    const fetchedResources = await Promise.all(
+      resourceIds.map(async (id: string) => {
+        const response = await fetch(`/api/resources/${id}`);
+        const data = await response.json();
 
-      setIsLoadingResources(true);
-      try {
-        const fetchedResources = await Promise.all(
-          resourceIds.map(async (id) => {
-            const response = await apiClient.get(`/api/resource/${id}`);
-            return response.data;
-          })
-        );
+        return data;
+      })
+    );
 
-        setResources(fetchedResources);
-      } catch (err) {
-        toast({
-          title: 'Error',
-          description:
-            err instanceof Error ? err.message : 'Failed to fetch resources',
-          variant: 'destructive'
-        });
-      } finally {
-        setIsLoadingResources(false);
-      }
-    },
-    [toast]
-  );
+    return fetchedResources;
+  };
 
   const doChat = useCallback(
     async (
@@ -155,13 +141,8 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
                 item.resource_id.length > 0
               ) {
                 try {
-                  const fetchedResources = await Promise.all(
-                    item.resource_id.map(async (id: string) => {
-                      const response = await fetch(`/api/resources/${id}`);
-                      const data = await response.json();
-
-                      return data;
-                    })
+                  const fetchedResources = await fetchRelatedResources(
+                    item.resource_id
                   );
 
                   return {
