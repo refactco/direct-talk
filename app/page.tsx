@@ -1,7 +1,8 @@
 'use client';
 
-import { CardSlider } from '@/components/card-slider/card-slider';
 import { ChatInput } from '@/components/ChatInput';
+import { PeopleCardListDesktop } from '@/components/people-card-list/desktop/people-card-list-desktop';
+import { PeopleCardListMobile } from '@/components/people-card-list/mobile/people-card-list-mobile';
 import { PeopleCard } from '@/components/people-card/PeopleCard';
 import { useAuth } from '@/contexts/AuthContext';
 import { useChat } from '@/contexts/ChatContext';
@@ -10,10 +11,8 @@ import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import type { IAuthor, IResource } from '@/types/resources';
-import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { SwiperSlide } from 'swiper/react';
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -189,99 +188,20 @@ export default function HomePage() {
           </div>
         ) : (
           <>
-            <AnimatePresence mode="wait">
-              {/* Mobile: 2x2 grid, shared layoutId animation */}
-              {selectedResources.length > 0 && selectedPerson ? (
-                <motion.div
-                  key="selected"
-                  className="md:hidden flex justify-center items-center min-h-96"
-                  // initial={{ opacity: 1 }}
-                  // animate={{ opacity: 1 }}
-                  // exit={{ opacity: 1 }}
-                  transition={{ duration: 1 }}
-                >
-                  <motion.div
-                    layoutId={`person-${selectedPerson.id}`}
-                    onClick={() =>
-                      handlePersonClick(selectedPerson, selectedPersonIndex)
-                    }
-                    className="flex flex-col items-center w-1/2"
-                  >
-                    <PeopleCard people={selectedPerson} />
-                  </motion.div>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="grid"
-                  // initial={{ display: 'grid' }}
-                  // animate={{ opacity: 1 }}
-                  // exit={{ opacity: 1 }}
-                  transition={{ duration: 1 }}
-                  className="md:hidden grid grid-cols-2 gap-4"
-                >
-                  {popularResources?.slice(0, 4).map((show, index) => (
-                    <motion.div
-                      key={show.id}
-                      layoutId={`person-${show.id}`}
-                      onClick={() => handlePersonClick(show, index)}
-                      className="flex justify-center items-center"
-                    >
-                      <PeopleCard people={show} />
-                    </motion.div>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-            <AnimatePresence mode="wait">
-              {selectedResources.length > 0 && selectedPerson ? (
-                <motion.div
-                  key="selected"
-                  initial={{
-                    opacity: 1,
-                    x: `${(selectedPersonIndex ?? 0) * 25}%`
-                  }}
-                  animate={{ opacity: 1, x: 'calc(40% - 2rem)' }}
-                  exit={{
-                    opacity: 1,
-                    x: `${(selectedPersonIndex ?? 0) * 25}%`
-                  }}
-                  transition={{ duration: 0.4 }}
-                  className="hidden md:flex justify-start"
-                >
-                  <div
-                    className="w-1/4"
-                    onClick={() =>
-                      handlePersonClick(selectedPerson, selectedPersonIndex)
-                    }
-                  >
-                    <PeopleCard people={selectedPerson} />
-                  </div>
-                </motion.div>
-              ) : (
-                // <div className='bg-red-500 h-24 w-full'>hello world</div>
-                <motion.div
-                  key="carousel"
-                  initial={{ opacity: 1 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 1 }}
-                  transition={{ duration: 0.4 }}
-                  className="hidden md:block"
-                >
-                  <CardSlider>
-                    {popularResources.map((show, index) => (
-                      <SwiperSlide
-                        key={index}
-                        className="flex justify-center items-center"
-                      >
-                        <div onClick={() => handlePersonClick(show, index)}>
-                          <PeopleCard people={show} />
-                        </div>
-                      </SwiperSlide>
-                    ))}
-                  </CardSlider>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <PeopleCardListDesktop
+              selectedResources={selectedResources}
+              selectedPerson={selectedPerson}
+              popularResources={popularResources}
+              selectedPersonIndex={selectedPersonIndex}
+              handlePersonClick={handlePersonClick}
+            />
+            <PeopleCardListMobile
+              selectedResources={selectedResources}
+              selectedPerson={selectedPerson}
+              popularResources={popularResources}
+              selectedPersonIndex={selectedPersonIndex}
+              handlePersonClick={handlePersonClick}
+            />
           </>
         )}
       </div>
