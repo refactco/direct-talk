@@ -174,11 +174,11 @@ export default function HomePage() {
           Who do you want to talk to?
         </h1>
         {!popularResources ? (
-          <div className="flex">
+          <div className="flex flex-wrap md:flex-nowrap">
             {new Array(4).fill(null).map((show, index) => (
               <div
                 key={index}
-                className="justify-center items-center w-1/4 p-4"
+                className="justify-center items-center w-1/2 md:w-1/4 p-4"
               >
                 <div onClick={() => handlePersonClick(show, index)}>
                   <PeopleCard people={{} as any} isLoading />
