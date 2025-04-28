@@ -195,9 +195,9 @@ export default function HomePage() {
                 <motion.div
                   key="selected"
                   className="md:hidden flex justify-center items-center min-h-96"
-                  initial={{ opacity: 1 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 1 }}
+                  // initial={{ opacity: 1 }}
+                  // animate={{ opacity: 1 }}
+                  // exit={{ opacity: 1 }}
                   transition={{ duration: 1 }}
                 >
                   <motion.div
@@ -213,9 +213,9 @@ export default function HomePage() {
               ) : (
                 <motion.div
                   key="grid"
-                  initial={{ opacity: 1 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 1 }}
+                  // initial={{ display: 'grid' }}
+                  // animate={{ opacity: 1 }}
+                  // exit={{ opacity: 1 }}
                   transition={{ duration: 1 }}
                   className="md:hidden grid grid-cols-2 gap-4"
                 >
