@@ -167,7 +167,7 @@ export default function SearchResults() {
 
   return (
     <Fragment>
-      <div className="flex gap-8 min-h-[calc(100vh-154px)] max-w-[768px] mx-auto">
+      <div className="flex gap-8 min-h-[calc(100vh-202px)] md:min-h-[calc(100vh-154px)] max-w-[768px] mx-auto">
         {/* Main Content */}
         {isLoadingChats || isLoadingStartChat ? (
           <ConversationPageLoading
@@ -190,13 +190,13 @@ export default function SearchResults() {
                     key={index}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="p-6 max-w-5xl"
+                    className="max-w-5xl"
                     ref={
                       index === chatHistory.length - 1 ? messagesEndRef : null
                     }
                   >
-                    <div className="flex-1 flex flex-col">
-                      <div className="flex items-center gap-3 mb-4">
+                    <div className="flex-1 flex flex-col gap-8">
+                      <div className="flex items-center gap-3">
                         {userAvatar ? (
                           <img
                             src={userAvatar}
@@ -210,7 +210,7 @@ export default function SearchResults() {
                       </div>
 
                       {/* Answer Section */}
-                      <div className="flex gap-3 flex-1 py-4 rounded-xl">
+                      <div className="grid grid-cols-[2rem_1fr] gap-3 flex-1 rounded-xl">
                         <div className="w-8">
                           {resources?.[0] ? (
                             <img
@@ -223,7 +223,7 @@ export default function SearchResults() {
                             <Logo className="w-8 h-8" />
                           )}
                         </div>
-                        <div className="flex-1 flex flex-col gap-2">
+                        <div className="flex-1 flex flex-col gap-2 w-[calc(100vw-5rem)] md:w-auto">
                           <div className="inline-flex items-center gap-2 text-neutral-500 mb-0 rounded-xl">
                             {/* <Book className="h-5 w-5" /> */}
                             <div className="font-normal text-sm">
@@ -231,11 +231,13 @@ export default function SearchResults() {
                             </div>
                           </div>
                           {resourceIds && answerResources ? (
-                            <ResourcesList
-                              selectedResources={answerResources ?? []}
-                              noDetail
-                              hideRemoveButton
-                            />
+                            <div>
+                              <ResourcesList
+                                selectedResources={answerResources ?? []}
+                                noDetail
+                                hideRemoveButton
+                              />
+                            </div>
                           ) : null}
                           <AnimatePresence mode="wait">
                             {!answer ? (
@@ -296,8 +298,8 @@ export default function SearchResults() {
           <motion.div
             className="max-w-3xl relative mx-auto"
             initial={false}
-            animate={inputValue ? { width: '100%' } : { width: '66.666667%' }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            // animate={inputValue ? { width: '100%' } : { width: '66.666667%' }}
+            // transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           >
             <Input
               value={inputValue}
@@ -313,7 +315,7 @@ export default function SearchResults() {
               }}
             />
             <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center">
-              <span className="text-sm text-gray-400 mr-2">
+              <span className="text-sm text-neutral-700 mr-2">
                 {inputValue.length}/200
               </span>
               <Button

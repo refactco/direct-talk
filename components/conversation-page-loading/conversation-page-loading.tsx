@@ -25,7 +25,7 @@ export function ConversationPageLoading({
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="p-6 max-w-3xl"
+              className="max-w-5xl"
             >
               <div className="flex-1 flex flex-col">
                 <div className="flex items-center gap-4 mb-6">
@@ -40,7 +40,9 @@ export function ConversationPageLoading({
                       ) : (
                         <CircleUserIcon className="w-8 h-8" />
                       )}
-                      <h2 className="text-lg font-bold">{initialMessage}</h2>
+                      <h2 className="text-base font-normal">
+                        {initialMessage}
+                      </h2>
                     </div>
                   ) : (
                     <div className="flex items-center gap-3 w-1/2">

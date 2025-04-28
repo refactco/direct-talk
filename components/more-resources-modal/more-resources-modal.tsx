@@ -1,5 +1,6 @@
 'use client';
 
+import { CloseIcon } from '@/components/icons/CloseIcon';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
@@ -10,11 +11,9 @@ import {
   SheetTitle
 } from '@/components/ui/sheet';
 import { TSelectedResource } from '@/types/resources';
-import { X } from 'lucide-react';
 import 'swiper/css';
 import SelectedResourceCard from '../SelectedResourceCard';
 import { ResourceSelectorProps } from './more-resources-modal-types';
-import { CloseIcon } from '@/components/icons/CloseIcon';
 
 export function MoreResourcesSheet({
   open,
@@ -36,14 +35,14 @@ export function MoreResourcesSheet({
               variant="ghost"
               size="icon"
               onClick={() => onOpenChange(false)}
-              className="rounded-full border border-border"
+              className="rounded-full border border-border focus-visible:ring-0"
             >
               <CloseIcon className="h-5 w-5 fill-foreground" />
             </Button>
           </SheetClose>
         </SheetHeader>
 
-        <ScrollArea className="p-5">
+        <ScrollArea className="p-5 h-[calc(100vh-80px)] overflow-auto">
           <div className="flex flex-col gap-2">
             {selectedResources.map(
               (resource: TSelectedResource, index: number) => (

@@ -58,7 +58,7 @@ export function ResourcesList(props: IResourcesListProps) {
       })}
       {selectedResources.length > 4 ? (
         <div
-          className="flex items-center bg-accent rounded-lg px-2 py-1 relative gap-2 cursor-pointer"
+          className="flex items-center bg-accent rounded-lg p-2 relative gap-2 cursor-pointer"
           onClick={() => {
             setIsSheetOpen(true);
           }}
