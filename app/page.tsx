@@ -158,6 +158,7 @@ export default function HomePage() {
   };
 
   const handlePersonClick = (person: IAuthor, index: number | null) => {
+    console.log({ person, index });
     if (selectedPerson?.id === person.id) {
       setSelectedPerson(null);
       setSelectedPersonIndex(null);
@@ -168,7 +169,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-16 md:gap-8 justify-normal md:justify-center min-h-[calc(100vh-4rem)] p-0 md:p-4">
+    <div className="flex flex-col items-center gap-16 md:gap-8 justify-normal md:justify-center min-h-[calc(100vh-6rem)] md:min-h-[calc(100vh-4rem)] p-0 md:p-4">
       <div className="w-full max-w-3xl mt-0">
         <h1 className="text-2xl md:text-[2rem] font-semibold text-center text-white mb-4 sm:mb-12">
           Who do you want to talk to?
@@ -188,18 +189,49 @@ export default function HomePage() {
           </div>
         ) : (
           <>
-            <div className="flex md:hidden flex-wrap gap-8">
-              {popularResources.map((show, index) => (
-                <div
-                  key={index}
-                  className="flex-1 justify-center items-center w-1/2"
+            <AnimatePresence mode="wait">
+              {/* Mobile: 2x2 grid, shared layoutId animation */}
+              {selectedResources.length > 0 && selectedPerson ? (
+                <motion.div
+                  key="selected"
+                  className="md:hidden flex justify-center items-center min-h-96"
+                  initial={{ opacity: 1 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 1 }}
+                  transition={{ duration: 1 }}
                 >
-                  <div onClick={() => handlePersonClick(show, index)}>
-                    <PeopleCard people={show} />
-                  </div>
-                </div>
-              ))}
-            </div>
+                  <motion.div
+                    layoutId={`person-${selectedPerson.id}`}
+                    onClick={() =>
+                      handlePersonClick(selectedPerson, selectedPersonIndex)
+                    }
+                    className="flex flex-col items-center w-1/2"
+                  >
+                    <PeopleCard people={selectedPerson} />
+                  </motion.div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="grid"
+                  initial={{ opacity: 1 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 1 }}
+                  transition={{ duration: 1 }}
+                  className="md:hidden grid grid-cols-2 gap-4"
+                >
+                  {popularResources?.slice(0, 4).map((show, index) => (
+                    <motion.div
+                      key={show.id}
+                      layoutId={`person-${show.id}`}
+                      onClick={() => handlePersonClick(show, index)}
+                      className="flex justify-center items-center"
+                    >
+                      <PeopleCard people={show} />
+                    </motion.div>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
             <AnimatePresence mode="wait">
               {selectedResources.length > 0 && selectedPerson ? (
                 <motion.div
