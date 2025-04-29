@@ -6,7 +6,7 @@ import { useHistory } from '@/contexts/HistoryContext';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { IHistoryItemProps } from './history-list-item-type';
 
 export function HistoryListItem(props: IHistoryItemProps) {
@@ -15,14 +15,22 @@ export function HistoryListItem(props: IHistoryItemProps) {
   const activeSessionId = searchParams.get('id');
   const { removeHistoryItem } = useHistory();
   const [isRemoving, setIsRemoving] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
+
+  // Detect iOS only on client side
+  useEffect(() => {
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    setIsIOS(/iphone|ipad|ipod/.test(userAgent));
+  }, []);
 
   return (
     <div
       key={item.session_id}
       className={cn(
         'flex items-center justify-between group text-sm rounded-md transition-all',
-        'hover:bg-highlight hover:px-2 max-h-[34px] touch-manipulation',
-        activeSessionId == item.session_id && 'bg-accent'
+        'hover:bg-highlight hover:px-2 max-h-[34px]',
+        activeSessionId == item.session_id && 'bg-accent',
+        isIOS ? 'touch-manipulation' : ''
       )}
     >
       {isRemoving ? (
@@ -33,23 +41,25 @@ export function HistoryListItem(props: IHistoryItemProps) {
         <>
           <Link
             href={`/conversation?id=${item.session_id}`}
-            className="truncate max-w-40 text-xs font-light py-1 flex-1 touch-manipulation"
+            className={cn(
+              'truncate max-w-40 text-xs font-light py-1 flex-1',
+              isIOS ? 'touch-manipulation' : ''
+            )}
             onClick={() => {
               onCloseSidebar();
             }}
           >
-            {item.session_title
-              ? item.session_title.replace(/^"(.*)"$/, '$1')
-              : null}
+            {item.session_title?.replace(/^"(.*)"$/, '$1')}
           </Link>
           <TrashIcon
-            onClick={() => {
+            onClick={(e: MouseEvent<SVGSVGElement>) => {
+              e.stopPropagation();
               setIsRemoving(true);
               removeHistoryItem(item.session_id, activeSessionId, () => {
                 setIsRemoving(false);
               });
             }}
-            className="opacity-0 group-hover:opacity-100 transition-opacity fill-foreground cursor-pointer w-5 touch-manipulation"
+            className="opacity-0 group-hover:opacity-100 transition-opacity fill-foreground cursor-pointer w-5 hidden md:inline-block"
           />
         </>
       )}
