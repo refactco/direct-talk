@@ -12,7 +12,7 @@ export default function InteractiveCirclesPeople({
   handlePersonClick
 }: IPeopleCardListProps) {
   return (
-    <div className={`relative w-full aspect-square mt-4 block md:hidden`}>
+    <div className={`relative w-full aspect-square mt-8 block md:hidden`}>
       <AnimatePresence>
         {popularResources?.slice(0, 4).map((show, index) => {
           const isSelected = selectedPersonIndex === index;
@@ -29,7 +29,8 @@ export default function InteractiveCirclesPeople({
               className={cn(
                 'absolute w-1/2 h-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full cursor-pointer flex items-center justify-center',
                 index < 2 ? 'pb-4' : 'pt-4',
-                index % 2 === 0 ? 'pr-4' : 'pl-4'
+                index % 2 === 0 ? 'pr-4' : 'pl-4',
+                isSelected ? 'p-0' : ''
               )}
               initial={false}
               animate={{
