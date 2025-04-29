@@ -2,7 +2,7 @@
 
 import { ChatInput } from '@/components/ChatInput';
 import { PeopleCardListDesktop } from '@/components/people-card-list/desktop/people-card-list-desktop';
-import { PeopleCardListMobile } from '@/components/people-card-list/mobile/people-card-list-mobile';
+import InteractiveCirclesPeople from '@/components/people-card-list/mobile/InteractiveCircles';
 import { PeopleCard } from '@/components/people-card/PeopleCard';
 import { useAuth } from '@/contexts/AuthContext';
 import { useChat } from '@/contexts/ChatContext';
@@ -173,13 +173,11 @@ export default function HomePage() {
         <h1 className="text-2xl md:text-[2rem] font-semibold text-center text-white mb-4 sm:mb-12">
           Who do you want to talk to?
         </h1>
+        {/* <InteractiveCircles /> */}
         {!popularResources ? (
-          <div className="flex flex-wrap md:flex-nowrap">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {new Array(4).fill(null).map((show, index) => (
-              <div
-                key={index}
-                className="justify-center items-center w-1/2 md:w-1/4 p-4"
-              >
+              <div key={index} className="justify-center items-center p-4">
                 <div onClick={() => handlePersonClick(show, index)}>
                   <PeopleCard people={{} as any} isLoading />
                 </div>
@@ -195,13 +193,21 @@ export default function HomePage() {
               selectedPersonIndex={selectedPersonIndex}
               handlePersonClick={handlePersonClick}
             />
-            <PeopleCardListMobile
+            <InteractiveCirclesPeople
+              selectedResources={selectedResources}
+              selectedPerson={selectedPerson}
+              popularResources={popularResources ?? []}
+              selectedPersonIndex={selectedPersonIndex}
+              handlePersonClick={handlePersonClick}
+            />
+
+            {/* <PeopleCardListMobile
               selectedResources={selectedResources}
               selectedPerson={selectedPerson}
               popularResources={popularResources}
               selectedPersonIndex={selectedPersonIndex}
               handlePersonClick={handlePersonClick}
-            />
+            /> */}
           </>
         )}
       </div>
