@@ -13,7 +13,7 @@ import { ResourceDetailProvider } from '@/contexts/ResourceDetailContext';
 import { ResourceProvider } from '@/contexts/ResourcesContext';
 import { SearchProvider } from '@/contexts/SearchContext';
 import { SelectedResourcesProvider } from '@/contexts/SelectedResourcesContext';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import React from 'react';
 import 'slick-carousel/slick/slick-theme.css';
@@ -29,6 +29,14 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon.png'
   }
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: 'cover'
 };
 
 export default function RootLayout({

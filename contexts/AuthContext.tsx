@@ -143,6 +143,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const loginWithTwitter = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'twitter',
+
       options: { redirectTo: `${window.location.origin}` }
     });
     if (error) {

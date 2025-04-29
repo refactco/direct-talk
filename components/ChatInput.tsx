@@ -93,6 +93,9 @@ export function ChatInput({
               hideResources ? 'flex-1' : '',
               disabled ? 'placeholder-neutral-700' : 'placeholder-[#a2a2a4]'
             )}
+            style={{
+              touchAction: 'manipulation'
+            }}
             disabled={isLoading || disabled}
             defaultValue={defaultValue}
           />

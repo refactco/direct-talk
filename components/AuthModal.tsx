@@ -1,17 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { CloseIcon } from '@/components/icons/CloseIcon';
+import { GoogleIcon } from '@/components/icons/GoogleIcon';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { GoogleIcon } from '@/components/icons/GoogleIcon';
-import { XIcon } from '@/components/icons/XIcon'; // Add XIcon for Twitter
-import { CloseIcon } from '@/components/icons/CloseIcon';
 import { useAuth } from '@/contexts/AuthContext';
+import { useState } from 'react';
 import { Icons } from './icons';
 
 export function AuthModal() {
@@ -71,7 +70,7 @@ export function AuthModal() {
             )}
             Login with Google
           </Button>
-          <Button
+          {/* <Button
             variant="default"
             className="bg-foreground font-semibold hover:bg-foreground/90 rounded-[6px]"
             onClick={handleTwitterAuth}
@@ -83,7 +82,7 @@ export function AuthModal() {
               <XIcon className="fill-primary-foreground" />
             )}
             Login with Twitter
-          </Button>
+          </Button> */}
         </div>
       </DialogContent>
     </Dialog>
