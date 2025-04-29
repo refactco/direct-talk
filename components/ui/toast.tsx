@@ -48,7 +48,7 @@ const Toast = React.forwardRef<
   return (
     <div>
       {image_url && (
-        <div className="h-12 w-12 overflow-hidden rounded-md flex-shrink-0">
+        <div className="h-12 w-12 overflow-hidden rounded-md flex-shrink-0 ">
           <img
             src={image_url}
             alt="Toast image"

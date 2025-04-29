@@ -168,7 +168,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-16 md:gap-8 justify-normal md:justify-center min-h-[calc(100vh-6rem)] md:min-h-[calc(100vh-4rem)] p-0 md:p-4">
+    <div className="flex flex-col items-center gap-4 md:gap-8 justify-normal md:justify-center min-h-[calc(100vh-6rem)] md:min-h-[calc(100vh-4rem)] p-0 md:p-4">
       <div className="w-full max-w-3xl mt-0">
         <h1 className="text-2xl md:text-[2rem] font-semibold text-center text-white mb-4 sm:mb-12">
           Who do you want to talk to?

@@ -58,7 +58,7 @@ const toastConfig = (props: toastConfigProps) => {
       paddingRight: '34px',
       paddingLeft: image_url ? '16px' : '34px'
     },
-    className: `p-4 bg-foreground border-none text-[13px] rounded-lg ${toastType === 'destructive' ? 'text-destructive' : 'text-black'}`
+    className: `p-4 bg-foreground border-none text-[13px] rounded-lg hidden md:flex ${toastType === 'destructive' ? 'text-destructive' : 'text-black'}`
   };
 };
 export default toastConfig;

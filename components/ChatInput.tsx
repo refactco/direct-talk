@@ -58,7 +58,7 @@ export function ChatInput({
         className={cn(
           'rounded-3xl border bg-background overflow-hidden transition-all duration-300',
           hideResources ? 'rounded-[62.4375rem]' : 'rounded-3xl',
-          disabled ? 'border-border' : 'border-neutral-700'
+          disabled ? 'border-border' : 'border-neutral-400'
         )}
         onPointerDown={(e) => {
           if (disabled) {
@@ -78,7 +78,7 @@ export function ChatInput({
         {/* Input Area */}
         <div
           className={cn(
-            'flex items-center px-3 gap-4',
+            'flex items-center px-3 gap-2 md:gap-4',
             hideResources ? 'flex-row' : 'flex-col'
           )}
         >
@@ -89,7 +89,7 @@ export function ChatInput({
             placeholder={placeholder}
             rows={1}
             className={cn(
-              'w-full py-6 flex-grow bg-background border-0 focus:outline-none focus:ring-0 text-xs md:text-sm resize-none pl-5',
+              'w-full py-6 flex-grow bg-background border-0 focus:outline-none focus:ring-0 text-xs md:text-sm resize-none pl-2 md:pl-5',
               hideResources ? 'flex-1' : '',
               disabled ? 'placeholder-neutral-700' : 'placeholder-[#a2a2a4]'
             )}
