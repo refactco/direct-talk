@@ -21,7 +21,7 @@ export function HistoryListItem(props: IHistoryItemProps) {
       key={item.session_id}
       className={cn(
         'flex items-center justify-between group text-sm rounded-md transition-all',
-        'hover:bg-highlight hover:px-2 max-h-[34px]',
+        'hover:bg-highlight hover:px-2 max-h-[34px] touch-manipulation',
         activeSessionId == item.session_id && 'bg-accent'
       )}
     >
@@ -33,12 +33,14 @@ export function HistoryListItem(props: IHistoryItemProps) {
         <>
           <Link
             href={`/conversation?id=${item.session_id}`}
-            className="truncate max-w-40 text-xs font-light py-1 flex-1"
+            className="truncate max-w-40 text-xs font-light py-1 flex-1 touch-manipulation"
             onClick={() => {
               onCloseSidebar();
             }}
           >
-            {item.session_title?.replace(/^"(.*)"$/, '$1')}
+            {item.session_title
+              ? item.session_title.replace(/^"(.*)"$/, '$1')
+              : null}
           </Link>
           <TrashIcon
             onClick={() => {
@@ -47,7 +49,7 @@ export function HistoryListItem(props: IHistoryItemProps) {
                 setIsRemoving(false);
               });
             }}
-            className="opacity-0 group-hover:opacity-100 transition-opacity fill-foreground cursor-pointer w-5"
+            className="opacity-0 group-hover:opacity-100 transition-opacity fill-foreground cursor-pointer w-5 touch-manipulation"
           />
         </>
       )}

@@ -292,7 +292,7 @@ export default function SearchResults() {
         )} */}
       </div>
       {/* Search Input */}
-      <div className="px-4 pt-4 sticky flex flex-col bottom-0 items-center justify-center w-full">
+      <div className="p-0 md:px-4 md:pt-4 sticky flex flex-col bottom-0 items-center justify-center w-[calc(100vw-2rem)] md:w-full">
         <div className="h-10 w-full bg-fade"></div>
         <div className="w-full bg-black pb-4">
           <motion.div
@@ -307,7 +307,7 @@ export default function SearchResults() {
               placeholder="Ask a follow-up question..."
               maxLength={200}
               disabled={isLoadingFollowUp}
-              className="border border-border text-white placeholder-gray-400 pr-24 pl-4 py-6 rounded-full transition-all duration-300 focus:border-[#4a4a4f] focus:outline-none outline-none ring-0"
+              className="border border-neutral-400 text-white placeholder-gray-400 pr-24 pl-4 py-6 rounded-full transition-all duration-300 focus:border-neutral-300 focus:outline-none outline-none ring-0"
               onKeyUp={(e) => {
                 if (e.key === 'Enter') {
                   handleSubmit(inputValue);
