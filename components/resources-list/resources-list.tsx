@@ -28,6 +28,8 @@ export function ResourcesList(props: IResourcesListProps) {
     >
       {selectedResources.map((resource: TSelectedResource, index: number) => {
         const { image_url, title, name, link, url } = resource as any;
+        const resourceLink = link || url;
+        const isYouTubeLink = resourceLink && resourceLink.includes('youtube.com');
 
         return (
           <div
@@ -39,7 +41,7 @@ export function ResourcesList(props: IResourcesListProps) {
             )}
           >
             <a
-              href={link || url}
+              href={resourceLink}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center bg-accent hover:bg-accent/80 transition-colors rounded-lg p-2 relative gap-2 cursor-pointer"
@@ -54,6 +56,11 @@ export function ResourcesList(props: IResourcesListProps) {
                 />
               </div>
               <div className="flex flex-col flex-grow min-w-0">
+                {isYouTubeLink && (
+                  <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide">
+                    YouTube
+                  </span>
+                )}
                 <span className="text-xsm font-semibold leading-[normal] truncate">
                   {title ?? name}
                 </span>

@@ -2,9 +2,20 @@
 
 import { Icons } from '@/components/icons';
 import { HistoryListItem } from '@/components/sidebar/history-list/item/history-list-item';
+import { Skeleton } from '@/components/ui/skeleton';
 import { HistoryItem } from '@/contexts/HistoryContext';
 import { Fragment, Suspense } from 'react';
 import { IHistoryListProps } from './history-list-type';
+
+// Skeleton component for history items
+function HistoryItemSkeleton({ width }: { width: string }) {
+  return (
+    <div className="flex items-center justify-between text-sm max-h-[34px] py-1 px-0">
+      <Skeleton className={`h-3 ${width}`} />
+      <div className="w-4" /> {/* Spacer for trash icon area */}
+    </div>
+  );
+}
 
 export function HistoryList(props: IHistoryListProps) {
   const { list, isLoading, onCloseSidebar } = props;
@@ -29,7 +40,13 @@ export function HistoryList(props: IHistoryListProps) {
       ) : (
         <Fragment>
           {isLoading ? (
-            <Icons.spinner className="mt-2 m-auto h-4 w-4 animate-spin" />
+            <div className="space-y-2">
+              {/* Show 3-5 skeleton items to simulate loading history */}
+              <HistoryItemSkeleton width="w-[140px]" />
+              <HistoryItemSkeleton width="w-[100px]" />
+              <HistoryItemSkeleton width="w-[120px]" />
+              <HistoryItemSkeleton width="w-[90px]" />
+            </div>
           ) : (
             <div className="text-sm text-muted-foreground pb-2">
               No history records.

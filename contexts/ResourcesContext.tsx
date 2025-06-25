@@ -39,12 +39,9 @@ export function ResourceProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const fetchResource = async (authorId?: number) => {
-    if (selectedResources.length > 0) {
-      setResources(selectedResources);
-      setIsLoading(false);
-    } else {
+    // If authorId is provided, always fetch the specific author data
+    if (authorId) {
       setIsLoading(true);
-
       try {
         const response = await fetch(`/api/people/${authorId}`);
         const data = await response.json();
@@ -54,6 +51,12 @@ export function ResourceProvider({ children }: { children: React.ReactNode }) {
       } finally {
         setIsLoading(false);
       }
+    } else if (selectedResources.length > 0) {
+      // Only use selectedResources if no specific authorId is provided
+      setResources(selectedResources);
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
     }
   };
 

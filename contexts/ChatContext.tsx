@@ -39,6 +39,7 @@ interface ChatContextType {
     shouldLog?: boolean
   ) => Promise<TSelectedResource[]>;
   setLoadingChatsComplete: () => void;
+  initializeChatData: (chatData: ChatData) => void;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -250,6 +251,10 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsLoadingChats(false);
   };
 
+  const initializeChatData = (chatData: ChatData) => {
+    setChatDatas(chatData);
+  };
+
   const value = {
     chatDatas,
     isLoading,
@@ -265,7 +270,8 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
     resetChatData,
     resources,
     fetchRelatedResources,
-    setLoadingChatsComplete
+    setLoadingChatsComplete,
+    initializeChatData
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;

@@ -44,7 +44,8 @@ export default function SearchResults() {
     updateStartChatDate,
     resetChatData,
     fetchRelatedResources,
-    setLoadingChatsComplete
+    setLoadingChatsComplete,
+    initializeChatData
   } = useChat();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const hasStartedChat = useRef(false);
@@ -113,8 +114,6 @@ export default function SearchResults() {
       }
 
       try {
-        addMessage({ question: messageToUse });
-
         const retrievedChatData = await doChat(
           messageToUse,
           startChatData?.contentIds
@@ -129,14 +128,40 @@ export default function SearchResults() {
         );
         console.log('Fetched related resources:', relatedResources);
 
-        // Add the message with resources
-        addMessage({
-          answer: retrievedChatData?.answer,
-          resource_id: retrievedChatData?.resource_id,
-          resources: relatedResources
-        });
-
         if (retrievedChatData?.session_id) {
+          // Initialize chat data structure with both question and answer
+          const newChatData = {
+            session_id: retrievedChatData.session_id,
+            content_ids: startChatData?.contentIds || [],
+            chat_history: [
+              { question: messageToUse },
+              {
+                answer: retrievedChatData.answer,
+                resource_id: retrievedChatData.resource_id,
+                resources: relatedResources
+              }
+            ],
+            created_at: new Date().toISOString(),
+            session_title: messageToUse.substring(0, 50) + (messageToUse.length > 50 ? '...' : ''),
+            user_id: retrievedChatData.user_id || '',
+            author_id: retrievedChatData.author_id || null,
+            author_name: retrievedChatData.author_name || (selectedResources?.[0] && ('name' in selectedResources[0] ? selectedResources[0].name : selectedResources[0].title))
+          };
+
+          // Fetch the author resource for the avatar image first
+          // Use the selected author ID since the API might not return author_id
+          const authorId = retrievedChatData.author_id || (selectedResources?.[0]?.id);
+          if (authorId) {
+            console.log('Fetching author resource for ID:', authorId);
+            await fetchResource(Number(authorId));
+            console.log('Author resource fetched, current resources:', resources);
+          } else {
+            console.log('No author_id available from API or selected resources');
+          }
+
+          // Set the complete chat data at once
+          initializeChatData(newChatData);
+
           // Track that we just created this chat to avoid clearing selected resources
           justCreatedChatId.current = retrievedChatData.session_id;
           router.push(`/conversation?id=${retrievedChatData.session_id}`);
