@@ -29,7 +29,8 @@ export function ResourcesList(props: IResourcesListProps) {
       {selectedResources.map((resource: TSelectedResource, index: number) => {
         const { image_url, title, name, link, url } = resource as any;
         const resourceLink = link || url;
-        const isYouTubeLink = resourceLink && resourceLink.includes('youtube.com');
+        const isYouTubeLink =
+          resourceLink && resourceLink.includes('youtube.com');
 
         return (
           <div

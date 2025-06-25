@@ -142,21 +142,34 @@ export default function SearchResults() {
               }
             ],
             created_at: new Date().toISOString(),
-            session_title: messageToUse.substring(0, 50) + (messageToUse.length > 50 ? '...' : ''),
+            session_title:
+              messageToUse.substring(0, 50) +
+              (messageToUse.length > 50 ? '...' : ''),
             user_id: retrievedChatData.user_id || '',
             author_id: retrievedChatData.author_id || null,
-            author_name: retrievedChatData.author_name || (selectedResources?.[0] && ('name' in selectedResources[0] ? selectedResources[0].name : selectedResources[0].title))
+            author_name:
+              retrievedChatData.author_name ||
+              (selectedResources?.[0] &&
+                ('name' in selectedResources[0]
+                  ? selectedResources[0].name
+                  : selectedResources[0].title))
           };
 
           // Fetch the author resource for the avatar image first
           // Use the selected author ID since the API might not return author_id
-          const authorId = retrievedChatData.author_id || (selectedResources?.[0]?.id);
+          const authorId =
+            retrievedChatData.author_id || selectedResources?.[0]?.id;
           if (authorId) {
             console.log('Fetching author resource for ID:', authorId);
             await fetchResource(Number(authorId));
-            console.log('Author resource fetched, current resources:', resources);
+            console.log(
+              'Author resource fetched, current resources:',
+              resources
+            );
           } else {
-            console.log('No author_id available from API or selected resources');
+            console.log(
+              'No author_id available from API or selected resources'
+            );
           }
 
           // Set the complete chat data at once
