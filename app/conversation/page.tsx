@@ -43,7 +43,8 @@ export default function SearchResults() {
     doChat,
     updateStartChatDate,
     resetChatData,
-    fetchRelatedResources
+    fetchRelatedResources,
+    setLoadingChatsComplete
   } = useChat();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const hasStartedChat = useRef(false);
@@ -122,10 +123,15 @@ export default function SearchResults() {
         console.log('API result:', retrievedChatData);
         console.log('Resource IDs from API:', retrievedChatData?.resource_id);
 
-        // Add the message without resources - fetchChat will handle resource fetching after navigation
+        // Fetch related resources for the AI response
+        const relatedResources = await fetchRelatedResources(retrievedChatData?.resource_id);
+        console.log('Fetched related resources:', relatedResources);
+
+        // Add the message with resources
         addMessage({
           answer: retrievedChatData?.answer,
-          resource_id: retrievedChatData?.resource_id
+          resource_id: retrievedChatData?.resource_id,
+          resources: relatedResources
         });
 
         if (retrievedChatData?.session_id) {
@@ -157,29 +163,37 @@ export default function SearchResults() {
     if (isAuthLoading) return;
 
     if (chatId) {
-      resetChatData();
-      updateStartChatDate(null, null);
-      // Clear resources immediately to prevent showing previous author's image
-      clearResources();
-      // Only clear selected resources when viewing a different existing chat
-      // Don't clear when we just created this chat (to avoid the "removed" log)
+      // Check if this is a chat we just created to avoid clearing local data
       const isJustCreatedChat = justCreatedChatId.current === chatId;
+      
       if (!isJustCreatedChat) {
+        // Only reset data when viewing a different existing chat
+        resetChatData();
+        clearResources();
         resetSelectedResources();
       } else {
         // Clear the ref after using it
         justCreatedChatId.current = null;
       }
-      // Only fetch chat if user is authenticated
-      if (isAuthenticated) {
+      
+      updateStartChatDate(null, null);
+      
+      // Only fetch chat if user is authenticated and it's not a newly created chat
+      if (isAuthenticated && !isJustCreatedChat) {
         fetchChat(chatId).catch((err) => {
           if (err.status === 401) {
             openAuthModal();
           }
         });
-      } else {
+      } else if (!isAuthenticated) {
         // If not authenticated after loading is complete, show auth modal
         openAuthModal();
+      }
+      
+      // For newly created chats, we already have the data, so stop loading
+      if (isJustCreatedChat && isAuthenticated) {
+        // We need to manually set loading to false since we skipped fetchChat
+        setLoadingChatsComplete();
       }
     } else if (
       !chatId &&

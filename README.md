@@ -14,30 +14,35 @@ A Next.js application that allows users to have conversations with AI personas b
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 - Supabase account for database and authentication
 
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/refactco/direct-talk.git
 cd direct-talk
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Set up environment variables:
+
 ```bash
 cp .env.example .env.local
 ```
+
 Fill in your Supabase and other API credentials in `.env.local`.
 
 4. Run the development server:
+
 ```bash
 npm run dev
 ```
@@ -64,4 +69,4 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 
 ## License
 
-MIT 
+MIT
