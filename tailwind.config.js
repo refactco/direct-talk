@@ -90,8 +90,5 @@ module.exports = {
     'prose-p:text-base',
     'prose-p:leading-7'
   ],
-  plugins: [
-    require('@tailwindcss/typography'), 
-    require('tailwindcss-animate')
-  ]
+  plugins: [require('@tailwindcss/typography'), require('tailwindcss-animate')]
 };

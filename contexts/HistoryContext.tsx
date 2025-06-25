@@ -39,14 +39,14 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
   const fetchChatHistory = async () => {
     try {
       setIsLoading(true);
-      
+
       // Skip API call if user is not authenticated
       if (!isAuthenticated) {
         setHistoryItems([]);
         setIsLoading(false);
         return;
       }
-      
+
       // Skip API call if using mocked data
       const useMockedData = process.env.NEXT_PUBLIC_MOCKED_DATA === 'true';
       if (useMockedData) {
@@ -55,7 +55,7 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
         setIsLoading(false);
         return;
       }
-      
+
       // Skip API call if base URL is not configured
       if (!baseURL) {
         console.warn('NEXT_PUBLIC_BASE_AI_API_URL is not configured');
@@ -63,7 +63,7 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
         setIsLoading(false);
         return;
       }
-      
+
       const response = await apiClient.get(`${baseURL}/search`);
       const data = await response.data;
       setHistoryItems(Array.isArray(data) ? data : []);

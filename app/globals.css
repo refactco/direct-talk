@@ -64,11 +64,11 @@
     @apply border-border;
     font-size: calc(1em);
   }
-  
+
   body {
     @apply bg-background text-foreground;
   }
-  
+
   .prose-invert {
     --tw-prose-invert-body: hsl(0deg 0% 94.9%);
     --tw-prose-invert-counters: hsl(0deg 0% 100%);
@@ -116,7 +116,11 @@
 }
 
 .bg-history-top-fade {
-  background: linear-gradient(0deg, rgba(var(--accent), 0) 51.16%, rgb(var(--accent)) 96.74%);
+  background: linear-gradient(
+    0deg,
+    rgba(var(--accent), 0) 51.16%,
+    rgb(var(--accent)) 96.74%
+  );
 }
 
 .bg-history-bottom-fade {

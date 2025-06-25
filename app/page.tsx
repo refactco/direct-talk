@@ -45,30 +45,34 @@ export default function HomePage() {
   useEffect(() => {
     // Prevent multiple navigations
     if (hasNavigatedRef.current) return;
-    
+
     // Check if user just logged in and has pending chat data
-    if (isAuthenticated && hasSelectedAuthor && (initialMessage || startChatData?.message)) {
+    if (
+      isAuthenticated &&
+      hasSelectedAuthor &&
+      (initialMessage || startChatData?.message)
+    ) {
       const messageToUse = initialMessage || startChatData?.message;
       const contentIds = startChatData?.contentIds || authorResourcesIds;
-      
-      console.log('Auto-continuing chat after login:', { 
-        messageToUse, 
-        contentIds, 
+
+      console.log('Auto-continuing chat after login:', {
+        messageToUse,
+        contentIds,
         selectedResourcesCount: selectedResources.length,
         isAuthenticated,
-        hasSelectedAuthor 
+        hasSelectedAuthor
       });
-      
+
       // Mark as navigated to prevent multiple runs
       hasNavigatedRef.current = true;
-      
+
       // Add a small delay to ensure all contexts are fully loaded
       const timer = setTimeout(() => {
         if (messageToUse) {
           console.log('Navigating to conversation with message:', messageToUse);
           setInitialMessage(messageToUse);
           updateStartChatDate(messageToUse, contentIds as string[]);
-          
+
           // Navigate to conversation page
           router.push('/conversation');
         }
@@ -76,13 +80,22 @@ export default function HomePage() {
 
       return () => clearTimeout(timer);
     }
-  }, [isAuthenticated, hasSelectedAuthor, initialMessage, startChatData?.message]);
+  }, [
+    isAuthenticated,
+    hasSelectedAuthor,
+    initialMessage,
+    startChatData?.message
+  ]);
 
   const handleChatSubmit = (message: string) => {
     // Check if user is authenticated
     if (!isAuthenticated) {
       // Store the chat state in existing contexts (they now persist to localStorage)
-      console.log('Storing chat state before auth:', { message, selectedResources, authorResourcesIds });
+      console.log('Storing chat state before auth:', {
+        message,
+        selectedResources,
+        authorResourcesIds
+      });
       setInitialMessage(message);
       updateStartChatDate(message, authorResourcesIds as string[]);
       openAuthModal();
@@ -93,7 +106,7 @@ export default function HomePage() {
     setInitialMessage(message);
     // Use the authorResourcesIds which contain the ref_ids that the API expects
     updateStartChatDate(message, authorResourcesIds as string[]);
-    
+
     // Navigate to conversation page
     router.push('/conversation');
   };
@@ -106,13 +119,13 @@ export default function HomePage() {
             Chat with Your Favorite Thinkers
           </h1>
         </div>
-        
+
         <div className="hidden md:block">
           <PeopleCardListDesktop people={people} isLoading={isLoading} />
         </div>
-        
+
         <PeopleCardListMobile people={people} isLoading={isLoading} />
-        
+
         {/* Chat Input - shows when an author is selected */}
         {hasSelectedAuthor && (
           <div className="mt-8 w-full">

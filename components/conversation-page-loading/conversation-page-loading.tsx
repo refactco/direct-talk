@@ -18,7 +18,7 @@ export function ConversationPageLoading({
   authorResource
 }: ConversationPageLoadingProps) {
   const { selectedResources } = useSelectedResources();
-  
+
   // Use the passed authorResource, or fall back to selectedResources, or resources from context
   const authorToDisplay = authorResource || selectedResources?.[0];
 

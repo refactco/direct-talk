@@ -4,7 +4,13 @@ import { ChatData, Message, StartChatData } from '@/app/conversation/types';
 import apiClient from '@/lib/axiosInstance';
 import { TSelectedResource } from '@/types/resources';
 import type React from 'react';
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState
+} from 'react';
 import { useSelectedResources } from './SelectedResourcesContext';
 
 interface ChatContextType {
@@ -41,7 +47,9 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   children
 }) => {
   const [chatDatas, setChatDatas] = useState<ChatData | null>(null);
-  const [startChatData, setStartChatData] = useState<StartChatData | null>(null);
+  const [startChatData, setStartChatData] = useState<StartChatData | null>(
+    null
+  );
   const [resources, setResources] = useState<TSelectedResource[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingStartChat, setIsLoadingStartChat] = useState(false);
@@ -68,12 +76,15 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   ) => {
     const newStartChatData = { message, contentIds };
     setStartChatData(newStartChatData);
-    
+
     // Persist to localStorage
     if (typeof window !== 'undefined') {
       try {
         if (message || contentIds) {
-          localStorage.setItem('startChatData', JSON.stringify(newStartChatData));
+          localStorage.setItem(
+            'startChatData',
+            JSON.stringify(newStartChatData)
+          );
         } else {
           localStorage.removeItem('startChatData');
         }
@@ -94,9 +105,9 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       // Import the mocked data to match resources
       const { mockAllEpisodes } = await import('@/app/api/mocked-data');
-      
+
       // Find matching episodes based on ref_id
-      const matchedResources = mockAllEpisodes.filter(episode => 
+      const matchedResources = mockAllEpisodes.filter((episode) =>
         resourceIds.includes(episode.ref_id)
       );
 
@@ -130,13 +141,14 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (selectedResources && selectedResources?.length > 0) {
         const resource = selectedResources[0];
-        formData['author_name'] = 'name' in resource ? resource.name : resource.title;
+        formData['author_name'] =
+          'name' in resource ? resource.name : resource.title;
         formData['author_id'] = String(resource.id); // Ensure it's a string
       }
-      
+
       // Debug: Log the data being sent to the API
       console.log('Sending data to API:', formData);
-      
+
       try {
         const response = await apiClient.post(`${baseURL}/search`, formData);
 
@@ -162,62 +174,61 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
     [selectedResources, fetchRelatedResources]
   );
 
-  const fetchChat = useCallback(
-    async (sessionId: string): Promise<void> => {
-      setIsLoadingChats(true);
-      setError(null);
-      try {
-        const response = await apiClient.get(`${baseURL}/search/${sessionId}`);
-        const data = await response.data;
+  const fetchChat = useCallback(async (sessionId: string): Promise<void> => {
+    setIsLoadingChats(true);
+    setError(null);
+    try {
+      const response = await apiClient.get(`${baseURL}/search/${sessionId}`);
+      const data = await response.data;
 
-        // Process chat history items with resource_ids
-        if (data.chat_history && Array.isArray(data.chat_history)) {
-          let totalResourcesFetched = 0;
-          const updatedChatHistory = await Promise.all(
-            data.chat_history.map(async (item: Message) => {
-              if (
-                item.resource_id &&
-                Array.isArray(item.resource_id) &&
-                item.resource_id.length > 0
-              ) {
-                try {
-                  const fetchedResources = await fetchRelatedResources(
-                    item.resource_id,
-                    false // Disable individual logging for bulk operations
-                  );
-                  totalResourcesFetched += fetchedResources.length;
+      // Process chat history items with resource_ids
+      if (data.chat_history && Array.isArray(data.chat_history)) {
+        let totalResourcesFetched = 0;
+        const updatedChatHistory = await Promise.all(
+          data.chat_history.map(async (item: Message) => {
+            if (
+              item.resource_id &&
+              Array.isArray(item.resource_id) &&
+              item.resource_id.length > 0
+            ) {
+              try {
+                const fetchedResources = await fetchRelatedResources(
+                  item.resource_id,
+                  false // Disable individual logging for bulk operations
+                );
+                totalResourcesFetched += fetchedResources.length;
 
-                  return {
-                    ...item,
-                    resources: fetchedResources
-                  };
-                } catch (error) {
-                  return item;
-                }
+                return {
+                  ...item,
+                  resources: fetchedResources
+                };
+              } catch (error) {
+                return item;
               }
-              return item;
-            })
+            }
+            return item;
+          })
+        );
+
+        // Log summary instead of individual calls
+        if (totalResourcesFetched > 0) {
+          console.log(
+            `Loaded chat with ${data.chat_history.length} messages and ${totalResourcesFetched} total resources`
           );
-
-          // Log summary instead of individual calls
-          if (totalResourcesFetched > 0) {
-            console.log(`Loaded chat with ${data.chat_history.length} messages and ${totalResourcesFetched} total resources`);
-          }
-
-          // Update data with the processed chat history
-          data.chat_history = updatedChatHistory;
         }
 
-        setChatDatas(data);
-      } catch (err: any) {
-        console.error('Error fetching chat:', err);
-        throw err;
-      } finally {
-        setIsLoadingChats(false);
+        // Update data with the processed chat history
+        data.chat_history = updatedChatHistory;
       }
-    },
-    []
-  );
+
+      setChatDatas(data);
+    } catch (err: any) {
+      console.error('Error fetching chat:', err);
+      throw err;
+    } finally {
+      setIsLoadingChats(false);
+    }
+  }, []);
 
   const addMessage = (message: Message) => {
     setChatDatas((prevChatData) => {

@@ -1,6 +1,12 @@
 'use client';
 
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState
+} from 'react';
 
 interface InitialMessageContextType {
   initialMessage: string | null;
@@ -12,7 +18,9 @@ const InitialMessageContext = createContext<
 >(undefined);
 
 export function InitialMessageProvider({ children }: { children: ReactNode }) {
-  const [initialMessage, setInitialMessageState] = useState<string | null>(null);
+  const [initialMessage, setInitialMessageState] = useState<string | null>(
+    null
+  );
 
   // Load from localStorage after hydration
   useEffect(() => {

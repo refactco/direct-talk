@@ -5,5 +5,3 @@ export async function getAuthor(id: string): Promise<IAuthor> {
   if (!response.ok) throw new Error('Failed to fetch author');
   return response.json();
 }
-
-

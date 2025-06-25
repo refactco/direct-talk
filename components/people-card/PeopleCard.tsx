@@ -50,11 +50,11 @@ export function PeopleCard({
   }
 
   return (
-    <div 
+    <div
       className={cn(
-        "relative w-full transition-all duration-300 group/people cursor-pointer hover:bg-accent p-2 md:p-4 rounded-lg flex flex-col items-center",
-        selected && "bg-accent border-2 border-primary",
-        isDisabled && "opacity-50"
+        'relative w-full transition-all duration-300 group/people cursor-pointer hover:bg-accent p-2 md:p-4 rounded-lg flex flex-col items-center',
+        selected && 'bg-accent border-2 border-primary',
+        isDisabled && 'opacity-50'
       )}
       onClick={handleClick}
     >
@@ -62,7 +62,7 @@ export function PeopleCard({
         {imageLoading && !imageError && (
           <Skeleton className="absolute inset-0 w-full h-full rounded-full" />
         )}
-        
+
         {people.image_url && (
           <Image
             src={people.image_url}
@@ -70,11 +70,11 @@ export function PeopleCard({
             fill
             sizes="(max-width: 768px) 50vw, 25vw"
             className={cn(
-              "object-cover transition-all duration-300 group-hover/people:scale-105",
-              imageLoading && "opacity-0",
+              'object-cover transition-all duration-300 group-hover/people:scale-105',
+              imageLoading && 'opacity-0',
               // Grayscale by default, remove on hover or when selected
-              !selected && "grayscale group-hover/people:grayscale-0",
-              selected && "grayscale-0"
+              !selected && 'grayscale group-hover/people:grayscale-0',
+              selected && 'grayscale-0'
             )}
             onLoad={() => setImageLoading(false)}
             onError={() => {
@@ -83,7 +83,7 @@ export function PeopleCard({
             }}
           />
         )}
-        
+
         {(!people.image_url || imageError) && !imageLoading && (
           <div className="w-full h-full flex items-center justify-center bg-muted">
             <div className="w-8 h-8 bg-muted-foreground/40 rounded-full" />
@@ -91,10 +91,12 @@ export function PeopleCard({
         )}
       </div>
       <div className="w-full pt-1 md:pt-2">
-        <h3 className={cn(
-          "text-xs md:text-sm font-bold truncate text-center transition-colors duration-300",
-          selected ? "text-primary" : "text-foreground"
-        )}>
+        <h3
+          className={cn(
+            'text-xs md:text-sm font-bold truncate text-center transition-colors duration-300',
+            selected ? 'text-primary' : 'text-foreground'
+          )}
+        >
           {name}
         </h3>
       </div>

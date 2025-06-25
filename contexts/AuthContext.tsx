@@ -107,7 +107,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             avatar
           });
           setIsAuthenticated(true);
-          
+
           // Close auth modal when user successfully logs in
           setIsAuthModalOpen(false);
         } else {

@@ -28,7 +28,7 @@ export function ResourcesList(props: IResourcesListProps) {
     >
       {selectedResources.map((resource: TSelectedResource, index: number) => {
         const { image_url, title, name, link, url } = resource as any;
-        
+
         return (
           <div
             key={index}

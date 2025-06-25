@@ -18,10 +18,10 @@ export function HistoryList(props: IHistoryListProps) {
         <Suspense>
           {safeList.map((chat: HistoryItem) => {
             return (
-              <HistoryListItem 
-                key={chat.session_id} 
-                item={chat} 
-                onCloseSidebar={onCloseSidebar} 
+              <HistoryListItem
+                key={chat.session_id}
+                item={chat}
+                onCloseSidebar={onCloseSidebar}
               />
             );
           })}

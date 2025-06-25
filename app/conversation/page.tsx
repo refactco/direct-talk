@@ -26,7 +26,12 @@ export default function SearchResults() {
   const chatId = searchParams.get('id');
   const messageParam = searchParams.get('message');
   const { initialMessage, setInitialMessage } = useInitialMessage();
-  const { openAuthModal, isAuthenticated, user, isLoading: isAuthLoading } = useAuth();
+  const {
+    openAuthModal,
+    isAuthenticated,
+    user,
+    isLoading: isAuthLoading
+  } = useAuth();
   const {
     chatDatas,
     startChatData,
@@ -59,7 +64,7 @@ export default function SearchResults() {
     const scrollToBottom = () => {
       if (messagesEndRef.current) {
         // Scroll to the last message with proper spacing above the fixed input
-        messagesEndRef.current.scrollIntoView({ 
+        messagesEndRef.current.scrollIntoView({
           behavior: 'smooth',
           block: 'end'
         });
@@ -113,23 +118,23 @@ export default function SearchResults() {
           messageToUse,
           startChatData?.contentIds
         );
-        
+
         console.log('API result:', retrievedChatData);
         console.log('Resource IDs from API:', retrievedChatData?.resource_id);
-        
+
         // Add the message without resources - fetchChat will handle resource fetching after navigation
         addMessage({
           answer: retrievedChatData?.answer,
           resource_id: retrievedChatData?.resource_id
         });
-        
+
         if (retrievedChatData?.session_id) {
           // Track that we just created this chat to avoid clearing selected resources
           justCreatedChatId.current = retrievedChatData.session_id;
           router.push(`/conversation?id=${retrievedChatData.session_id}`);
           updateHistory();
         }
-        
+
         updateStartChatDate(null, null);
         setInitialMessage(null); // Clear the initial message after use
       } catch (err: any) {
@@ -150,7 +155,7 @@ export default function SearchResults() {
   useEffect(() => {
     // Don't do anything while auth is still loading
     if (isAuthLoading) return;
-    
+
     if (chatId) {
       resetChatData();
       updateStartChatDate(null, null);
@@ -176,7 +181,11 @@ export default function SearchResults() {
         // If not authenticated after loading is complete, show auth modal
         openAuthModal();
       }
-    } else if (!chatId && (startChatData?.message || initialMessage) && !hasStartedChat.current) {
+    } else if (
+      !chatId &&
+      (startChatData?.message || initialMessage) &&
+      !hasStartedChat.current
+    ) {
       const messageToUse = startChatData?.message || initialMessage;
       if (messageToUse) {
         resetChatData();
@@ -185,7 +194,13 @@ export default function SearchResults() {
         startNewChat();
       }
     }
-  }, [chatId, startChatData?.message, initialMessage, isAuthenticated, isAuthLoading]);
+  }, [
+    chatId,
+    startChatData?.message,
+    initialMessage,
+    isAuthenticated,
+    isAuthLoading
+  ]);
 
   const handleSubmit = async (message: string) => {
     if (!message.trim() || isLoadingFollowUp) return;
@@ -203,13 +218,13 @@ export default function SearchResults() {
       scrollToLastMessage();
       const result = await doChat(message, undefined, chatId?.toString());
       addMessage({ question: message });
-      
+
       console.log('API result:', result);
       console.log('Resource IDs from API:', result?.resource_id);
-      
+
       const relatedResources = await fetchRelatedResources(result?.resource_id);
       console.log('Fetched related resources:', relatedResources);
-      
+
       addMessage({
         answer: result?.answer,
         resource_id: result?.resource_id,
@@ -251,9 +266,10 @@ export default function SearchResults() {
             userAvatar={userAvatar}
             authorResource={
               // For existing chats, prioritize the author from chat data
-              chatId ? resources?.[0] : 
-              // For new chats, use selected resources
-              selectedResources?.[0] || resources?.[0]
+              chatId
+                ? resources?.[0]
+                : // For new chats, use selected resources
+                  selectedResources?.[0] || resources?.[0]
             }
           />
         ) : (
@@ -327,22 +343,31 @@ export default function SearchResults() {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                               >
-                                <p className="text-base text-foreground font-normal whitespace-pre-wrap" style={{ lineHeight: '28px', fontSize: '16px' }}>
+                                <p
+                                  className="text-base text-foreground font-normal whitespace-pre-wrap"
+                                  style={{
+                                    lineHeight: '28px',
+                                    fontSize: '16px'
+                                  }}
+                                >
                                   {answer}
                                 </p>
                               </motion.div>
                             )}
                           </AnimatePresence>
-                          {resourceIds && resourceIds.length > 0 && answerResources && answerResources.length > 0 && (
-                            <div className="mt-6">
-                              <div className="text-sm font-semibold text-foreground mb-3">
-                                Resources
+                          {resourceIds &&
+                            resourceIds.length > 0 &&
+                            answerResources &&
+                            answerResources.length > 0 && (
+                              <div className="mt-6">
+                                <div className="text-sm font-semibold text-foreground mb-3">
+                                  Resources
+                                </div>
+                                <ResourcesList
+                                  selectedResources={answerResources}
+                                />
                               </div>
-                              <ResourcesList
-                                selectedResources={answerResources}
-                              />
-                            </div>
-                          )}
+                            )}
                         </div>
                       </div>
                     </div>
@@ -353,7 +378,7 @@ export default function SearchResults() {
           </div>
         )}
       </div>
-      
+
       {/* Fixed Chat Input - always visible at bottom, aligned with conversation */}
       <div className="fixed bottom-0 left-0 right-0 z-10">
         <div className="h-10 w-full bg-fade"></div>
@@ -361,7 +386,7 @@ export default function SearchResults() {
           <div className="flex">
             {/* Sidebar space - responsive to sidebar width */}
             <div className="hidden md:block sidebar-spacer flex-shrink-0"></div>
-            
+
             {/* Chat input container - matches main content area */}
             <div className="flex-1 px-4 md:px-8">
               <div className="max-w-[768px] mx-auto">

@@ -9,8 +9,7 @@ export function Logo(props: any) {
         props.className
       )}
       style={{ backgroundColor: '#97c521' }}
-    >
-    </div>
+    ></div>
     // <BotMessageSquareIcon {...props} />
     // <svg
     //   xmlns="http://www.w3.org/2000/svg"

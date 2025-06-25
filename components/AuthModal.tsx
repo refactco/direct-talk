@@ -70,7 +70,6 @@ export function AuthModal() {
             )}
             Login with Google
           </Button>
-
         </div>
       </DialogContent>
     </Dialog>

@@ -1,5 +1,5 @@
 import { AuthModal } from '@/components/AuthModal';
-  import { Providers } from '@/components/providers';
+import { Providers } from '@/components/providers';
 import { Sidebar } from '@/components/sidebar/sidebar';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { AuthProvider } from '@/contexts/AuthContext';

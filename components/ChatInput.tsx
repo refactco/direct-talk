@@ -60,7 +60,8 @@ export function ChatInput({
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+      textareaRef.current.style.height =
+        textareaRef.current.scrollHeight + 'px';
     }
   }, [input]);
 
@@ -100,16 +101,21 @@ export function ChatInput({
             }}
             disabled={isLoading || disabled}
           />
-          
+
           {/* Bottom row with character counter and submit button */}
           <div className="flex items-center justify-end gap-2">
             <span className="text-xs text-muted-foreground">
               {input.length}/{maxLength}
             </span>
-            
+
             <button
               type="submit"
-              disabled={isLoading || !input.trim() || disabled || input.length > maxLength}
+              disabled={
+                isLoading ||
+                !input.trim() ||
+                disabled ||
+                input.length > maxLength
+              }
               className={cn(
                 'flex items-center justify-center',
                 'w-8 h-8 rounded-full transition-all duration-200',

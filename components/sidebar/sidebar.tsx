@@ -50,7 +50,8 @@ export function Sidebar() {
   };
 
   const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
-    const { scrollTop, scrollHeight, clientHeight } = event.target as HTMLDivElement;
+    const { scrollTop, scrollHeight, clientHeight } =
+      event.target as HTMLDivElement;
     // Show/hide top fade based on scroll position
     setShowTopFade(scrollTop > 0);
 
@@ -99,12 +100,7 @@ export function Sidebar() {
         )}
       >
         {/* Logo Section */}
-        <div
-          className={cn(
-            'flex items-center p-4',
-            'justify-between'
-          )}
-        >
+        <div className={cn('flex items-center p-4', 'justify-between')}>
           <Link
             href="/"
             className="flex items-center gap-3"
@@ -114,9 +110,7 @@ export function Sidebar() {
           >
             <Logo className="flex-[25px]" />
             <div className="line-height-0">
-              <span 
-                className="font-medium text-[#97c521] line-height-0 whitespace-nowrap text-xl" 
-              >
+              <span className="font-medium text-[#97c521] line-height-0 whitespace-nowrap text-xl">
                 Ask Author
               </span>
             </div>
@@ -158,10 +152,7 @@ export function Sidebar() {
               </span>
             </div>
 
-            <ScrollArea
-              className="relative"
-              onScroll={handleScroll}
-            >
+            <ScrollArea className="relative" onScroll={handleScroll}>
               <div
                 className={cn(
                   isNotHomePage
