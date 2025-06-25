@@ -1,8 +1,6 @@
 'use client';
 
-import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabaseClient';
-import toastConfig from '@/lib/toast-config';
 import { useRouter } from 'next/navigation';
 import {
   createContext,
@@ -40,7 +38,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { toast } = useToast();
   const router = useRouter();
 
   // Helper function to store avatar in localStorage
@@ -84,11 +81,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setIsAuthenticated(false);
       }
       if (error?.message) {
-        const toastLimitConf: any = toastConfig({
-          message: error.message ?? 'Unknown error',
-          toastType: 'destructive'
-        });
-        toast(toastLimitConf);
+        console.error('Auth session error:', error.message);
       }
       setIsLoading(false);
     };
@@ -132,11 +125,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       options: { redirectTo: `${window.location.origin}` }
     });
     if (error) {
-      const toastLimitConf: any = toastConfig({
-        message: error.message ?? 'Google Login Error',
-        toastType: 'destructive'
-      });
-      toast(toastLimitConf);
+      console.error('Google Login Error:', error.message);
     }
   };
 
@@ -147,11 +136,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       options: { redirectTo: `${window.location.origin}` }
     });
     if (error) {
-      const toastLimitConf: any = toastConfig({
-        message: error.message ?? 'Twitter Login Error',
-        toastType: 'destructive'
-      });
-      toast(toastLimitConf);
+      console.error('Twitter Login Error:', error.message);
     }
   };
 

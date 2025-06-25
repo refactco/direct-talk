@@ -5,7 +5,6 @@ import { CollapseIcon } from '@/components/icons/CollapseIcon';
 import { HistoryIcon } from '@/components/icons/HistoryIcon';
 import { Logo } from '@/components/icons/Logo';
 import { LogoutIcon } from '@/components/icons/LogoutIcon';
-import { SearchIcon } from '@/components/icons/SearchIcon';
 import { HistoryList } from '@/components/sidebar/history-list/history-list';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -13,20 +12,17 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useHistory } from '@/contexts/HistoryContext';
 import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { cn } from '@/lib/utils';
-import { MenuIcon } from 'lucide-react';
+import { MenuIcon, PlusIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Tooltip } from '../ui/tooltip/tooltip';
 
 export function Sidebar() {
   // const { mobileExpanded } = props;
   const pathname = usePathname();
-  const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileExpanded, setIsMobileExpanded] = useState(false);
   const [showTopFade, setShowTopFade] = useState(false);
   const [showBottomFade, setShowBottomFade] = useState(true);
-  const [showContent, setShowContent] = useState(false);
   const {
     isAuthenticated,
     logout,
@@ -50,8 +46,8 @@ export function Sidebar() {
     }
   };
 
-  const handleScroll = (event) => {
-    const { scrollTop, scrollHeight, clientHeight } = event.target;
+  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, scrollHeight, clientHeight } = event.target as HTMLDivElement;
     // Show/hide top fade based on scroll position
     setShowTopFade(scrollTop > 0);
 
@@ -59,15 +55,10 @@ export function Sidebar() {
     setShowBottomFade(scrollTop + clientHeight < scrollHeight);
   };
 
+  // Set sidebar width to always be expanded on desktop
   useEffect(() => {
-    if (!isCollapsed) {
-      setTimeout(() => {
-        setShowContent(false);
-      }, 200);
-    } else {
-      setShowContent(true);
-    }
-  }, [isCollapsed]);
+    document.documentElement.style.setProperty('--sidebar-width', '243px');
+  }, []);
 
   const closeMobileSidebar = () => {
     setIsMobileExpanded(false);
@@ -75,14 +66,14 @@ export function Sidebar() {
 
   return (
     <>
-      <nav className="flex md:hidden w-full justify-between absolute z-50 p-4 border-b border-current/80 bg-background">
+      <nav className="flex md:hidden w-full justify-between absolute z-50 p-4 bg-background">
         <Button
           variant="ghost"
           size="icon"
           onClick={() => {
             setIsMobileExpanded(true);
           }}
-          className="bg-[#1C1917] rounded-md w-8 h-8"
+          className="bg-accent rounded-md w-8 h-8"
         >
           <MenuIcon className="absolute rotate-90 scale-0 w-5 h-5 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
@@ -99,72 +90,35 @@ export function Sidebar() {
       ></div>
       <div
         className={cn(
-          'absolute md:relative md:left-0 w-80 z-50 flex h-full flex-col bg-accent transition-all duration-300 ease-in-out border-r border-white/10',
-          isCollapsed ? 'md:w-[64px]' : 'md:w-[243px]',
+          'absolute md:relative md:left-0 w-80 z-50 flex h-full flex-col bg-accent transition-all duration-300 ease-in-out',
+          'md:w-[243px]',
           isMobileExpanded ? 'left-0' : '-left-full'
         )}
       >
         {/* Logo Section */}
         <div
           className={cn(
-            'flex items-center p-4 border-b border-border',
-            isCollapsed ? 'justify-center' : 'justify-between'
+            'flex items-center p-4',
+            'justify-between'
           )}
         >
           <Link
             href="/"
             className="flex items-center gap-3"
-            onClick={(e) => {
-              if (isCollapsed) {
-                e.preventDefault();
-
-                setIsCollapsed(false);
-              }
-
+            onClick={() => {
               closeMobileSidebar();
             }}
           >
             <Logo className="flex-[25px]" />
-            {!isCollapsed && (
-              <div
-                className={cn(
-                  'transition-opacity duration-200',
-                  showContent ? 'opacity-0' : 'opacity-100'
-                )}
+            <div className="line-height-0">
+              <span 
+                className="font-medium text-[#97c521] line-height-0 whitespace-nowrap text-xl" 
               >
-                <span className="text-base font-medium whitespace-nowrap">
-                  Ask Author
-                </span>
-              </div>
-            )}
+                Ask Author
+              </span>
+            </div>
           </Link>
-          <div
-            className={cn(
-              'transition-opacity duration-200',
-              showContent ? 'opacity-0' : 'opacity-100'
-            )}
-          >
-            {!isCollapsed && (
-              <>
-                <Tooltip
-                  id="collapse-button"
-                  place="right"
-                  content="Collapse"
-                />
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="w-5 h-5 rounded-full hidden md:flex items-center justify-center hover:bg-accent transition-colors duration-200"
-                  onClick={() => {
-                    setIsCollapsed(!isCollapsed);
-                  }}
-                  data-tooltip-id="collapse-button"
-                >
-                  <CollapseIcon className="fill-muted-foreground h-4 w-4" />
-                </Button>
-              </>
-            )}
-          </div>
+          {/* Collapse button removed for desktop */}
           <Button
             variant="ghost"
             size="icon"
@@ -178,157 +132,91 @@ export function Sidebar() {
         </div>
 
         <div className="flex-1 flex flex-col overflow-hidden">
-          <div className={cn('space-y-3 flex-1', isCollapsed ? 'p-3' : 'p-5')}>
-            {/* History Section */}
+          <div className="space-y-3 flex-1 p-4">
+            {/* New Chat Link */}
             {isNotHomePage ? (
-              <Button
-                variant="default"
-                onClick={() => {
-                  closeMobileSidebar();
-                  resetSelectedResources();
-                  router.push('/');
-                }}
-                className="bg-foreground w-full mb-3 font-normal max-h-9 hover:bg-foreground/90 rounded-[6px] text-md"
-              >
-                <SearchIcon className="fill-primary-foreground w-4 h-4" />
-                {isCollapsed ? '' : 'New Chat'}
-              </Button>
-            ) : null}
-            <div
-              className={cn(
-                'flex items-center gap-2 mb-3',
-                isCollapsed && 'justify-center'
-              )}
-            >
-              {isCollapsed ? (
-                <Button
-                  variant="ghost"
-                  className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors duration-200"
+              <div className="mb-4">
+                <Link
+                  href="/"
                   onClick={() => {
-                    setIsCollapsed(!isCollapsed);
+                    closeMobileSidebar();
+                    resetSelectedResources();
                   }}
+                  className="flex items-center justify-center gap-3 px-3 py-2.5 text-sm font-medium text-foreground bg-background/50 border border-border hover:border-[#97c521] hover:bg-background/80 rounded-lg transition-all duration-200 group w-full"
                 >
-                  <HistoryIcon />
-                </Button>
-              ) : (
-                <>
-                  <span className="text-[11px] uppercase text-muted-foreground">
-                    History
-                  </span>
-                </>
-              )}
+                  <PlusIcon className="w-4 h-4 group-hover:text-[#97c521] transition-colors duration-200" />
+                  New Chat
+                </Link>
+              </div>
+            ) : null}
+            <div className="flex items-center pt-4 border-t border-border/30">
+              <span className="text-xs uppercase text-muted-foreground font-medium tracking-wider">
+                History
+              </span>
             </div>
 
-            {!isCollapsed && (
-              <ScrollArea
-                className={cn(`border-white relative`)}
-                onScroll={handleScroll}
-              >
-                <div
-                  className={cn(
-                    isNotHomePage
-                      ? 'h-[calc(100vh-322px)]'
-                      : 'h-[calc(100vh-270px)]'
-                  )}
-                >
-                  {showTopFade ? (
-                    <div className="w-full h-8 bg-history-top-fade absolute top-0"></div>
-                  ) : null}
-                  <div
-                    className={cn(
-                      'transition-opacity duration-200',
-                      showContent ? 'opacity-0' : 'opacity-100'
-                    )}
-                  >
-                    <HistoryList
-                      list={historyItems}
-                      isLoading={isLoading}
-                      onCloseSidebar={() => {
-                        closeMobileSidebar();
-                      }}
-                    />
-                  </div>
-                  {showBottomFade ? (
-                    <div className="w-full h-8 bg-history-bottom-fade absolute bottom-0"></div>
-                  ) : null}
-                </div>
-              </ScrollArea>
-            )}
-          </div>
-          <div
-            className={cn(
-              'flex flex-col gap-5',
-              isCollapsed ? 'px-3 pb-3 items-center' : 'px-5 pb-5'
-            )}
-          >
-            <div
-              className={cn(
-                showContent ? 'opacity-0' : 'opacity-100 duration-200'
-              )}
+            <ScrollArea
+              className="relative"
+              onScroll={handleScroll}
             >
+              <div
+                className={cn(
+                  isNotHomePage
+                    ? 'h-[calc(100vh-322px)]'
+                    : 'h-[calc(100vh-270px)]'
+                )}
+              >
+                {showTopFade ? (
+                  <div className="w-full h-8 bg-history-top-fade absolute top-0"></div>
+                ) : null}
+                <div>
+                  <HistoryList
+                    list={historyItems}
+                    isLoading={isLoading}
+                    onCloseSidebar={() => {
+                      closeMobileSidebar();
+                    }}
+                  />
+                </div>
+                {showBottomFade ? (
+                  <div className="w-full h-8 bg-history-bottom-fade absolute bottom-0"></div>
+                ) : null}
+              </div>
+            </ScrollArea>
+          </div>
+          <div className="flex flex-col gap-5 px-4 pb-4">
+            <div>
               <Button
                 variant="outline"
-                className={cn(
-                  'justify-start w-max bg-transparent',
-                  showContent ? 'p-0 border-none' : 'border-border'
-                )}
+                className="justify-start w-max bg-background/50 border-border hover:border-[#97c521] hover:bg-background/80 transition-all duration-200"
                 onClick={handleAuth}
                 disabled={isLoadingAuth}
               >
                 {isLoadingAuth ? (
-                  <Icons.spinner className=" h-4 w-4 animate-spin" />
+                  <Icons.spinner className="h-4 w-4 animate-spin" />
                 ) : (
-                  <LogoutIcon
-                    className={cn(
-                      'fill-foreground',
-                      isCollapsed ? 'h-5 w-5' : 'h-4 w-4'
-                    )}
-                  />
+                  <LogoutIcon className="fill-foreground h-4 w-4" />
                 )}
-                {!isCollapsed && (
-                  <span className="text-sm font-bold">
-                    {isAuthenticated ? 'Logout' : 'Login'}
-                  </span>
-                )}
+                <span className="text-sm font-bold">
+                  {isAuthenticated ? 'Logout' : 'Login'}
+                </span>
               </Button>
             </div>
-            {isCollapsed && (
-              <LogoutIcon
-                onClick={handleAuth}
-                className={'fill-foreground h-5 w-5 cursor-pointer'}
-              />
-            )}
-            {!isCollapsed ? (
-              <div
-                className={cn(
-                  'transition-opacity duration-200',
-                  showContent ? 'opacity-0 d' : 'opacity-100'
-                )}
-              >
-                <div className="flex flex-col gap-2">
-                  <p className="text-xs text-muted-foreground">
-                    Copyright &copy; 2025{' '}
-                    <a
-                      href="https://refact.co"
-                      target="_blank"
-                      className="text-primary"
-                    >
-                      Refact, LLC
-                    </a>
-                  </p>
-                  <div className="flex flex-col gap-1 text-xs text-muted-foreground [&_a:hover]:text-white">
-                    <div className="flex gap-[0.38rem] items-center">
-                      <Link href="/privacy">Privacy Policy</Link>
-                      <div className="w-1 h-1 rounded-full bg-muted-foreground" />
-                      <Link href="/terms">Terms of Use</Link>
-                    </div>
-                    {/* <div>
-                      <Link href="/about">About</Link>
-                    </div> */}
-                  </div>
-                </div>
+
+            <div>
+              <div className="flex flex-col gap-2">
+                <p className="text-xs text-muted-foreground">
+                  Made by{' '}
+                  <a
+                    href="https://refact.co"
+                    target="_blank"
+                    className="text-primary"
+                  >
+                    Refact
+                  </a>
+                </p>
               </div>
-            ) : null}
+            </div>
           </div>
         </div>
       </div>

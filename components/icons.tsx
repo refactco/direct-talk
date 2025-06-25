@@ -12,7 +12,7 @@ export const Icons = {
   sun: SunMedium,
   moon: Moon,
   twitter: Twitter,
-  logo: (props: LucideProps) => (
+  logo: (props: typeof LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="25"
@@ -30,7 +30,7 @@ export const Icons = {
       <path d="M12.5 0L25 8L12.5 16L0 8L12.5 0Z" fill="white" />
     </svg>
   ),
-  spinner: (props: LucideProps) => (
+  spinner: (props: React.SVGProps<SVGSVGElement>) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -46,7 +46,7 @@ export const Icons = {
       <path d="M21 12a9 9 0 1 1-6.219-8.56" />
     </svg>
   ),
-  google: (props: LucideProps) => (
+  google: (props: typeof LucideProps) => (
     <svg role="img" viewBox="0 0 24 24" {...props}>
       <path
         fill="currentColor"

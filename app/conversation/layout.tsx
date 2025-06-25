@@ -7,14 +7,16 @@ export default function ChatLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Suspense
-      fallback={
-        <div className="flex gap-8 min-h-[calc(100vh-154px)] max-w-3xl mx-auto">
-          <ConversationPageLoading />
-        </div>
-      }
-    >
-      {children}
-    </Suspense>
+    <div className="pb-32">
+      <Suspense
+        fallback={
+          <div className="flex gap-8 min-h-[calc(100vh-154px)] max-w-3xl mx-auto">
+            <ConversationPageLoading />
+          </div>
+        }
+      >
+        {children}
+      </Suspense>
+    </div>
   );
 }

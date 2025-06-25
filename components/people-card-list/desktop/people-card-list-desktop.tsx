@@ -1,60 +1,29 @@
-import { CardSlider } from '@/components/card-slider/card-slider';
-import { PeopleCard } from '@/components/people-card/PeopleCard';
-import { AnimatePresence, motion } from 'framer-motion';
-import { SwiperSlide } from 'swiper/react';
-import { IPeopleCardListProps } from '../people-card-list-type';
+'use client';
 
-export function PeopleCardListDesktop({
-  popularResources,
-  selectedPerson,
-  selectedPersonIndex,
-  handlePersonClick,
-  selectedResources
-}: IPeopleCardListProps) {
+import { PeopleCard } from '@/components/people-card/PeopleCard';
+import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
+import type { PeopleCardListProps } from '../people-card-list-type';
+
+export function PeopleCardListDesktop({ people, isLoading }: PeopleCardListProps) {
+  const { selectedResources } = useSelectedResources();
+  const hasSelectedAuthor = selectedResources.length > 0;
+  
+  // Show 4 skeleton cards while loading, or actual people when loaded
+  const displayItems = isLoading ? Array(4).fill(null) : people;
+  
   return (
-    <AnimatePresence mode="wait">
-      {selectedResources.length > 0 && selectedPerson ? (
-        <motion.div
-          key="selected"
-          initial={{
-            x: `${(selectedPersonIndex ?? 0) * 25}%`
-          }}
-          animate={{ x: 'calc(40% - 2rem)' }}
-          exit={{
-            x: `${(selectedPersonIndex ?? 0) * 25}%`
-          }}
-          transition={{ duration: 0.4 }}
-          className="hidden md:flex justify-start"
-        >
-          <div
-            className="w-1/4"
-            onClick={() =>
-              handlePersonClick(selectedPerson, selectedPersonIndex)
-            }
-          >
-            <PeopleCard people={selectedPerson} />
+    <div className="w-full">
+      <div className="grid grid-cols-4 gap-4">
+        {displayItems.map((person, index) => (
+          <div key={person?.id || `skeleton-${index}`} className="w-full">
+            <PeopleCard 
+              people={person} 
+              isLoading={isLoading} 
+              hasSelectedAuthor={hasSelectedAuthor}
+            />
           </div>
-        </motion.div>
-      ) : (
-        <motion.div
-          key="carousel"
-          transition={{ duration: 0.4 }}
-          className="hidden md:block"
-        >
-          <CardSlider>
-            {popularResources.map((show, index) => (
-              <SwiperSlide
-                key={index}
-                className="flex justify-center items-center"
-              >
-                <div onClick={() => handlePersonClick(show, index)}>
-                  <PeopleCard people={show} />
-                </div>
-              </SwiperSlide>
-            ))}
-          </CardSlider>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        ))}
+      </div>
+    </div>
   );
 }

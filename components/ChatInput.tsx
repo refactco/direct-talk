@@ -2,42 +2,40 @@
 
 // import { ArrowRightIcon } from '@/components/icons/ArrowRightIcon';
 // import { PlusIcon } from '@/components/icons/PlusIcon';
-import { useToast } from '@/hooks/use-toast';
-import toastConfig from '@/lib/toast-config';
 import { cn } from '@/lib/utils';
-import { ArrowRightIcon, PlusIcon } from 'lucide-react';
+import { ArrowUpIcon } from 'lucide-react';
 import type React from 'react';
-import { useState } from 'react';
-import { SelectedResourcesList } from './selected-resources-list/selected-resources-list';
+import { useState, useRef, useEffect } from 'react';
 
 interface ChatInputProps {
   onSubmit: (message: string) => void;
-  onAddResource?: () => void;
   hideResources?: boolean;
   isLoading: boolean;
   placeholder?: string;
   resetAfterSubmit?: boolean;
   defaultValue?: string;
   disabled?: boolean;
+  className?: string;
 }
 
 export function ChatInput({
   onSubmit,
-  onAddResource,
   hideResources = false,
   isLoading,
   placeholder = 'Ask AI anything...',
   resetAfterSubmit = false,
   defaultValue,
-  disabled = false
+  disabled = false,
+  className
 }: ChatInputProps) {
   const [input, setInput] = useState(defaultValue ?? '');
-  const { toast } = useToast();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const maxLength = 200;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (input?.trim() && !isLoading) {
+    if (input?.trim() && !isLoading && input.length <= maxLength) {
       onSubmit(input?.trim());
       if (resetAfterSubmit) {
         setInput('');
@@ -52,86 +50,79 @@ export function ChatInput({
     }
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    if (value.length <= maxLength) {
+      setInput(value);
+    }
+  };
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+    }
+  }, [input]);
+
   return (
-    <form onSubmit={handleSubmit} className="relative">
-      <div
-        className={cn(
-          'rounded-3xl border bg-background overflow-hidden transition-all duration-300',
-          hideResources ? 'rounded-[62.4375rem]' : 'rounded-3xl',
-          disabled ? 'border-border' : 'border-neutral-400'
-        )}
-        onPointerDown={(e) => {
-          if (disabled) {
-            e.preventDefault();
-            const tConfig: any = toastConfig({
-              message: 'Please select a person first',
-              toastType: 'destructive'
-            });
-            toast(tConfig);
-          }
-        }}
-      >
-        {/* Selected Resources */}
-        {hideResources ? null : (
-          <SelectedResourcesList customClassName="p-3 border-b border-border" />
-        )}
-        {/* Input Area */}
+    <div className="relative w-full max-w-4xl mx-auto">
+      <form onSubmit={handleSubmit} className="relative">
         <div
           className={cn(
-            'flex items-center px-3 gap-2 md:gap-4',
-            hideResources ? 'flex-row' : 'flex-col'
+            'relative bg-card rounded-3xl shadow-sm transition-all duration-200',
+            'px-4 py-3',
+            disabled && 'opacity-50 cursor-not-allowed',
+            className
           )}
+          onPointerDown={(e) => {
+            if (disabled) {
+              e.preventDefault();
+              console.log('Please select a person first');
+            }
+          }}
         >
           <textarea
+            ref={textareaRef}
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
             rows={1}
+            maxLength={maxLength}
             className={cn(
-              'w-full py-6 flex-grow bg-background border-0 focus:outline-none focus:ring-0 text-xs md:text-sm resize-none pl-2 md:pl-5',
-              hideResources ? 'flex-1' : '',
-              disabled ? 'placeholder-neutral-700' : 'placeholder-[#a2a2a4]'
+              'w-full bg-transparent text-foreground placeholder-muted-foreground resize-none border-0 outline-none',
+              'text-base leading-6 min-h-[24px] max-h-32',
+              'scrollbar-hide pb-2'
             )}
             style={{
-              touchAction: 'manipulation'
+              touchAction: 'manipulation',
+              overflow: 'hidden'
             }}
             disabled={isLoading || disabled}
-            defaultValue={defaultValue}
           />
-          <div
-            className={cn(
-              'flex items-center',
-              hideResources ? 'justify-end' : 'justify-between w-full'
-            )}
-          >
-            {hideResources ? null : (
-              <button
-                type="button"
-                className="flex gap-2 items-center text-[13px] font-semibold"
-                onClick={onAddResource}
-              >
-                <div className="w-8 h-8 rounded-full flex items-center justify-center bg-accent-light hover:bg-accent-light/70 focus:bg-accent-light/60 transition-colors">
-                  <PlusIcon className="fill-foreground h-5 w-5" />
-                </div>
-                Add resource
-              </button>
-            )}
+          
+          {/* Bottom row with character counter and submit button */}
+          <div className="flex items-center justify-end gap-2">
+            <span className="text-xs text-muted-foreground">
+              {input.length}/{maxLength}
+            </span>
+            
             <button
               type="submit"
-              disabled={isLoading || !input.trim()}
-              className="w-8 h-8 sm:w-10 md:h-10 rounded-full bg-primary hover:bg-primary/90 focus:bg:primary/70 flex items-center justify-center shrink-0 disabled:bg-neutral-900 disabled:cursor-not-allowed"
+              disabled={isLoading || !input.trim() || disabled || input.length > maxLength}
+              className={cn(
+                'flex items-center justify-center',
+                'w-8 h-8 rounded-full transition-all duration-200',
+                'bg-primary hover:bg-primary/90 disabled:bg-muted disabled:cursor-not-allowed',
+                'text-primary-foreground disabled:text-muted-foreground',
+                'disabled:opacity-50'
+              )}
             >
-              <ArrowRightIcon
-                className={cn(
-                  'w-5 h-5',
-                  !input.trim() ? 'text-neutral-500' : 'text-black'
-                )}
-              />
+              <ArrowUpIcon className="w-4 h-4" />
             </button>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 }

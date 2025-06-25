@@ -11,7 +11,6 @@ export interface IResource extends IBaseResourceItem {
   title: string;
   type: ResourceType;
   people?: IAuthor[];
-  topics?: ITopic[];
   episodes: IResource[];
 }
 
@@ -30,8 +29,3 @@ export interface IAuthor extends IBaseResourceItem {
 }
 
 export type TSelectedResource = IResource | IAuthor;
-
-export interface ITopic {
-  id: number;
-  term: string;
-}

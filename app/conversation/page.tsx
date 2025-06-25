@@ -1,34 +1,30 @@
 'use client';
 
+import { ChatInput } from '@/components/ChatInput';
 import { ConversationPageLoading } from '@/components/conversation-page-loading/conversation-page-loading';
 import { Logo } from '@/components/icons/Logo';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/contexts/AuthContext';
 import { useChat } from '@/contexts/ChatContext';
 import { useHistory } from '@/contexts/HistoryContext';
 import { useResource } from '@/contexts/ResourcesContext';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowRightIcon, CircleUserIcon } from 'lucide-react';
+import { CircleUserIcon } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { IChatHistory } from '../conversation/types';
 
-import { Icons } from '@/components/icons';
-import MarkdownRenderer from '@/components/markdown-render';
 import { ResourcesList } from '@/components/resources-list/resources-list';
 import { useInitialMessage } from '@/contexts/InitialMessageContext';
-import { cn } from '@/lib/utils';
 
 export default function SearchResults() {
-  const [inputValue, setInputValue] = useState('');
   const [userAvatar, setUserAvatar] = useState<string | null>(null);
   const [isLoadingFollowUp, setIsLoadingFollowUp] = useState<boolean>(false);
   const [chatHistory, setChatHistory] = useState<IChatHistory[]>([]);
   const searchParams = useSearchParams();
   const chatId = searchParams.get('id');
-  const { initialMessage } = useInitialMessage();
+  const messageParam = searchParams.get('message');
+  const { initialMessage, setInitialMessage } = useInitialMessage();
   const { openAuthModal, isAuthenticated, user } = useAuth();
   const {
     chatDatas,
@@ -59,7 +55,11 @@ export default function SearchResults() {
   const scrollToLastMessage = () => {
     const scrollToBottom = () => {
       if (messagesEndRef.current) {
-        messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        // Scroll to the last message with proper spacing above the fixed input
+        messagesEndRef.current.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'end'
+        });
       }
     };
     const timeout = setTimeout(scrollToBottom, 100);
@@ -95,19 +95,43 @@ export default function SearchResults() {
   }, [chatDatas?.chat_history]);
 
   const startNewChat = async () => {
-    if (startChatData.message) {
-      addMessage({ question: startChatData.message });
+    const messageToUse = startChatData?.message || initialMessage;
+    if (messageToUse) {
+      // Check if user is authenticated
+      if (!isAuthenticated) {
+        openAuthModal();
+        return;
+      }
 
-      const retrievedChatData = await doChat(
-        startChatData?.message,
-        startChatData?.contentIds
-      );
-      router.push(`/conversation?id=${retrievedChatData.session_id}`);
+      try {
+        addMessage({ question: messageToUse });
 
-      updateHistory();
-      updateStartChatDate(null, null);
+        const retrievedChatData = await doChat(
+          messageToUse,
+          startChatData?.contentIds
+        );
+        
+        if (retrievedChatData?.session_id) {
+          router.push(`/conversation?id=${retrievedChatData.session_id}`);
+          updateHistory();
+        }
+        
+        updateStartChatDate(null, null);
+        setInitialMessage(null); // Clear the initial message after use
+      } catch (err: any) {
+        if (!isAuthenticated && err.status === 401) {
+          openAuthModal();
+        }
+        console.error('Error starting new chat:', err);
+      }
     }
   };
+
+  useEffect(() => {
+    if (messageParam && !initialMessage) {
+      setInitialMessage(decodeURIComponent(messageParam));
+    }
+  }, [messageParam, initialMessage, setInitialMessage]);
 
   useEffect(() => {
     if (chatId) {
@@ -118,15 +142,25 @@ export default function SearchResults() {
           openAuthModal();
         }
       });
-    } else if (!chatId && startChatData?.message && !hasStartedChat.current) {
-      resetChatData();
-      hasStartedChat.current = true;
-      startNewChat();
+    } else if (!chatId && (startChatData?.message || initialMessage) && !hasStartedChat.current) {
+      const messageToUse = startChatData?.message || initialMessage;
+      if (messageToUse) {
+        resetChatData();
+        hasStartedChat.current = true;
+        updateStartChatDate(messageToUse, startChatData?.contentIds || null);
+        startNewChat();
+      }
     }
-  }, [chatId]);
+  }, [chatId, startChatData?.message, initialMessage]);
 
   const handleSubmit = async (message: string) => {
     if (!message.trim() || isLoadingFollowUp) return;
+
+    // Check if user is authenticated
+    if (!isAuthenticated) {
+      openAuthModal();
+      return;
+    }
 
     setIsLoadingFollowUp(true);
 
@@ -135,17 +169,25 @@ export default function SearchResults() {
       scrollToLastMessage();
       const result = await doChat(message, undefined, chatId?.toString());
       addMessage({ question: message });
-      // setChatHistory([...chatHistory, { question: message, answer: result?.answer }]);
+      
+      console.log('API result:', result);
+      console.log('Resource IDs from API:', result?.resource_id);
+      
       const relatedResources = await fetchRelatedResources(result?.resource_id);
+      console.log('Fetched related resources:', relatedResources);
+      
       addMessage({
         answer: result?.answer,
         resource_id: result?.resource_id,
         resources: relatedResources
       });
       // setTimeout(scrollToLastMessage, 100);
+    } catch (err: any) {
+      if (!isAuthenticated && err.status === 401) {
+        openAuthModal();
+      }
     } finally {
       setIsLoadingFollowUp(false);
-      setInputValue('');
       scrollToLastMessage();
     }
   };
@@ -195,7 +237,7 @@ export default function SearchResults() {
                       index === chatHistory.length - 1 ? messagesEndRef : null
                     }
                   >
-                    <div className="flex-1 flex flex-col gap-8">
+                    <div className="flex-1 flex flex-col gap-8 mb-12">
                       <div className="flex items-center gap-3">
                         {userAvatar ? (
                           <img
@@ -224,21 +266,6 @@ export default function SearchResults() {
                           )}
                         </div>
                         <div className="flex-1 flex flex-col gap-2 w-[calc(100vw-5rem)] md:w-auto">
-                          <div className="inline-flex items-center gap-2 text-neutral-500 mb-0 rounded-xl">
-                            {/* <Book className="h-5 w-5" /> */}
-                            <div className="font-normal text-sm">
-                              {chatDatas?.author_name ?? 'Answer'}
-                            </div>
-                          </div>
-                          {resourceIds && answerResources ? (
-                            <div>
-                              <ResourcesList
-                                selectedResources={answerResources ?? []}
-                                noDetail
-                                hideRemoveButton
-                              />
-                            </div>
-                          ) : null}
                           <AnimatePresence mode="wait">
                             {!answer ? (
                               <motion.div
@@ -259,23 +286,23 @@ export default function SearchResults() {
                                 key="content"
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
-                                className="space-y-4"
                               >
-                                <motion.div
-                                  key={index}
-                                  initial={{ opacity: 0, y: 10 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  // transition={{ delay: index * 0.5 }}
-                                  className="leading-relaxed text-gray-200 text-sm"
-                                >
-                                  <MarkdownRenderer
-                                    content={answer as string}
-                                    className="prose prose-invert max-w-none [&>p:first-child]:mt-1"
-                                  />
-                                </motion.div>
+                                <p className="text-base text-foreground font-normal whitespace-pre-wrap" style={{ lineHeight: '28px', fontSize: '16px' }}>
+                                  {answer}
+                                </p>
                               </motion.div>
                             )}
                           </AnimatePresence>
+                          {resourceIds && resourceIds.length > 0 && answerResources && answerResources.length > 0 && (
+                            <div className="mt-6">
+                              <div className="text-sm font-semibold text-foreground mb-3">
+                                Resources
+                              </div>
+                              <ResourcesList
+                                selectedResources={answerResources}
+                              />
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -285,62 +312,28 @@ export default function SearchResults() {
             </div>
           </div>
         )}
-        {/* {isLoadingResources ? (
-          <ResourcesConversationPageLoading />
-        ) : (
-          <ResourcesConversationPage resources={resources} />
-        )} */}
       </div>
-      {/* Search Input */}
-      <div className="p-0 md:px-4 md:pt-4 sticky flex flex-col bottom-0 items-center justify-center w-[calc(100vw-2rem)] md:w-full">
+      
+      {/* Fixed Chat Input - always visible at bottom, aligned with conversation */}
+      <div className="fixed bottom-0 left-0 right-0 z-10">
         <div className="h-10 w-full bg-fade"></div>
-        <div className="w-full bg-black pb-4">
-          <motion.div
-            className="max-w-3xl relative mx-auto"
-            initial={false}
-            // animate={inputValue ? { width: '100%' } : { width: '66.666667%' }}
-            // transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          >
-            <Input
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Ask a follow-up question..."
-              maxLength={200}
-              disabled={isLoadingFollowUp}
-              className="border border-neutral-400 text-white placeholder-gray-400 pr-24 pl-4 py-6 rounded-full transition-all duration-300 focus:border-neutral-300 focus:outline-none outline-none ring-0"
-              onKeyUp={(e) => {
-                if (e.key === 'Enter') {
-                  handleSubmit(inputValue);
-                }
-              }}
-            />
-            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center">
-              <span className="text-sm text-neutral-700 mr-2">
-                {inputValue.length}/200
-              </span>
-              <Button
-                size="icon"
-                className="w-8 h-8 sm:w-10 md:h-10 rounded-full bg-primary hover:bg-primary/90 focus:bg:primary/70 flex items-center justify-center shrink-0 disabled:bg-accent-light disabled:cursor-not-allowed"
-                disabled={isLoadingFollowUp || !inputValue?.trim()}
-                onClick={() => {
-                  handleSubmit(inputValue);
-                }}
-              >
-                {isLoadingFollowUp ? (
-                  <Icons.spinner className="h-4 w-4 animate-spin text-white" />
-                ) : (
-                  <ArrowRightIcon
-                    className={cn(
-                      'w-5 h-5',
-                      !inputValue?.trim()
-                        ? 'text-white'
-                        : 'text-primary-foreground'
-                    )}
-                  />
-                )}
-              </Button>
+        <div className="w-full bg-background pb-8">
+          <div className="flex">
+            {/* Sidebar space - responsive to sidebar width */}
+            <div className="hidden md:block sidebar-spacer flex-shrink-0"></div>
+            
+            {/* Chat input container - matches main content area */}
+            <div className="flex-1 px-4 md:px-8">
+              <div className="max-w-[768px] mx-auto">
+                <ChatInput
+                  onSubmit={handleSubmit}
+                  isLoading={isLoadingFollowUp}
+                  placeholder="Ask a follow-up question..."
+                  resetAfterSubmit={true}
+                />
+              </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </Fragment>

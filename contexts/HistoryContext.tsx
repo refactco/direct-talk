@@ -1,8 +1,7 @@
 'use client';
 
-import { useToast } from '@/hooks/use-toast';
 import apiClient from '@/lib/axiosInstance';
-import toastConfig from '@/lib/toast-config';
+import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import type React from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
@@ -34,24 +33,33 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
   const [historyItems, setHistoryItems] = useState<HistoryItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
-  const { toast } = useToast();
 
   const fetchChatHistory = async () => {
     try {
       setIsLoading(true);
+      
+      // Skip API call if using mocked data
+      const useMockedData = process.env.NEXT_PUBLIC_MOCKED_DATA === 'true';
+      if (useMockedData) {
+        // Return empty history for mocked data
+        setHistoryItems([]);
+        return;
+      }
+      
+      // Skip API call if base URL is not configured
+      if (!baseURL) {
+        setHistoryItems([]);
+        return;
+      }
+      
       const response = await apiClient.get(`${baseURL}/search`);
       const data = await response.data;
-      setHistoryItems(data);
+      setHistoryItems(Array.isArray(data) ? data : []);
     } catch (err) {
-      if (err?.status == 401) {
+      if (err instanceof AxiosError && err.status === 401) {
         setHistoryItems([]);
       } else {
-        const toastLimitConf: any = toastConfig({
-          message:
-            err instanceof Error ? err.message : 'An unknown error occurred',
-          toastType: 'destructive'
-        });
-        toast(toastLimitConf);
+        setHistoryItems([]);
       }
     } finally {
       setIsLoading(false);
@@ -69,7 +77,7 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const removeHistoryItem = async (
     session_id: string,
-    active_session_id: string,
+    active_session_id: string | null,
     onRemoveComplete: () => void
   ) => {
     try {
@@ -83,18 +91,13 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
           );
           return newItems;
         });
-        if (active_session_id == session_id) {
+        if (active_session_id && active_session_id === session_id) {
           router.push('/');
         }
       }
       onRemoveComplete();
     } catch (err) {
-      const toastLimitConf: any = toastConfig({
-        message:
-          err instanceof Error ? err.message : 'An unknown error occurred',
-        toastType: 'destructive'
-      });
-      toast(toastLimitConf);
+      console.error('Error removing history item:', err);
     }
   };
 

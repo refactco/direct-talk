@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/icons';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { Logo } from '@/components/icons/Logo';
+import { GoogleIcon } from '@/components/icons/GoogleIcon';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -23,7 +25,7 @@ export default function LoginPage() {
   return (
     <div className="w-full max-w-sm mx-auto space-y-6 pt-16">
       <div className="flex flex-col space-y-2 text-center">
-        <Icons.logo className="mx-auto h-12 w-12" />
+        <Logo />
         <h1 className="text-2xl font-semibold tracking-tight">Welcome back</h1>
         <p className="text-sm text-muted-foreground">Sign in to your account</p>
       </div>
@@ -32,12 +34,12 @@ export default function LoginPage() {
           variant="outline"
           type="button"
           disabled={isLoading}
-          className="border-white"
+          className="border-border"
         >
           {isLoading ? (
             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
           ) : (
-            <Icons.google className="mr-2 h-4 w-4" />
+            <GoogleIcon className="mr-2 h-4 w-4" />
           )}{' '}
           Google
         </Button>
@@ -45,7 +47,7 @@ export default function LoginPage() {
           variant="outline"
           type="button"
           disabled={isLoading}
-          className="border-white"
+          className="border-border"
         >
           {isLoading ? (
             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />

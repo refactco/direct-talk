@@ -50,7 +50,7 @@ export function AuthModal() {
         </Button>
         <DialogHeader>
           <DialogTitle className="text-center text-xl">
-            Let’s get you In!
+            Let's get you In!
           </DialogTitle>
           <p className="text-center text-sm mt-3 text-muted-foreground">
             Login with a social account to start your search.
@@ -59,7 +59,7 @@ export function AuthModal() {
         <div className="grid gap-4 pt-2 w-full max-w-[203px] m-auto">
           <Button
             variant="default"
-            className="bg-foreground font-semibold hover:bg-foreground/90 rounded-[6px]"
+            className="bg-foreground font-semibold hover:bg-foreground/90 rounded-md"
             onClick={handleGoogleAuth}
             disabled={isLoadingGoogle}
           >
@@ -70,19 +70,7 @@ export function AuthModal() {
             )}
             Login with Google
           </Button>
-          {/* <Button
-            variant="default"
-            className="bg-foreground font-semibold hover:bg-foreground/90 rounded-[6px]"
-            onClick={handleTwitterAuth}
-            disabled={isLoadingTwitter}
-          >
-            {isLoadingTwitter ? (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <XIcon className="fill-primary-foreground" />
-            )}
-            Login with Twitter
-          </Button> */}
+
         </div>
       </DialogContent>
     </Dialog>

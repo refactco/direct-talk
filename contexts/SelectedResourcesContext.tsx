@@ -1,7 +1,5 @@
 'use client';
 
-import { useToast } from '@/hooks/use-toast';
-import toastConfig from '@/lib/toast-config';
 import type { IAuthor, IResource, TSelectedResource } from '@/types/resources';
 import type React from 'react';
 import { createContext, useContext, useState } from 'react';
@@ -33,7 +31,6 @@ export function SelectedResourcesProvider({
   const [authorResourcesIds, setAuthorResourcesIds] = useState<
     string[] | number[]
   >([]);
-  const { toast } = useToast();
 
   const getAuthorResource = async (author: IAuthor) => {
     try {
@@ -71,12 +68,7 @@ export function SelectedResourcesProvider({
 
       setAuthorResourcesIds(contentIds);
     } catch (error) {
-      toast(
-        toastConfig({
-          message: 'Error fetching author resources.',
-          toastType: 'destructive'
-        })
-      );
+      console.error('Error fetching author resources:', error);
       return;
     }
   };
@@ -91,21 +83,10 @@ export function SelectedResourcesProvider({
     setSelectedResources((prev) => {
       if (selectedResources.length === 1) {
         removeResource(selectedResources[0].id);
-        // const toastLimitConf: any = toastConfig({
-        //   message: 'You can only select up to 10 resources.',
-        //   toastType: 'destructive'
-        // });
-        // toast(toastLimitConf);
-        // return prev; // Prevent adding more than 10 resources
       }
       if (!prev.some((r) => r.id === resource.id)) {
-        const toastConf: any = toastConfig({
-          image_url: resource.image_url,
-          message: 'Added to the resources.',
-          onAction: () => removeResource(resource.id),
-          action_text: 'Remove'
-        });
-        toast(toastConf);
+        const resourceName = (resource as any).title || (resource as any).name || 'Resource';
+        console.log(`${resourceName} is selected.`);
         return [...prev, resource];
       }
       return prev;
@@ -113,7 +94,14 @@ export function SelectedResourcesProvider({
   };
 
   const removeResource = (resourceId: string | number) => {
-    setSelectedResources((prev) => prev.filter((r) => r.id !== resourceId));
+    setSelectedResources((prev) => {
+      const resourceToRemove = prev.find((r) => r.id === resourceId);
+      if (resourceToRemove) {
+        const resourceName = (resourceToRemove as any).title || (resourceToRemove as any).name || 'Resource';
+        console.log(`${resourceName} is removed.`);
+      }
+      return prev.filter((r) => r.id !== resourceId);
+    });
   };
 
   const resetSelectedResources = () => {

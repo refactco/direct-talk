@@ -10,12 +10,12 @@ module.exports = {
   theme: {
     container: {
       center: true,
-      padding: '2rem',
-      screens: {
-        '2xl': '1400px'
-      }
+      padding: '2rem'
     },
     extend: {
+      fontFamily: {
+        sans: ['monospace']
+      },
       colors: {
         border: 'rgba(var(--border))',
         input: 'rgba(var(--input))',
@@ -56,9 +56,10 @@ module.exports = {
         }
       },
       borderRadius: {
-        // lg: "var(--radius)",
         md: '0.25rem'
-        // sm: 'calc(var(--radius) - 4px)'
+      },
+      fontSize: {
+        xsm: '0.8125rem'
       },
       keyframes: {
         'accordion-down': {
@@ -73,15 +74,6 @@ module.exports = {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out'
-      },
-      fontSize: {
-        xxs: '0.625rem',
-        xxm: '0.6875rem',
-        xsm: '0.8125rem',
-        '1xl': '1.375rem'
-      },
-      width: {
-        875: '1.875rem'
       }
     }
   },
@@ -98,5 +90,8 @@ module.exports = {
     'prose-p:text-base',
     'prose-p:leading-7'
   ],
-  plugins: [require('@tailwindcss/typography'), require('tailwindcss-animate')]
+  plugins: [
+    require('@tailwindcss/typography'), 
+    require('tailwindcss-animate')
+  ]
 };

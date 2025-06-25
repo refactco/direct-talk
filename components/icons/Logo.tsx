@@ -5,10 +5,12 @@ export function Logo(props: any) {
     <div
       {...props}
       className={cn(
-        'w-6 h-6 rounded-full bg-white text-black text-xs flex items-center justify-center',
+        'w-6 h-6 rounded-full text-xs flex items-center justify-center font-bold',
         props.className
       )}
-    ></div>
+      style={{ backgroundColor: '#97c521' }}
+    >
+    </div>
     // <BotMessageSquareIcon {...props} />
     // <svg
     //   xmlns="http://www.w3.org/2000/svg"

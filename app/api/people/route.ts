@@ -17,16 +17,6 @@ export async function GET(request: Request) {
         people: mockAuthors.slice(0, parseInt(perPage))
       };
     } else {
-      // const searchParams = new URLSearchParams();
-
-      // if (searchTerm) {
-      //   searchParams.set('s', searchTerm);
-      // }
-
-      // if (perPage) {
-      //   searchParams.set('per_page', perPage);
-      // }
-
       const apiUrl = `${API_BASE_URL}/people?${searchParams}`;
 
       const agent = new https.Agent({

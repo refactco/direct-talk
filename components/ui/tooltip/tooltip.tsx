@@ -9,7 +9,7 @@ export function Tooltip(props: ITooltipProps) {
       id={id}
       place="right"
       content={content}
-      className="[&&]:p-1 [&&]:text-xs [&&]:bg-[#302B27]"
+      className="[&&]:p-1 [&&]:text-xs [&&]:bg-popover"
     />
   );
 }

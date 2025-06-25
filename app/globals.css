@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===== CSS VARIABLES ===== */
 @layer base {
   :root {
     --background: 255, 255, 255;
@@ -31,39 +32,43 @@
   }
 
   .dark {
-    --background: 10, 10, 10;
-    --foreground: 242, 242, 242;
-    --card: 36, 36, 36;
-    --card-foreground: 242, 242, 242;
-    --popover: 23, 23, 23;
-    --popover-foreground: 242, 242, 242;
+    --background: 20, 18, 16;
+    --foreground: 250, 250, 249;
+    --card: 41, 37, 36;
+    --card-foreground: 250, 250, 249;
+    --popover: 28, 25, 23;
+    --popover-foreground: 250, 250, 249;
     --primary: 151, 197, 34;
-    --primary-foreground: 26, 46, 22;
-    --secondary: 41, 41, 41;
-    --secondary-foreground: 250, 250, 250;
-    --muted: 38, 38, 38;
-    --muted-foreground: 161, 161, 161;
+    --primary-foreground: 20, 18, 16;
+    --secondary: 15, 118, 110;
+    --secondary-foreground: 250, 250, 249;
+    --muted: 68, 64, 60;
+    --muted-foreground: 168, 162, 158;
     --accent: 28, 25, 23;
     --accent-light: 41, 37, 36;
-    --accent-foreground: 250, 250, 250;
-    --destructive: 153, 27, 27;
-    --destructive-foreground: 253, 242, 243;
-    --border: 41, 41, 41;
-    --input: 41, 41, 41;
-    --ring: 34, 139, 34;
-    --background-secondary: 41, 41, 41;
-    --background-highlight: 26, 26, 26;
-    --highlight: 39, 39, 39;
+    --accent-foreground: 250, 250, 249;
+    --destructive: 220, 38, 38;
+    --destructive-foreground: 250, 250, 249;
+    --border: 68, 64, 60;
+    --input: 41, 37, 36;
+    --ring: 151, 197, 34;
+    --background-secondary: 41, 37, 36;
+    --background-highlight: 28, 25, 23;
+    --highlight: 68, 64, 60;
   }
 }
 
+/* ===== BASE STYLES ===== */
 @layer base {
   * {
     @apply border-border;
+    font-size: calc(1em);
   }
+  
   body {
     @apply bg-background text-foreground;
   }
+  
   .prose-invert {
     --tw-prose-invert-body: hsl(0deg 0% 94.9%);
     --tw-prose-invert-counters: hsl(0deg 0% 100%);
@@ -72,6 +77,7 @@
   }
 }
 
+/* ===== SCROLLBAR STYLES ===== */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
@@ -81,115 +87,11 @@
   scrollbar-width: none;
 }
 
+/* ===== ANIMATIONS & KEYFRAMES ===== */
 @layer utilities {
   .animate-in {
     animation-delay: calc(var(--delay, 0) * 1ms);
   }
-
-  .slide-in-from-top {
-    animation: slide-in-from-top 0.5s ease-out;
-  }
-
-  .slide-in-from-bottom {
-    animation: slide-in-from-bottom 0.5s ease-out;
-  }
-
-  .slide-in-from-left {
-    animation: slide-in-from-left 0.5s ease-out;
-  }
-
-  .slide-in-from-right {
-    animation: slide-in-from-right 0.5s ease-out;
-  }
-
-  .fade-in {
-    animation: fade-in 0.5s ease-out;
-  }
-
-  @keyframes slide-in-from-top {
-    from {
-      transform: translateY(-20px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
-  @keyframes slide-in-from-bottom {
-    from {
-      transform: translateY(20px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  .bg-gradient-light {
-    background-image: linear-gradient(
-      270deg,
-      #ffffff -3.68%,
-      rgba(255, 255, 255, 0.25) 84.45%,
-      rgba(9, 9, 11, 0) 100%
-    );
-  }
-
-  .bg-gradient-dark {
-    background-image: linear-gradient(
-      270deg,
-      #09090b -3.68%,
-      rgba(9, 9, 11, 0.25) 84.45%,
-      rgba(9, 9, 11, 0) 100%
-    );
-  }
-}
-
-.text-shadow {
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-@keyframes slide-in-from-right {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes slide-out-to-right {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(100%);
-  }
-}
-
-/* Ensure dropdowns are visible */
-.radix-dropdown-menu {
-  z-index: 1000;
-}
-
-.radix-dropdown-menu-content {
-  animation-duration: 0.6s;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.radix-dropdown-menu-content[data-side='top'] {
-  animation-name: slideUp;
 }
 
 @keyframes slideUp {
@@ -203,65 +105,56 @@
   }
 }
 
+/* ===== BACKGROUND GRADIENTS ===== */
 .bg-fade {
   background: linear-gradient(
     0deg,
-    #09090b -3.68%,
-    rgba(9, 9, 11, 0.25) 84.45%,
-    rgba(9, 9, 11, 0) 100%
-  );
-}
-
-.bg-fade-inverse {
-  background: linear-gradient(
-    180deg,
-    #09090b -3.68%,
-    rgba(9, 9, 11, 0.25) 84.45%,
-    rgba(9, 9, 11, 0) 100%
+    rgb(var(--background)) -3.68%,
+    rgba(var(--background), 0.25) 84.45%,
+    rgba(var(--background), 0) 100%
   );
 }
 
 .bg-history-top-fade {
-  background: linear-gradient(0deg, rgba(28, 25, 23, 0) 51.16%, #1c1917 96.74%);
+  background: linear-gradient(0deg, rgba(var(--accent), 0) 51.16%, rgb(var(--accent)) 96.74%);
 }
 
 .bg-history-bottom-fade {
   background: linear-gradient(
     180deg,
-    rgba(28, 25, 23, 0) 51.16%,
-    #1c1917 96.74%
+    rgba(var(--accent), 0) 51.16%,
+    rgb(var(--accent)) 96.74%
   );
 }
 
-.custom-scrollbar::-webkit-scrollbar {
-  width: 8px; /* Width of the scrollbar */
+/* ===== COMPONENT SPECIFIC STYLES ===== */
+.radix-dropdown-menu {
+  z-index: 1000;
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Color of the track */
-  border-radius: 4px;
+.radix-dropdown-menu-content {
+  animation-duration: 0.6s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #888; /* Color of the scroll thumb */
-  border-radius: 4px;
+.radix-dropdown-menu-content[data-side='top'] {
+  animation-name: slideUp;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Color of the scroll thumb on hover */
-}
-
-/* Add this at the beginning or end of your globals.css file */
+/* ===== INPUT STYLES ===== */
 input,
 textarea {
   -webkit-text-size-adjust: 100%;
 }
 
-/* Add these rules to prevent iOS zoom */
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-  select,
-  textarea,
-  input {
-    /* Font size removed */
+/* ===== SIDEBAR STYLES ===== */
+.sidebar-spacer {
+  width: 243px;
+  transition: width 300ms ease-in-out;
+}
+
+@media (min-width: 768px) {
+  .sidebar-spacer {
+    width: var(--sidebar-width, 243px);
   }
 }

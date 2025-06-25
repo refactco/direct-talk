@@ -1,9 +1,7 @@
 'use client';
 
 import { ChatData, Message, StartChatData } from '@/app/conversation/types';
-import { useToast } from '@/hooks/use-toast';
 import apiClient from '@/lib/axiosInstance';
-import toastConfig from '@/lib/toast-config';
 import { TSelectedResource } from '@/types/resources';
 import type React from 'react';
 import { createContext, useCallback, useContext, useState } from 'react';
@@ -51,7 +49,6 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isLoadingChats, setIsLoadingChats] = useState(true);
   const [isLoadingResources, setIsLoadingResources] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { toast } = useToast();
   const { selectedResources } = useSelectedResources();
 
   const updateStartChatDate = (
@@ -64,16 +61,25 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   const fetchRelatedResources = async (
     resourceIds: string[]
   ): Promise<TSelectedResource[]> => {
-    const fetchedResources = await Promise.all(
-      resourceIds.map(async (id: string) => {
-        const response = await fetch(`/api/resources/${id}`);
-        const data = await response.json();
+    if (!resourceIds || resourceIds.length === 0) {
+      return [];
+    }
 
-        return data;
-      })
-    );
+    try {
+      // Import the mocked data to match resources
+      const { mockAllEpisodes } = await import('@/app/api/mocked-data');
+      
+      // Find matching episodes based on ref_id
+      const matchedResources = mockAllEpisodes.filter(episode => 
+        resourceIds.includes(episode.ref_id)
+      );
 
-    return fetchedResources;
+      console.log('Matched resources:', matchedResources);
+      return matchedResources as unknown as TSelectedResource[];
+    } catch (error) {
+      console.error('Error fetching related resources:', error);
+      return [];
+    }
   };
 
   const doChat = useCallback(
@@ -95,29 +101,37 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
       }
 
       if (selectedResources && selectedResources?.length > 0) {
-        formData['author_name'] = selectedResources[0].name;
-        formData['author_id'] = selectedResources[0].id;
+        const resource = selectedResources[0];
+        formData['author_name'] = 'name' in resource ? resource.name : resource.title;
+        formData['author_id'] = String(resource.id); // Ensure it's a string
       }
+      
+      // Debug: Log the data being sent to the API
+      console.log('Sending data to API:', formData);
+      
       try {
         const response = await apiClient.post(`${baseURL}/search`, formData);
 
         const data = await response.data;
 
         return data;
-      } catch (err) {
-        const toastLimitConf: any = toastConfig({
-          message:
-            err instanceof Error ? err.message : 'An unknown error occurred',
-          toastType: 'destructive'
-        });
-        toast(toastLimitConf);
+      } catch (err: any) {
+        console.error('Error fetching chat:', err);
+        if (err.response) {
+          console.error('API Response Error:', {
+            status: err.response.status,
+            statusText: err.response.statusText,
+            data: err.response.data,
+            headers: err.response.headers
+          });
+        }
         throw err;
       } finally {
         setIsLoading(false);
         setIsLoadingStartChat(false);
       }
     },
-    [selectedResources, fetchRelatedResources, toast]
+    [selectedResources, fetchRelatedResources]
   );
 
   const fetchChat = useCallback(
@@ -160,18 +174,13 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
 
         setChatDatas(data);
       } catch (err: any) {
-        const toastLimitConf: any = toastConfig({
-          message:
-            err instanceof Error ? err.message : 'An unknown error occurred',
-          toastType: 'destructive'
-        });
-        toast(toastLimitConf);
+        console.error('Error fetching chat:', err);
         throw err;
       } finally {
         setIsLoadingChats(false);
       }
     },
-    [toast]
+    []
   );
 
   const addMessage = (message: Message) => {

@@ -9,13 +9,20 @@ import { IHistoryListProps } from './history-list-type';
 export function HistoryList(props: IHistoryListProps) {
   const { list, isLoading, onCloseSidebar } = props;
 
+  // Ensure list is an array
+  const safeList = Array.isArray(list) ? list : [];
+
   return (
     <div>
-      {list?.length > 0 ? (
+      {safeList.length > 0 ? (
         <Suspense>
-          {list?.map((chat: HistoryItem) => {
+          {safeList.map((chat: HistoryItem) => {
             return (
-              <HistoryListItem item={chat} onCloseSidebar={onCloseSidebar} />
+              <HistoryListItem 
+                key={chat.session_id} 
+                item={chat} 
+                onCloseSidebar={onCloseSidebar} 
+              />
             );
           })}
         </Suspense>

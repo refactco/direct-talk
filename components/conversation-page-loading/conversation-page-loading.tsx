@@ -23,6 +23,7 @@ export function ConversationPageLoading({
         {[1].map((chat: number, index: number) => {
           return (
             <motion.div
+              key={index}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="max-w-5xl"
@@ -72,7 +73,7 @@ export function ConversationPageLoading({
                       {/* <Logo /> */}
                       <div className="font-light text-sm">
                         {selectedResources?.[0]
-                          ? selectedResources[0].name
+                          ? (selectedResources[0] as any).title || (selectedResources[0] as any).name
                           : 'Answer'}
                       </div>
                     </div>
