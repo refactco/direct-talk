@@ -5,6 +5,7 @@ import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import type React from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
+import { useAuth } from './AuthContext';
 
 export interface HistoryItem {
   content_ids: Array<string>;
@@ -33,10 +34,17 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
   const [historyItems, setHistoryItems] = useState<HistoryItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
+  const { isAuthenticated } = useAuth();
 
   const fetchChatHistory = async () => {
     try {
       setIsLoading(true);
+      
+      // Skip API call if user is not authenticated
+      if (!isAuthenticated) {
+        setHistoryItems([]);
+        return;
+      }
       
       // Skip API call if using mocked data
       const useMockedData = process.env.NEXT_PUBLIC_MOCKED_DATA === 'true';
@@ -48,6 +56,7 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
       
       // Skip API call if base URL is not configured
       if (!baseURL) {
+        console.warn('NEXT_PUBLIC_BASE_AI_API_URL is not configured');
         setHistoryItems([]);
         return;
       }
@@ -56,7 +65,9 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
       const data = await response.data;
       setHistoryItems(Array.isArray(data) ? data : []);
     } catch (err) {
+      console.error('Error fetching chat history:', err);
       if (err instanceof AxiosError && err.status === 401) {
+        console.warn('Unauthorized access to chat history');
         setHistoryItems([]);
       } else {
         setHistoryItems([]);
@@ -66,10 +77,10 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
   useEffect(() => {
-    if (historyItems?.length == 0) {
+    if (historyItems?.length == 0 && isAuthenticated) {
       fetchChatHistory();
     }
-  }, []);
+  }, [isAuthenticated]);
 
   const updateHistory = () => {
     fetchChatHistory();

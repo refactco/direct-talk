@@ -35,7 +35,10 @@ export function Sidebar() {
   const { resetSelectedResources } = useSelectedResources();
 
   useEffect(() => {
-    updateHistory();
+    // Only update history when user becomes authenticated, not when they become unauthenticated
+    if (isAuthenticated) {
+      updateHistory();
+    }
   }, [isAuthenticated]);
 
   const handleAuth = () => {

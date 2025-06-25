@@ -20,9 +20,13 @@ apiClient.interceptors.request.use(
 
           if (accessToken) {
             config.headers['Authorization'] = `Bearer ${accessToken}`;
+          } else {
+            console.warn('No access token found in stored session');
           }
         } catch (error) {
           console.error('Error parsing auth token:', error);
+          // Clear invalid token from localStorage
+          localStorage.removeItem('sb-wfcrrnfzcsoljbhxbsko-auth-token');
         }
       }
     }
@@ -30,6 +34,21 @@ apiClient.interceptors.request.use(
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor to handle 401 errors globally
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      console.warn('Received 401 Unauthorized response');
+      // Clear auth token on 401 errors
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('sb-wfcrrnfzcsoljbhxbsko-auth-token');
+      }
+    }
     return Promise.reject(error);
   }
 );

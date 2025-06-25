@@ -137,11 +137,17 @@ export default function SearchResults() {
     if (chatId) {
       resetChatData();
       updateStartChatDate(null, null);
-      fetchChat(chatId).catch((err) => {
-        if (!isAuthenticated && err.status === 401) {
-          openAuthModal();
-        }
-      });
+      // Only fetch chat if user is authenticated
+      if (isAuthenticated) {
+        fetchChat(chatId).catch((err) => {
+          if (err.status === 401) {
+            openAuthModal();
+          }
+        });
+      } else {
+        // If not authenticated, redirect to home or show auth modal
+        openAuthModal();
+      }
     } else if (!chatId && (startChatData?.message || initialMessage) && !hasStartedChat.current) {
       const messageToUse = startChatData?.message || initialMessage;
       if (messageToUse) {
@@ -151,7 +157,7 @@ export default function SearchResults() {
         startNewChat();
       }
     }
-  }, [chatId, startChatData?.message, initialMessage]);
+  }, [chatId, startChatData?.message, initialMessage, isAuthenticated]);
 
   const handleSubmit = async (message: string) => {
     if (!message.trim() || isLoadingFollowUp) return;
