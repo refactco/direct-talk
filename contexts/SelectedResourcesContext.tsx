@@ -81,13 +81,18 @@ export function SelectedResourcesProvider({
       getAuthorResource(resource as IAuthor);
     }
     setSelectedResources((prev) => {
-      if (selectedResources.length === 1) {
-        removeResource(selectedResources[0].id);
+      // Fix: Use prev.length instead of selectedResources.length to avoid stale state
+      if (prev.length === 1) {
+        // Remove the existing selection first
+        const existingResource = prev[0];
+        const resourceName = (existingResource as any).title || (existingResource as any).name || 'Resource';
+        console.log(`${resourceName} is removed.`);
       }
+      
       if (!prev.some((r) => r.id === resource.id)) {
         const resourceName = (resource as any).title || (resource as any).name || 'Resource';
         console.log(`${resourceName} is selected.`);
-        return [...prev, resource];
+        return [resource]; // Only allow one selection at a time
       }
       return prev;
     });

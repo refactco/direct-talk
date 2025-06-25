@@ -17,13 +17,19 @@ export function PeopleCard({
   hasSelectedAuthor = false
 }: PeopleCardProps) {
   const { name } = people ?? {};
-  const { addResource, isSelected } = useSelectedResources();
+  const { addResource, removeResource, isSelected } = useSelectedResources();
   const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
 
   const handleClick = () => {
     if (!isLoading && people) {
-      addResource(people, 'people');
+      if (selected) {
+        // If already selected, deselect it
+        removeResource(people.id);
+      } else {
+        // If not selected, select it
+        addResource(people, 'people');
+      }
     }
   };
 
