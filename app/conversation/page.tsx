@@ -124,7 +124,9 @@ export default function SearchResults() {
         console.log('Resource IDs from API:', retrievedChatData?.resource_id);
 
         // Fetch related resources for the AI response
-        const relatedResources = await fetchRelatedResources(retrievedChatData?.resource_id);
+        const relatedResources = await fetchRelatedResources(
+          retrievedChatData?.resource_id
+        );
         console.log('Fetched related resources:', relatedResources);
 
         // Add the message with resources
@@ -165,7 +167,7 @@ export default function SearchResults() {
     if (chatId) {
       // Check if this is a chat we just created to avoid clearing local data
       const isJustCreatedChat = justCreatedChatId.current === chatId;
-      
+
       if (!isJustCreatedChat) {
         // Only reset data when viewing a different existing chat
         resetChatData();
@@ -175,9 +177,9 @@ export default function SearchResults() {
         // Clear the ref after using it
         justCreatedChatId.current = null;
       }
-      
+
       updateStartChatDate(null, null);
-      
+
       // Only fetch chat if user is authenticated and it's not a newly created chat
       if (isAuthenticated && !isJustCreatedChat) {
         fetchChat(chatId).catch((err) => {
@@ -189,7 +191,7 @@ export default function SearchResults() {
         // If not authenticated after loading is complete, show auth modal
         openAuthModal();
       }
-      
+
       // For newly created chats, we already have the data, so stop loading
       if (isJustCreatedChat && isAuthenticated) {
         // We need to manually set loading to false since we skipped fetchChat
