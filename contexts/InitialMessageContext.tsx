@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 
 interface InitialMessageContextType {
   initialMessage: string | null;
@@ -12,7 +12,35 @@ const InitialMessageContext = createContext<
 >(undefined);
 
 export function InitialMessageProvider({ children }: { children: ReactNode }) {
-  const [initialMessage, setInitialMessage] = useState<string | null>(null);
+  const [initialMessage, setInitialMessageState] = useState<string | null>(null);
+
+  // Load from localStorage after hydration
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('initialMessage');
+      if (stored) {
+        setInitialMessageState(stored);
+      }
+    } catch (error) {
+      console.error('Error loading initial message from localStorage:', error);
+    }
+  }, []);
+
+  const setInitialMessage = (message: string | null) => {
+    setInitialMessageState(message);
+    // Persist to localStorage
+    if (typeof window !== 'undefined') {
+      try {
+        if (message) {
+          localStorage.setItem('initialMessage', message);
+        } else {
+          localStorage.removeItem('initialMessage');
+        }
+      } catch (error) {
+        console.error('Error saving initial message to localStorage:', error);
+      }
+    }
+  };
 
   return (
     <InitialMessageContext.Provider

@@ -16,6 +16,7 @@ import { IChatHistory } from '../conversation/types';
 
 import { ResourcesList } from '@/components/resources-list/resources-list';
 import { useInitialMessage } from '@/contexts/InitialMessageContext';
+import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 
 export default function SearchResults() {
   const [userAvatar, setUserAvatar] = useState<string | null>(null);
@@ -25,7 +26,7 @@ export default function SearchResults() {
   const chatId = searchParams.get('id');
   const messageParam = searchParams.get('message');
   const { initialMessage, setInitialMessage } = useInitialMessage();
-  const { openAuthModal, isAuthenticated, user } = useAuth();
+  const { openAuthModal, isAuthenticated, user, isLoading: isAuthLoading } = useAuth();
   const {
     chatDatas,
     startChatData,
@@ -41,7 +42,9 @@ export default function SearchResults() {
   } = useChat();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const hasStartedChat = useRef(false);
+  const justCreatedChatId = useRef<string | null>(null);
   const { resources, fetchResource, clearResources } = useResource();
+  const { selectedResources, resetSelectedResources } = useSelectedResources();
   const { updateHistory } = useHistory();
   const router = useRouter();
 
@@ -111,7 +114,18 @@ export default function SearchResults() {
           startChatData?.contentIds
         );
         
+        console.log('API result:', retrievedChatData);
+        console.log('Resource IDs from API:', retrievedChatData?.resource_id);
+        
+        // Add the message without resources - fetchChat will handle resource fetching after navigation
+        addMessage({
+          answer: retrievedChatData?.answer,
+          resource_id: retrievedChatData?.resource_id
+        });
+        
         if (retrievedChatData?.session_id) {
+          // Track that we just created this chat to avoid clearing selected resources
+          justCreatedChatId.current = retrievedChatData.session_id;
           router.push(`/conversation?id=${retrievedChatData.session_id}`);
           updateHistory();
         }
@@ -134,9 +148,23 @@ export default function SearchResults() {
   }, [messageParam, initialMessage, setInitialMessage]);
 
   useEffect(() => {
+    // Don't do anything while auth is still loading
+    if (isAuthLoading) return;
+    
     if (chatId) {
       resetChatData();
       updateStartChatDate(null, null);
+      // Clear resources immediately to prevent showing previous author's image
+      clearResources();
+      // Only clear selected resources when viewing a different existing chat
+      // Don't clear when we just created this chat (to avoid the "removed" log)
+      const isJustCreatedChat = justCreatedChatId.current === chatId;
+      if (!isJustCreatedChat) {
+        resetSelectedResources();
+      } else {
+        // Clear the ref after using it
+        justCreatedChatId.current = null;
+      }
       // Only fetch chat if user is authenticated
       if (isAuthenticated) {
         fetchChat(chatId).catch((err) => {
@@ -145,7 +173,7 @@ export default function SearchResults() {
           }
         });
       } else {
-        // If not authenticated, redirect to home or show auth modal
+        // If not authenticated after loading is complete, show auth modal
         openAuthModal();
       }
     } else if (!chatId && (startChatData?.message || initialMessage) && !hasStartedChat.current) {
@@ -157,7 +185,7 @@ export default function SearchResults() {
         startNewChat();
       }
     }
-  }, [chatId, startChatData?.message, initialMessage, isAuthenticated]);
+  }, [chatId, startChatData?.message, initialMessage, isAuthenticated, isAuthLoading]);
 
   const handleSubmit = async (message: string) => {
     if (!message.trim() || isLoadingFollowUp) return;
@@ -221,6 +249,12 @@ export default function SearchResults() {
           <ConversationPageLoading
             initialMessage={initialMessage}
             userAvatar={userAvatar}
+            authorResource={
+              // For existing chats, prioritize the author from chat data
+              chatId ? resources?.[0] : 
+              // For new chats, use selected resources
+              selectedResources?.[0] || resources?.[0]
+            }
           />
         ) : (
           <div className="flex gap-8 w-full mx-auto">

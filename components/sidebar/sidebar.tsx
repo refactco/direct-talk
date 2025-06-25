@@ -187,11 +187,11 @@ export function Sidebar() {
               </div>
             </ScrollArea>
           </div>
-          <div className="flex flex-col gap-5 px-4 pb-4">
+          <div className="flex flex-col gap-5 px-4 pb-4 items-center">
             <div>
               <Button
                 variant="outline"
-                className="justify-start w-max bg-background/50 border-border hover:border-[#97c521] hover:bg-background/80 transition-all duration-200"
+                className="justify-center w-full bg-background/50 border-border hover:border-[#97c521] hover:bg-background/80 transition-all duration-200"
                 onClick={handleAuth}
                 disabled={isLoadingAuth}
               >
@@ -206,7 +206,7 @@ export function Sidebar() {
               </Button>
             </div>
 
-            <div>
+            <div className="text-center">
               <div className="flex flex-col gap-2">
                 <p className="text-xs text-muted-foreground">
                   Made by{' '}

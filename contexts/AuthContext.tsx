@@ -37,7 +37,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
 
   // Helper function to store avatar in localStorage
@@ -107,6 +107,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             avatar
           });
           setIsAuthenticated(true);
+          
+          // Close auth modal when user successfully logs in
+          setIsAuthModalOpen(false);
         } else {
           setUser(null);
           setIsAuthenticated(false);

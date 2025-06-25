@@ -91,7 +91,7 @@ export function ChatInput({
             maxLength={maxLength}
             className={cn(
               'w-full bg-transparent text-foreground placeholder-muted-foreground resize-none border-0 outline-none',
-              'text-base leading-6 min-h-[24px] max-h-32',
+              'text-sm sm:text-base leading-5 sm:leading-6 min-h-[20px] sm:min-h-[24px] max-h-32',
               'scrollbar-hide pb-2'
             )}
             style={{

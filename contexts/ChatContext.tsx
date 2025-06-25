@@ -4,7 +4,7 @@ import { ChatData, Message, StartChatData } from '@/app/conversation/types';
 import apiClient from '@/lib/axiosInstance';
 import { TSelectedResource } from '@/types/resources';
 import type React from 'react';
-import { createContext, useCallback, useContext, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useSelectedResources } from './SelectedResourcesContext';
 
 interface ChatContextType {
@@ -29,7 +29,8 @@ interface ChatContextType {
   ) => void;
   resources: TSelectedResource[];
   fetchRelatedResources: (
-    resourceIds: string[]
+    resourceIds: string[],
+    shouldLog?: boolean
   ) => Promise<TSelectedResource[]>;
 }
 
@@ -40,9 +41,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   children
 }) => {
   const [chatDatas, setChatDatas] = useState<ChatData | null>(null);
-  const [startChatData, setStartChatData] = useState<StartChatData | null>(
-    null
-  );
+  const [startChatData, setStartChatData] = useState<StartChatData | null>(null);
   const [resources, setResources] = useState<TSelectedResource[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingStartChat, setIsLoadingStartChat] = useState(false);
@@ -51,15 +50,42 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   const [error, setError] = useState<string | null>(null);
   const { selectedResources } = useSelectedResources();
 
+  // Load from localStorage after hydration
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('startChatData');
+      if (stored) {
+        setStartChatData(JSON.parse(stored));
+      }
+    } catch (error) {
+      console.error('Error loading start chat data from localStorage:', error);
+    }
+  }, []);
+
   const updateStartChatDate = (
     message: string | null,
     contentIds: string[] | null
   ) => {
-    setStartChatData({ message, contentIds });
+    const newStartChatData = { message, contentIds };
+    setStartChatData(newStartChatData);
+    
+    // Persist to localStorage
+    if (typeof window !== 'undefined') {
+      try {
+        if (message || contentIds) {
+          localStorage.setItem('startChatData', JSON.stringify(newStartChatData));
+        } else {
+          localStorage.removeItem('startChatData');
+        }
+      } catch (error) {
+        console.error('Error saving start chat data to localStorage:', error);
+      }
+    }
   };
 
   const fetchRelatedResources = async (
-    resourceIds: string[]
+    resourceIds: string[],
+    shouldLog: boolean = true
   ): Promise<TSelectedResource[]> => {
     if (!resourceIds || resourceIds.length === 0) {
       return [];
@@ -74,7 +100,9 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
         resourceIds.includes(episode.ref_id)
       );
 
-      console.log('Matched resources:', matchedResources);
+      if (shouldLog) {
+        console.log('Matched resources:', matchedResources);
+      }
       return matchedResources as unknown as TSelectedResource[];
     } catch (error) {
       console.error('Error fetching related resources:', error);
@@ -144,6 +172,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
 
         // Process chat history items with resource_ids
         if (data.chat_history && Array.isArray(data.chat_history)) {
+          let totalResourcesFetched = 0;
           const updatedChatHistory = await Promise.all(
             data.chat_history.map(async (item: Message) => {
               if (
@@ -153,8 +182,10 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
               ) {
                 try {
                   const fetchedResources = await fetchRelatedResources(
-                    item.resource_id
+                    item.resource_id,
+                    false // Disable individual logging for bulk operations
                   );
+                  totalResourcesFetched += fetchedResources.length;
 
                   return {
                     ...item,
@@ -167,6 +198,11 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
               return item;
             })
           );
+
+          // Log summary instead of individual calls
+          if (totalResourcesFetched > 0) {
+            console.log(`Loaded chat with ${data.chat_history.length} messages and ${totalResourcesFetched} total resources`);
+          }
 
           // Update data with the processed chat history
           data.chat_history = updatedChatHistory;

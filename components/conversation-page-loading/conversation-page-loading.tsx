@@ -9,13 +9,18 @@ import { Skeleton } from '../ui/skeleton';
 interface ConversationPageLoadingProps {
   initialMessage?: string | null;
   userAvatar?: string | null;
+  authorResource?: any;
 }
 
 export function ConversationPageLoading({
   initialMessage,
-  userAvatar
+  userAvatar,
+  authorResource
 }: ConversationPageLoadingProps) {
   const { selectedResources } = useSelectedResources();
+  
+  // Use the passed authorResource, or fall back to selectedResources, or resources from context
+  const authorToDisplay = authorResource || selectedResources?.[0];
 
   return (
     <div className="flex gap-8 min-h-[calc(100vh-117px)] w-full mx-auto">
@@ -54,43 +59,24 @@ export function ConversationPageLoading({
                 </div>
 
                 {/* Answer Section */}
-                <div className="flex gap-3 py-4 rounded-xl">
+                <div className="grid grid-cols-[2rem_1fr] gap-3 flex-1 rounded-xl">
                   <div className="w-8">
-                    {selectedResources?.[0] ? (
-                      <img
-                        width={40}
-                        height={40}
-                        className="w-8 h-8 object-cover rounded-full"
-                        src={selectedResources[0].image_url}
-                      />
-                    ) : (
-                      <Logo className="w-8 h-8" />
-                    )}
+                    <Skeleton className="w-8 h-8 rounded-full" />
                   </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-4 text-neutral-500">
-                      {/* <Book className="h-5 w-5" /> */}
-                      {/* <Logo /> */}
-                      <div className="font-light text-sm">
-                        {selectedResources?.[0]
-                          ? (selectedResources[0] as any).title || (selectedResources[0] as any).name
-                          : 'Answer'}
-                      </div>
-                    </div>
-
+                  <div className="flex-1 flex flex-col gap-2 w-[calc(100vw-5rem)] md:w-auto">
                     <AnimatePresence mode="wait">
                       <motion.div
                         key="loading"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="space-y-4"
+                        className="space-y-4 mt-2"
                       >
-                        <Skeleton className="h-4 w-[100%]" />
                         <Skeleton className="h-4 w-[90%]" />
-                        <Skeleton className="h-4 w-[95%]" />
+                        <Skeleton className="h-4 w-[80%]" />
                         <Skeleton className="h-4 w-[85%]" />
-                        <Skeleton className="h-4 w-[98%]" />
+                        <Skeleton className="h-4 w-[75%]" />
+                        <Skeleton className="h-4 w-[88%]" />
                       </motion.div>
                     </AnimatePresence>
                   </div>

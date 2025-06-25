@@ -38,8 +38,8 @@ export function PeopleCard({
 
   if (isLoading) {
     return (
-      <div className="relative w-full p-2 md:p-4 rounded-lg">
-        <div className="relative bg-background rounded-full w-full aspect-square overflow-hidden">
+      <div className="relative w-full p-2 md:p-4 rounded-lg flex flex-col items-center">
+        <div className="relative bg-background rounded-full w-full max-w-[125px] aspect-square overflow-hidden">
           <Skeleton className="absolute inset-0 w-full h-full rounded-full" />
         </div>
         <div className="w-full pt-1 md:pt-2">
@@ -52,13 +52,13 @@ export function PeopleCard({
   return (
     <div 
       className={cn(
-        "relative w-full transition-all duration-300 group/people cursor-pointer hover:bg-accent p-2 md:p-4 rounded-lg",
+        "relative w-full transition-all duration-300 group/people cursor-pointer hover:bg-accent p-2 md:p-4 rounded-lg flex flex-col items-center",
         selected && "bg-accent border-2 border-primary",
         isDisabled && "opacity-50"
       )}
       onClick={handleClick}
     >
-      <div className="relative bg-background rounded-full w-full aspect-square overflow-hidden">
+      <div className="relative bg-background rounded-full w-full max-w-[125px] aspect-square overflow-hidden">
         {imageLoading && !imageError && (
           <Skeleton className="absolute inset-0 w-full h-full rounded-full" />
         )}

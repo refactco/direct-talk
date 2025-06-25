@@ -1,5 +1,5 @@
 import { AuthModal } from '@/components/AuthModal';
-import { Providers } from '@/components/providers';
+  import { Providers } from '@/components/providers';
 import { Sidebar } from '@/components/sidebar/sidebar';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { AuthProvider } from '@/contexts/AuthContext';
@@ -67,16 +67,6 @@ export default function RootLayout({
             </AuthProvider>
           </Providers>
         </ThemeProvider>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-    console.log("Initial HTML class:", document.documentElement.className);
-    new MutationObserver(() => {
-      console.log("HTML class changed:", document.documentElement.className);
-    }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-  `
-          }}
-        />
       </body>
     </html>
   );
