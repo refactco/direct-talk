@@ -10,14 +10,12 @@ import { ResourceProvider } from '@/contexts/ResourcesContext';
 import { SelectedResourcesProvider } from '@/contexts/SelectedResourcesContext';
 import type { Metadata, Viewport } from 'next';
 import React from 'react';
-import 'slick-carousel/slick/slick-theme.css';
-import 'slick-carousel/slick/slick.css';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Ask Author - Ask questions from your favorite public figures',
+  title: 'Ask Author - Ask questions from your favorite thinkers',
   description:
-    'Ask questions from your favorite public figures through AI-powered conversations',
+    'Ask questions from your favorite thinkers through AI-powered conversations',
   icons: {
     icon: '/favicon.png'
   }
