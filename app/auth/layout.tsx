@@ -2,23 +2,26 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Authentication',
-  description: 'Sign in to Ask Author to start conversations with your favorite thinkers.',
+  description:
+    'Sign in to Ask Author to start conversations with your favorite thinkers.',
   robots: {
     index: false,
-    follow: false,
+    follow: false
   },
   openGraph: {
     title: 'Sign In | Ask Author',
-    description: 'Sign in to Ask Author to start conversations with your favorite thinkers.',
+    description:
+      'Sign in to Ask Author to start conversations with your favorite thinkers.'
   },
   twitter: {
     title: 'Sign In | Ask Author',
-    description: 'Sign in to Ask Author to start conversations with your favorite thinkers.',
-  },
+    description:
+      'Sign in to Ask Author to start conversations with your favorite thinkers.'
+  }
 };
 
 export default function AuthLayout({
-  children,
+  children
 }: {
   children: React.ReactNode;
 }) {
@@ -27,4 +30,4 @@ export default function AuthLayout({
       {children}
     </div>
   );
-} 
+}

@@ -38,11 +38,13 @@ export const metadata: Metadata = {
   formatDetection: {
     email: false,
     address: false,
-    telephone: false,
+    telephone: false
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://askauthor.com'),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || 'https://askauthor.com'
+  ),
   alternates: {
-    canonical: '/',
+    canonical: '/'
   },
   openGraph: {
     type: 'website',
@@ -51,7 +53,7 @@ export const metadata: Metadata = {
     title: 'Ask Author - Chat with Your Favorite Thinkers',
     description:
       'Engage in AI-powered conversations with your favorite thinkers, authors, and intellectuals. Ask questions and explore ideas through interactive chat.',
-    siteName: 'Ask Author',
+    siteName: 'Ask Author'
   },
   twitter: {
     card: 'summary',
@@ -59,7 +61,7 @@ export const metadata: Metadata = {
     description:
       'Engage in AI-powered conversations with your favorite thinkers, authors, and intellectuals.',
     creator: '@askauthor',
-    site: '@askauthor',
+    site: '@askauthor'
   },
   robots: {
     index: true,
@@ -69,37 +71,33 @@ export const metadata: Metadata = {
       follow: true,
       'max-video-preview': -1,
       'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
+      'max-snippet': -1
+    }
   },
   icons: {
-    icon: '/favicon.png',
+    icon: '/favicon.png'
   },
   manifest: '/site.webmanifest',
   category: 'technology',
   classification: 'AI Chat Platform',
   referrer: 'origin-when-cross-origin',
-  colorScheme: 'light dark',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#000000' },
-  ],
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION,
     yandex: process.env.YANDEX_VERIFICATION,
     yahoo: process.env.YAHOO_VERIFICATION,
     other: {
-      'msvalidate.01': process.env.BING_SITE_VERIFICATION || '',
-    },
+      'msvalidate.01': process.env.BING_SITE_VERIFICATION || ''
+    }
   },
   appleWebApp: {
     capable: true,
     title: 'Ask Author',
-    statusBarStyle: 'default',
+    statusBarStyle: 'default'
   },
   applicationName: 'Ask Author',
   generator: 'Next.js',
-  abstract: 'AI-powered platform for conversing with favorite thinkers and authors',
+  abstract:
+    'AI-powered platform for conversing with favorite thinkers and authors',
   archives: [],
   assets: [],
   bookmarks: [],
@@ -109,8 +107,8 @@ export const metadata: Metadata = {
     'format-detection': 'telephone=no',
     'mobile-web-app-capable': 'yes',
     'msapplication-TileColor': '#000000',
-    'msapplication-config': '/browserconfig.xml',
-  },
+    'msapplication-config': '/browserconfig.xml'
+  }
 };
 
 export const viewport: Viewport = {
@@ -118,7 +116,12 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  viewportFit: 'cover'
+  viewportFit: 'cover',
+  colorScheme: 'light dark',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#000000' }
+  ]
 };
 
 export default function RootLayout({
@@ -130,7 +133,8 @@ export default function RootLayout({
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: 'Ask Author',
-    description: 'Engage in AI-powered conversations with your favorite thinkers, authors, and intellectuals.',
+    description:
+      'Engage in AI-powered conversations with your favorite thinkers, authors, and intellectuals.',
     url: process.env.NEXT_PUBLIC_APP_URL || 'https://askauthor.com',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Web Browser',
@@ -170,7 +174,7 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData),
+            __html: JSON.stringify(structuredData)
           }}
         />
       </head>
