@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Disallow authentication and API routes
+Disallow: /api/
+Disallow: /auth/
+
+# Allow specific API endpoints that might be useful for indexing
+Allow: /api/people
+
+# Sitemap location
+Sitemap: https://askauthor.com/sitemap.xml 

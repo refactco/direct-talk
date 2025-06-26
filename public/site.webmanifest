@@ -1,0 +1,20 @@
+{
+  "name": "Ask Author - Chat with Your Favorite Thinkers",
+  "short_name": "Ask Author",
+  "description": "Engage in AI-powered conversations with your favorite thinkers, authors, and intellectuals.",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["education", "productivity", "social"]
+} 
