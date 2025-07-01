@@ -13,7 +13,6 @@ export function ConversationPageLoading({
   initialMessage,
   userAvatar
 }: ConversationPageLoadingProps) {
-
   return (
     <div className="flex gap-8 min-h-[calc(100vh-117px)] w-full mx-auto">
       <div className="flex flex-1 flex-col">

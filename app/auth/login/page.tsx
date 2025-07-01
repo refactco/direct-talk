@@ -13,8 +13,6 @@ export default function LoginPage() {
   const router = useRouter();
   const [isLoading] = useState<boolean>(false);
 
-
-
   return (
     <div className="w-full max-w-sm mx-auto space-y-6 pt-16">
       <div className="flex flex-col space-y-2 text-center">

@@ -14,8 +14,7 @@ import { useState } from 'react';
 import { Icons } from './icons';
 
 export function AuthModal() {
-  const { loginWithGoogle, isAuthModalOpen, closeAuthModal } =
-    useAuth();
+  const { loginWithGoogle, isAuthModalOpen, closeAuthModal } = useAuth();
   const [isLoadingGoogle, setIsLoadingGoogle] = useState<boolean>(false);
 
   const handleGoogleAuth = async () => {

@@ -11,8 +11,8 @@ export default [
       'dist/**',
       '*.config.js',
       '*.config.mjs',
-      '*.config.ts',
-    ],
+      '*.config.ts'
+    ]
   },
   {
     files: ['**/*.{ts,tsx,js,jsx}'],
@@ -22,8 +22,8 @@ export default [
       sourceType: 'module',
       parserOptions: {
         ecmaFeatures: {
-          jsx: true,
-        },
+          jsx: true
+        }
       },
       globals: {
         // Browser globals
@@ -40,11 +40,11 @@ export default [
         __filename: 'readonly',
         global: 'readonly',
         // Next.js globals
-        React: 'readonly',
-      },
+        React: 'readonly'
+      }
     },
     plugins: {
-      '@typescript-eslint': typescriptEslint,
+      '@typescript-eslint': typescriptEslint
     },
     rules: {
       'no-unused-vars': 'off', // Use TypeScript version instead
@@ -52,7 +52,7 @@ export default [
       'prefer-const': 'error',
       'no-var': 'error',
       'no-console': 'warn',
-      'no-debugger': 'error',
-    },
-  },
-]; 
+      'no-debugger': 'error'
+    }
+  }
+];

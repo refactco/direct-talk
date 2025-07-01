@@ -66,4 +66,3 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 - `/contexts` - React context providers for state management
 - `/lib` - Utility functions and configurations
 - `/types` - TypeScript type definitions
-
