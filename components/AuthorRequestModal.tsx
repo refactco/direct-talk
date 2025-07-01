@@ -1,8 +1,9 @@
 'use client';
 
 import { useAuth } from '@/contexts/AuthContext';
+import { useAuthorRequest } from '@/contexts/AuthorRequestContext';
 import { supabase } from '@/lib/supabaseClient';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import {
   Dialog,
@@ -30,6 +31,27 @@ export function AuthorRequestModal({
   const [additionalNotes, setAdditionalNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { isAuthenticated, openAuthModal } = useAuth();
+  const { requestData, setRequestData, clearRequestData } = useAuthorRequest();
+
+  // Load saved data when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setAuthorName(requestData.authorName);
+      setAdditionalNotes(requestData.additionalNotes);
+    }
+  }, [isOpen, requestData]);
+
+  // Save data as user types (only when values actually change)
+  useEffect(() => {
+    if (authorName !== requestData.authorName || additionalNotes !== requestData.additionalNotes) {
+      setRequestData({
+        authorName,
+        additionalNotes
+      });
+    }
+  }, [authorName, additionalNotes]); // Removed setRequestData from dependencies
+
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,6 +100,7 @@ export function AuthorRequestModal({
         toast.success('Author request submitted successfully!');
         setAuthorName('');
         setAdditionalNotes('');
+        clearRequestData();
         onClose();
       } else {
         toast.error(data.error || 'Failed to submit request');
@@ -96,8 +119,7 @@ export function AuthorRequestModal({
 
   const handleClose = () => {
     if (!isSubmitting) {
-      setAuthorName('');
-      setAdditionalNotes('');
+      // Don't clear the form data on close - keep it saved for later
       onClose();
     }
   };
@@ -109,7 +131,7 @@ export function AuthorRequestModal({
           <DialogTitle className="text-2xl font-semibold">
             Request an Author
           </DialogTitle>
-          <DialogDescription className="text-base text-muted-foreground leading-relaxed">
+          <DialogDescription className="text-base leading-relaxed">
             Tell us which author or thinker you'd like to see added to our
             platform. We'll consider all suggestions for future additions.
           </DialogDescription>
@@ -127,7 +149,7 @@ export function AuthorRequestModal({
               placeholder="e.g., Jordan Peterson, Tim Ferriss, Naval Ravikant..."
               disabled={isSubmitting}
               required
-              className="text-base"
+              className="text-base text-muted-foreground focus:text-foreground border-2 border-border focus:border-primary transition-colors"
             />
           </div>
 
@@ -145,7 +167,7 @@ export function AuthorRequestModal({
               placeholder="Any specific books, podcasts, interviews, or content you'd like us to prioritize when creating this author's knowledge base..."
               disabled={isSubmitting}
               rows={4}
-              className="text-base leading-relaxed resize-none"
+              className="text-base leading-relaxed resize-none text-muted-foreground focus:text-foreground border-2 border-border focus:border-primary transition-colors"
             />
           </div>
 

@@ -3,6 +3,7 @@ import { Providers } from '@/components/providers';
 import { Sidebar } from '@/components/sidebar/sidebar';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { AuthProvider } from '@/contexts/AuthContext';
+import { AuthorRequestProvider } from '@/contexts/AuthorRequestContext';
 import { ChatProvider } from '@/contexts/ChatContext';
 import { HistoryProvider } from '@/contexts/HistoryContext';
 import { InitialMessageProvider } from '@/contexts/InitialMessageContext';
@@ -187,23 +188,25 @@ export default function RootLayout({
         >
           <Providers>
             <AuthProvider>
-              <InitialMessageProvider>
-                <HistoryProvider>
-                  <SelectedResourcesProvider>
-                    <ChatProvider>
-                      <ResourceProvider>
-                        <div className="flex h-dvh">
-                          <Sidebar />
-                          <main className="flex-1 overflow-y-auto px-4 py-4 md:px-8 md:py-8 mt-16 md:mt-0 !pb-0">
-                            {children}
-                          </main>
-                          <AuthModal />
-                        </div>
-                      </ResourceProvider>
-                    </ChatProvider>
-                  </SelectedResourcesProvider>
-                </HistoryProvider>
-              </InitialMessageProvider>
+              <AuthorRequestProvider>
+                <InitialMessageProvider>
+                  <HistoryProvider>
+                    <SelectedResourcesProvider>
+                      <ChatProvider>
+                        <ResourceProvider>
+                          <div className="flex h-dvh">
+                            <Sidebar />
+                            <main className="flex-1 overflow-y-auto px-4 py-4 md:px-8 md:py-8 mt-16 md:mt-0 !pb-0">
+                              {children}
+                            </main>
+                            <AuthModal />
+                          </div>
+                        </ResourceProvider>
+                      </ChatProvider>
+                    </SelectedResourcesProvider>
+                  </HistoryProvider>
+                </InitialMessageProvider>
+              </AuthorRequestProvider>
             </AuthProvider>
           </Providers>
         </ThemeProvider>

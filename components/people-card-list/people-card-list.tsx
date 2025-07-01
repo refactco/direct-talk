@@ -4,23 +4,30 @@ import { AuthorRequestModal } from '@/components/AuthorRequestModal';
 import { PeopleCard } from '@/components/people-card/PeopleCard';
 import { RequestAuthorCard } from '@/components/people-card/RequestAuthorCard';
 import { useAuth } from '@/contexts/AuthContext';
+import { useAuthorRequest } from '@/contexts/AuthorRequestContext';
 import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import type { PeopleCardListProps } from './people-card-list-type';
-import { useRef, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  type CarouselApi
+} from '@/components/ui/carousel';
 
 export function PeopleCardList({ people, isLoading }: PeopleCardListProps) {
   const { selectedResources } = useSelectedResources();
-  const { isAuthenticated, openAuthModal } = useAuth();
+  const { isAuthenticated } = useAuth();
+  const { hasRequestData } = useAuthorRequest();
   const hasSelectedAuthor = selectedResources.length > 0;
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
 
   const handleRequestAuthorClick = () => {
-    if (!isAuthenticated) {
-      openAuthModal();
-      return;
-    }
     setIsRequestModalOpen(true);
   };
 
@@ -33,13 +40,7 @@ export function PeopleCardList({ people, isLoading }: PeopleCardListProps) {
 
   // Auto-scroll to selected author
   useEffect(() => {
-    if (
-      !scrollRef.current ||
-      isLoading ||
-      !selectedResources.length ||
-      !people.length
-    )
-      return;
+    if (!api || isLoading || !selectedResources.length || !people.length) return;
 
     const selectedAuthor = selectedResources[0];
     const selectedIndex = people.findIndex(
@@ -47,65 +48,33 @@ export function PeopleCardList({ people, isLoading }: PeopleCardListProps) {
     );
 
     if (selectedIndex !== -1) {
-      scrollToIndex(selectedIndex);
+      api.scrollTo(selectedIndex);
     }
-  }, [selectedResources, people, isLoading]);
+  }, [api, selectedResources, people, isLoading]);
 
-  const scrollToIndex = (index: number) => {
-    if (!scrollRef.current) return;
-
-    const container = scrollRef.current;
-    const cardElement = container.children[index] as HTMLElement;
-
-    if (cardElement) {
-      const containerWidth = container.clientWidth;
-      const cardLeft = cardElement.offsetLeft;
-      const cardWidth = cardElement.clientWidth;
-      const scrollPosition = cardLeft - containerWidth / 2 + cardWidth / 2;
-
-      container.scrollTo({
-        left: Math.max(0, scrollPosition),
-        behavior: 'smooth'
-      });
-
-      setCurrentIndex(index);
-    }
-  };
-
-  // Track scroll position for indicators
-  const handleScroll = () => {
-    if (!scrollRef.current || totalItems === 0) return;
-
-    const container = scrollRef.current;
-    const containerWidth = container.clientWidth;
-    const scrollLeft = container.scrollLeft;
-
-    // Find the card that's most centered
-    let closestIndex = 0;
-    let closestDistance = Infinity;
-
-    Array.from(container.children).forEach((child, index) => {
-      const cardElement = child as HTMLElement;
-      const cardCenter = cardElement.offsetLeft + cardElement.clientWidth / 2;
-      const containerCenter = scrollLeft + containerWidth / 2;
-      const distance = Math.abs(cardCenter - containerCenter);
-
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestIndex = index;
-      }
-    });
-
-    setCurrentIndex(closestIndex);
-  };
-
+  // Track carousel state
   useEffect(() => {
-    const container = scrollRef.current;
-    if (!container) return;
+    if (!api) return;
 
-    container.addEventListener('scroll', handleScroll);
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, [totalItems]);
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap() + 1);
+
+    api.on('select', () => {
+      setCurrent(api.selectedScrollSnap() + 1);
+    });
+  }, [api]);
+
+  // Auto-open request modal when user logs in and has saved request data
+  useEffect(() => {
+    if (isAuthenticated && hasRequestData && !isRequestModalOpen) {
+      // Small delay to ensure auth flow is complete
+      const timer = setTimeout(() => {
+        setIsRequestModalOpen(true);
+      }, 500);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [isAuthenticated, hasRequestData, isRequestModalOpen]);
 
   return (
     <>
@@ -114,45 +83,43 @@ export function PeopleCardList({ people, isLoading }: PeopleCardListProps) {
         onClose={() => setIsRequestModalOpen(false)}
       />
       <div className="w-full space-y-4">
-        {/* Main slider */}
-        <div className="relative">
-          {/* Peek shadows for visual indication */}
-          <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
-
-          <div
-            ref={scrollRef}
-            className="flex gap-4 overflow-x-auto scrollbar-hide pb-2 px-4"
-            style={{
-              scrollbarWidth: 'none',
-              msOverflowStyle: 'none',
-              scrollSnapType: 'x mandatory',
-              WebkitOverflowScrolling: 'touch'
+        {/* Main carousel */}
+        <div className="relative px-12">
+          <Carousel
+            setApi={setApi}
+            className="w-full"
+            opts={{
+              align: 'start',
+              loop: false,
+              skipSnaps: false,
+              dragFree: true
             }}
           >
-            {displayItems.map((person, index) => (
-              <div
-                key={person?.id || `skeleton-${index}`}
-                className="flex-shrink-0 w-24 sm:w-28 md:w-32 lg:w-36"
-                style={{ scrollSnapAlign: 'center' }}
-              >
-                <PeopleCard
-                  people={person}
-                  isLoading={isLoading}
-                  hasSelectedAuthor={hasSelectedAuthor}
-                />
-              </div>
-            ))}
-            {showRequestCard && (
-              <div
-                key="request-author"
-                className="flex-shrink-0 w-24 sm:w-28 md:w-32 lg:w-36"
-                style={{ scrollSnapAlign: 'center' }}
-              >
-                <RequestAuthorCard onClick={handleRequestAuthorClick} />
-              </div>
-            )}
-          </div>
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {displayItems.map((person, index) => (
+                <CarouselItem
+                  key={person?.id || `skeleton-${index}`}
+                  className="pl-2 md:pl-4 basis-1/2 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                >
+                  <PeopleCard
+                    people={person}
+                    isLoading={isLoading}
+                    hasSelectedAuthor={hasSelectedAuthor}
+                  />
+                </CarouselItem>
+              ))}
+              {showRequestCard && (
+                <CarouselItem
+                  key="request-author"
+                  className="pl-2 md:pl-4 basis-1/2 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                >
+                  <RequestAuthorCard onClick={handleRequestAuthorClick} />
+                </CarouselItem>
+              )}
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex" />
+            <CarouselNext className="hidden md:flex" />
+          </Carousel>
         </div>
 
         {/* Scroll indicators */}
@@ -161,9 +128,9 @@ export function PeopleCardList({ people, isLoading }: PeopleCardListProps) {
             {Array.from({ length: totalItems }).map((_, index) => (
               <button
                 key={index}
-                onClick={() => scrollToIndex(index)}
+                onClick={() => api?.scrollTo(index)}
                 className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                  index === currentIndex
+                  index === current - 1
                     ? 'bg-primary w-4'
                     : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
                 }`}

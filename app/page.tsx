@@ -1,7 +1,7 @@
 'use client';
 
 import { PeopleCardList } from '@/components/people-card-list/people-card-list';
-import { ChatInput } from '@/components/ChatInput';
+import { ChatInput, type ChatInputRef } from '@/components/ChatInput';
 import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useChat } from '@/contexts/ChatContext';
@@ -19,6 +19,7 @@ export default function HomePage() {
   const { setInitialMessage, initialMessage } = useInitialMessage();
   const router = useRouter();
   const hasNavigatedRef = useRef(false);
+  const chatInputRef = useRef<ChatInputRef>(null);
 
   const hasSelectedAuthor = selectedResources.length > 0;
 
@@ -39,6 +40,75 @@ export default function HomePage() {
 
     fetchAuthors();
   }, []);
+
+  // Helper function to auto-focus and scroll to chat input on mobile landscape
+  const autoFocusChatInput = () => {
+    const isMobile = window.innerWidth <= 768;
+    const isLandscape = window.innerWidth > window.innerHeight;
+    
+    console.log('Auto-focus check:', { 
+      isMobile, 
+      isLandscape, 
+      width: window.innerWidth, 
+      height: window.innerHeight,
+      hasSelectedAuthor,
+      chatInputRef: !!chatInputRef.current
+    });
+    
+    if (isMobile && isLandscape) {
+      console.log('Triggering auto-focus for mobile landscape');
+      // Small delay to ensure the chat input is rendered
+      const timer = setTimeout(() => {
+        // Scroll to the chat input first
+        const chatContainer = document.querySelector('[data-chat-input]');
+        console.log('Chat container found:', !!chatContainer);
+        
+        if (chatContainer) {
+          chatContainer.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          });
+          
+          // Then focus the input
+          setTimeout(() => {
+            console.log('Attempting to focus input');
+            chatInputRef.current?.focus();
+          }, 200);
+        }
+      }, 300);
+      
+      return timer;
+    } else {
+      // For testing on desktop - let's also trigger focus but without the mobile/landscape check
+      console.log('Not mobile landscape, but focusing anyway for testing');
+      const timer = setTimeout(() => {
+        const chatContainer = document.querySelector('[data-chat-input]');
+        if (chatContainer) {
+          chatContainer.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          });
+          
+          setTimeout(() => {
+            console.log('Focusing input on desktop for testing');
+            chatInputRef.current?.focus();
+          }, 200);
+        }
+      }, 300);
+      
+      return timer;
+    }
+  };
+
+  // Auto-focus when author is selected or changed (regardless of authentication)
+  useEffect(() => {
+    if (!hasSelectedAuthor) return;
+    
+    const timer = autoFocusChatInput();
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [selectedResources]); // Changed from hasSelectedAuthor to selectedResources to trigger on author change
 
   // Auto-continue chat flow after login
   useEffect(() => {
@@ -123,12 +193,13 @@ export default function HomePage() {
 
         {/* Chat Input - shows when an author is selected */}
         {hasSelectedAuthor && (
-          <div className="mt-8 w-full">
+          <div className="mt-8 w-full" data-chat-input>
             <ChatInput
+              ref={chatInputRef}
               onSubmit={handleChatSubmit}
               isLoading={false}
               placeholder={`Ask ${(selectedResources[0] as any)?.name || 'the selected author'} anything...`}
-              disabled={!hasSelectedAuthor}
+              disabled={false}
               defaultValue={initialMessage || startChatData?.message || ''}
             />
           </div>

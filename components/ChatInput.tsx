@@ -5,7 +5,7 @@
 import { cn } from '@/lib/utils';
 import { ArrowUpIcon } from 'lucide-react';
 import type React from 'react';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
 
 interface ChatInputProps {
   onSubmit: (message: string) => void;
@@ -17,7 +17,12 @@ interface ChatInputProps {
   className?: string;
 }
 
-export function ChatInput({
+export interface ChatInputRef {
+  focus: () => void;
+  blur: () => void;
+}
+
+export const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(({
   onSubmit,
   isLoading,
   placeholder = 'Ask AI anything...',
@@ -25,10 +30,20 @@ export function ChatInput({
   defaultValue,
   disabled = false,
   className
-}: ChatInputProps) {
+}: ChatInputProps, ref) => {
   const [input, setInput] = useState(defaultValue ?? '');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const maxLength = 200;
+
+  // Expose focus and blur methods to parent components
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      textareaRef.current?.focus();
+    },
+    blur: () => {
+      textareaRef.current?.blur();
+    }
+  }), []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,7 +84,8 @@ export function ChatInput({
         <div
           className={cn(
             'relative bg-card rounded-3xl shadow-sm transition-all duration-200',
-            'px-4 py-3',
+            'px-4 py-3 border-2 border-transparent',
+            'focus-within:border-primary focus-within:shadow-lg',
             disabled && 'opacity-50 cursor-not-allowed',
             className
           )}
@@ -91,7 +107,8 @@ export function ChatInput({
             className={cn(
               'w-full bg-transparent text-foreground placeholder-muted-foreground resize-none border-0 outline-none',
               'text-sm sm:text-base leading-5 sm:leading-6 min-h-[20px] sm:min-h-[24px] max-h-32',
-              'scrollbar-hide pb-2'
+              'scrollbar-hide pb-2',
+              'focus:outline-none focus:ring-0'
             )}
             style={{
               touchAction: 'manipulation',
@@ -129,4 +146,6 @@ export function ChatInput({
       </form>
     </div>
   );
-}
+});
+
+ChatInput.displayName = 'ChatInput';

@@ -16,7 +16,7 @@ function HistoryItemSkeleton({ width }: { width: string }) {
   );
 }
 
-export function HistoryList(props: IHistoryListProps) {
+export function HistoryList(props: IHistoryListProps, isCollapsed?: boolean) {
   const { list, isLoading, onCloseSidebar } = props;
 
   // Ensure list is an array
