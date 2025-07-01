@@ -4,10 +4,6 @@ import { TSelectedResource } from '@/types/resources';
 import { createContext, useCallback, useContext, useState } from 'react';
 import { useSelectedResources } from './SelectedResourcesContext';
 
-interface ResourceData {
-  [key: string]: any;
-}
-
 interface ResourceContextType {
   resources: TSelectedResource[];
   fetchResource: (authorId?: number) => Promise<void>;

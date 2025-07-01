@@ -37,7 +37,6 @@ export default function SearchResults() {
     startChatData,
     isLoadingChats,
     isLoadingStartChat,
-    resources: answerResources,
     fetchChat,
     addMessage,
     doChat,
@@ -318,13 +317,6 @@ export default function SearchResults() {
           <ConversationPageLoading
             initialMessage={initialMessage}
             userAvatar={userAvatar}
-            authorResource={
-              // For existing chats, prioritize the author from chat data
-              chatId
-                ? resources?.[0]
-                : // For new chats, use selected resources
-                  selectedResources?.[0] || resources?.[0]
-            }
           />
         ) : (
           <div className="flex gap-8 w-full mx-auto">

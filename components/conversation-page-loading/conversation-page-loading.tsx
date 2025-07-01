@@ -1,26 +1,18 @@
 'use client';
 
-import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { AnimatePresence, motion } from 'framer-motion';
 import { CircleUserIcon } from 'lucide-react';
-import { Logo } from '../icons/Logo';
 import { Skeleton } from '../ui/skeleton';
 
 interface ConversationPageLoadingProps {
   initialMessage?: string | null;
   userAvatar?: string | null;
-  authorResource?: any;
 }
 
 export function ConversationPageLoading({
   initialMessage,
-  userAvatar,
-  authorResource
+  userAvatar
 }: ConversationPageLoadingProps) {
-  const { selectedResources } = useSelectedResources();
-
-  // Use the passed authorResource, or fall back to selectedResources, or resources from context
-  const authorToDisplay = authorResource || selectedResources?.[0];
 
   return (
     <div className="flex gap-8 min-h-[calc(100vh-117px)] w-full mx-auto">

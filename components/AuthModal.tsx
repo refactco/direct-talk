@@ -14,10 +14,9 @@ import { useState } from 'react';
 import { Icons } from './icons';
 
 export function AuthModal() {
-  const { loginWithGoogle, loginWithTwitter, isAuthModalOpen, closeAuthModal } =
+  const { loginWithGoogle, isAuthModalOpen, closeAuthModal } =
     useAuth();
   const [isLoadingGoogle, setIsLoadingGoogle] = useState<boolean>(false);
-  const [isLoadingTwitter, setIsLoadingTwitter] = useState<boolean>(false);
 
   const handleGoogleAuth = async () => {
     setIsLoadingGoogle(true);
@@ -25,15 +24,6 @@ export function AuthModal() {
       await loginWithGoogle();
     } finally {
       setIsLoadingGoogle(false);
-    }
-  };
-
-  const handleTwitterAuth = async () => {
-    setIsLoadingTwitter(true);
-    try {
-      await loginWithTwitter();
-    } finally {
-      setIsLoadingTwitter(false);
     }
   };
 

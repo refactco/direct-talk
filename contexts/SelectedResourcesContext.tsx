@@ -39,7 +39,6 @@ export function SelectedResourcesProvider({
     string[] | number[]
   >([]);
   const [isHydrated, setIsHydrated] = useState(false);
-  const lastLoggedRef = useRef<string>('');
   const previousSelectedRef = useRef<TSelectedResource[]>([]);
   const lastActionRef = useRef<{
     action: string;

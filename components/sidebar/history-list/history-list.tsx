@@ -1,6 +1,5 @@
 'use client';
 
-import { Icons } from '@/components/icons';
 import { HistoryListItem } from '@/components/sidebar/history-list/item/history-list-item';
 import { Skeleton } from '@/components/ui/skeleton';
 import { HistoryItem } from '@/contexts/HistoryContext';

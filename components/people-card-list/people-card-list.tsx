@@ -122,7 +122,7 @@ export function PeopleCardList({ people, isLoading }: PeopleCardListProps) {
 
           <div
             ref={scrollRef}
-            className="flex gap-4 md:gap-6 overflow-x-auto scrollbar-hide pb-2 px-4"
+            className="flex gap-4 overflow-x-auto scrollbar-hide pb-2 px-4"
             style={{
               scrollbarWidth: 'none',
               msOverflowStyle: 'none',
@@ -133,7 +133,7 @@ export function PeopleCardList({ people, isLoading }: PeopleCardListProps) {
             {displayItems.map((person, index) => (
               <div
                 key={person?.id || `skeleton-${index}`}
-                className="flex-shrink-0 w-28 sm:w-32 md:w-36 lg:w-40"
+                className="flex-shrink-0 w-24 sm:w-28 md:w-32 lg:w-36"
                 style={{ scrollSnapAlign: 'center' }}
               >
                 <PeopleCard
@@ -146,7 +146,7 @@ export function PeopleCardList({ people, isLoading }: PeopleCardListProps) {
             {showRequestCard && (
               <div
                 key="request-author"
-                className="flex-shrink-0 w-28 sm:w-32 md:w-36 lg:w-40"
+                className="flex-shrink-0 w-24 sm:w-28 md:w-32 lg:w-36"
                 style={{ scrollSnapAlign: 'center' }}
               >
                 <RequestAuthorCard onClick={handleRequestAuthorClick} />

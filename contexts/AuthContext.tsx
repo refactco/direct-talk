@@ -58,9 +58,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const checkUserSession = async () => {
       setIsLoading(true);
-      const { data, error } = await supabase.auth.getSession();
-      if (data.session) {
-        const { user } = data.session;
+      const { data: sessionData, error } = await supabase.auth.getSession();
+      if (sessionData.session) {
+        const { user } = sessionData.session;
         const avatar =
           user.user_metadata?.avatar_url || getAvatarFromLocalStorage();
 
@@ -123,7 +123,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const loginWithGoogle = async () => {
-    const { error, data } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: `${window.location.origin}` }
     });
@@ -133,13 +133,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const loginWithTwitter = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { error: twitterError } = await supabase.auth.signInWithOAuth({
       provider: 'twitter',
 
       options: { redirectTo: `${window.location.origin}` }
     });
-    if (error) {
-      console.error('Twitter Login Error:', error.message);
+    if (twitterError) {
+      console.error('Twitter Login Error:', twitterError.message);
     }
   };
 

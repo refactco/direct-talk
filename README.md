@@ -67,6 +67,3 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 - `/lib` - Utility functions and configurations
 - `/types` - TypeScript type definitions
 
-## License
-
-MIT

@@ -11,16 +11,9 @@ import { GoogleIcon } from '@/components/icons/GoogleIcon';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading] = useState<boolean>(false);
 
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault();
-    setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-  }
 
   return (
     <div className="w-full max-w-sm mx-auto space-y-6 pt-16">

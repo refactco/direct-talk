@@ -7,7 +7,7 @@ const mockUsers = [
 ];
 
 export async function POST(request: Request) {
-  const { provider } = await request.json();
+  await request.json();
 
   // Simulate a delay
   await new Promise((resolve) => setTimeout(resolve, 1000));

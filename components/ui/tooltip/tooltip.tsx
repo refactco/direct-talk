@@ -2,7 +2,7 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 import { ITooltipProps } from './tooltip-type';
 
 export function Tooltip(props: ITooltipProps) {
-  const { id, place = 'bottom', content } = props;
+  const { id, content } = props;
 
   return (
     <ReactTooltip

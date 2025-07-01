@@ -39,7 +39,7 @@ export function PeopleCard({
   if (isLoading) {
     return (
       <div className="relative w-full p-2 md:p-4 rounded-lg flex flex-col items-center">
-        <div className="relative bg-background rounded-full w-full max-w-[125px] aspect-square overflow-hidden">
+        <div className="relative bg-background rounded-full w-full max-w-[100px] aspect-square overflow-hidden">
           <Skeleton className="absolute inset-0 w-full h-full rounded-full" />
         </div>
         <div className="w-full pt-1 md:pt-2">
@@ -58,7 +58,7 @@ export function PeopleCard({
       )}
       onClick={handleClick}
     >
-      <div className="relative bg-background rounded-full w-full max-w-[125px] aspect-square overflow-hidden">
+      <div className="relative bg-background rounded-full w-full max-w-[100px] aspect-square overflow-hidden">
         {imageLoading && !imageError && (
           <Skeleton className="absolute inset-0 w-full h-full rounded-full" />
         )}
@@ -93,7 +93,7 @@ export function PeopleCard({
       <div className="w-full pt-1 md:pt-2">
         <h3
           className={cn(
-            'text-xs md:text-sm font-bold truncate text-center transition-colors duration-300',
+            'text-[10px] md:text-xs font-bold truncate text-center transition-colors duration-300',
             selected ? 'text-primary' : 'text-foreground'
           )}
         >

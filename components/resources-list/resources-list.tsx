@@ -7,9 +7,7 @@ export function ResourcesList(props: IResourcesListProps) {
   const {
     selectedResources,
     customClassName = '',
-    direction = 'horizontal',
-    wrapTitle = false,
-    isLoading = false
+    direction = 'horizontal'
   } = props;
 
   if (selectedResources.length === 0) {

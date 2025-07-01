@@ -56,7 +56,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingStartChat, setIsLoadingStartChat] = useState(false);
   const [isLoadingChats, setIsLoadingChats] = useState(true);
-  const [isLoadingResources, setIsLoadingResources] = useState(false);
+  const [isLoadingResources] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { selectedResources } = useSelectedResources();
 
@@ -204,7 +204,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
                   ...item,
                   resources: fetchedResources
                 };
-              } catch (error) {
+              } catch {
                 return item;
               }
             }

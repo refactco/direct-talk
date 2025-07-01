@@ -9,7 +9,6 @@ import { useState, useRef, useEffect } from 'react';
 
 interface ChatInputProps {
   onSubmit: (message: string) => void;
-  hideResources?: boolean;
   isLoading: boolean;
   placeholder?: string;
   resetAfterSubmit?: boolean;
@@ -20,7 +19,6 @@ interface ChatInputProps {
 
 export function ChatInput({
   onSubmit,
-  hideResources = false,
   isLoading,
   placeholder = 'Ask AI anything...',
   resetAfterSubmit = false,

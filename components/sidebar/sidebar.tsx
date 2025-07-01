@@ -2,7 +2,6 @@
 
 import { Icons } from '@/components/icons';
 import { CollapseIcon } from '@/components/icons/CollapseIcon';
-import { HistoryIcon } from '@/components/icons/HistoryIcon';
 import { Logo } from '@/components/icons/Logo';
 import { LogoutIcon } from '@/components/icons/LogoutIcon';
 import { HistoryList } from '@/components/sidebar/history-list/history-list';
@@ -14,7 +13,7 @@ import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { cn } from '@/lib/utils';
 import { MenuIcon, PlusIcon } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export function Sidebar() {
@@ -30,7 +29,6 @@ export function Sidebar() {
     isLoading: isLoadingAuth
   } = useAuth();
   const { historyItems, isLoading, updateHistory } = useHistory();
-  const router = useRouter();
   const isNotHomePage: boolean = pathname !== '/';
   const { resetSelectedResources } = useSelectedResources();
 
