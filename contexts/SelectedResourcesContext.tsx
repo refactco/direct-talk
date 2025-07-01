@@ -47,7 +47,7 @@ export function SelectedResourcesProvider({
     resourceId: string | number;
   }>({ action: '', timestamp: 0, resourceId: '' });
 
-  // Load from localStorage after hydration
+  // Load from localStorage after hydration and set Andrew Huberman as default
   useEffect(() => {
     setIsHydrated(true);
 
@@ -60,6 +60,18 @@ export function SelectedResourcesProvider({
         const parsedSelectedResources = JSON.parse(storedSelectedResources);
         setSelectedResources(parsedSelectedResources);
         previousSelectedRef.current = parsedSelectedResources; // Initialize ref to prevent logging on hydration
+      } else {
+        // Set Andrew Huberman as default if no stored selection
+        const defaultAuthor = {
+          id: 808,
+          name: 'Andrew Huberman',
+          image_url: '/andrew-huberman.png'
+        };
+        setSelectedResources([defaultAuthor as TSelectedResource]);
+        previousSelectedRef.current = [defaultAuthor as TSelectedResource];
+
+        // Fetch Andrew Huberman's resources by default
+        getAuthorResource(defaultAuthor as IAuthor);
       }
 
       if (storedAuthorResourcesIds) {

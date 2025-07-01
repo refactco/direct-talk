@@ -1,7 +1,6 @@
 'use client';
 
-import { PeopleCardListDesktop } from '@/components/people-card-list/desktop/people-card-list-desktop';
-import { PeopleCardListMobile } from '@/components/people-card-list/mobile/people-card-list-mobile';
+import { PeopleCardList } from '@/components/people-card-list/people-card-list';
 import { ChatInput } from '@/components/ChatInput';
 import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -120,11 +119,7 @@ export default function HomePage() {
           </h1>
         </div>
 
-        <div className="hidden md:block">
-          <PeopleCardListDesktop people={people} isLoading={isLoading} />
-        </div>
-
-        <PeopleCardListMobile people={people} isLoading={isLoading} />
+        <PeopleCardList people={people} isLoading={isLoading} />
 
         {/* Chat Input - shows when an author is selected */}
         {hasSelectedAuthor && (
