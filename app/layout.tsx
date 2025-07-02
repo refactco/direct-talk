@@ -194,9 +194,9 @@ export default function RootLayout({
                     <SelectedResourcesProvider>
                       <ChatProvider>
                         <ResourceProvider>
-                          <div className="flex h-dvh">
+                          <div className="flex h-dvh overflow-x-hidden">
                             <Sidebar />
-                            <main className="flex-1 overflow-y-auto px-4 py-4 md:px-8 md:py-8 mt-16 md:mt-0 !pb-0">
+                            <main className="flex-1 overflow-y-auto overflow-x-hidden pt-20 md:pt-8 px-4 pb-4 md:px-8 md:pb-8 min-w-0">
                               {children}
                             </main>
                             <AuthModal />

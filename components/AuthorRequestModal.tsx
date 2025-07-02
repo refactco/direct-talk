@@ -43,15 +43,16 @@ export function AuthorRequestModal({
 
   // Save data as user types (only when values actually change)
   useEffect(() => {
-    if (authorName !== requestData.authorName || additionalNotes !== requestData.additionalNotes) {
+    if (
+      authorName !== requestData.authorName ||
+      additionalNotes !== requestData.additionalNotes
+    ) {
       setRequestData({
         authorName,
         additionalNotes
       });
     }
   }, [authorName, additionalNotes]); // Removed setRequestData from dependencies
-
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -133,7 +134,7 @@ export function AuthorRequestModal({
           </DialogTitle>
           <DialogDescription className="text-base leading-relaxed">
             Tell us which author or thinker you'd like to see added to our
-            platform. We'll consider all suggestions for future additions.
+            platform.
           </DialogDescription>
         </DialogHeader>
 
@@ -149,7 +150,7 @@ export function AuthorRequestModal({
               placeholder="e.g., Jordan Peterson, Tim Ferriss, Naval Ravikant..."
               disabled={isSubmitting}
               required
-              className="text-base text-muted-foreground focus:text-foreground border-2 border-border focus:border-primary transition-colors"
+              className="text-base text-muted-foreground focus:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors"
             />
           </div>
 
@@ -167,7 +168,7 @@ export function AuthorRequestModal({
               placeholder="Any specific books, podcasts, interviews, or content you'd like us to prioritize when creating this author's knowledge base..."
               disabled={isSubmitting}
               rows={4}
-              className="text-base leading-relaxed resize-none text-muted-foreground focus:text-foreground border-2 border-border focus:border-primary transition-colors"
+              className="text-base leading-relaxed resize-none text-muted-foreground focus:text-foreground transition-colors"
             />
           </div>
 

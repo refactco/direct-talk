@@ -25,7 +25,6 @@ export function PeopleCardList({ people, isLoading }: PeopleCardListProps) {
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
-  const [count, setCount] = useState(0);
 
   const handleRequestAuthorClick = () => {
     setIsRequestModalOpen(true);
@@ -40,7 +39,8 @@ export function PeopleCardList({ people, isLoading }: PeopleCardListProps) {
 
   // Auto-scroll to selected author
   useEffect(() => {
-    if (!api || isLoading || !selectedResources.length || !people.length) return;
+    if (!api || isLoading || !selectedResources.length || !people.length)
+      return;
 
     const selectedAuthor = selectedResources[0];
     const selectedIndex = people.findIndex(
@@ -56,7 +56,6 @@ export function PeopleCardList({ people, isLoading }: PeopleCardListProps) {
   useEffect(() => {
     if (!api) return;
 
-    setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap() + 1);
 
     api.on('select', () => {
@@ -71,7 +70,7 @@ export function PeopleCardList({ people, isLoading }: PeopleCardListProps) {
       const timer = setTimeout(() => {
         setIsRequestModalOpen(true);
       }, 500);
-      
+
       return () => clearTimeout(timer);
     }
   }, [isAuthenticated, hasRequestData, isRequestModalOpen]);
@@ -82,9 +81,9 @@ export function PeopleCardList({ people, isLoading }: PeopleCardListProps) {
         isOpen={isRequestModalOpen}
         onClose={() => setIsRequestModalOpen(false)}
       />
-      <div className="w-full space-y-4">
-        {/* Main carousel */}
-        <div className="relative px-12">
+      <div className="w-full space-y-4 overflow-x-hidden">
+        {/* Unified carousel for all devices */}
+        <div className="relative px-6 md:px-12">
           <Carousel
             setApi={setApi}
             className="w-full"
@@ -95,11 +94,12 @@ export function PeopleCardList({ people, isLoading }: PeopleCardListProps) {
               dragFree: true
             }}
           >
-            <CarouselContent className="-ml-2 md:-ml-4">
+            <CarouselContent className="-ml-3">
               {displayItems.map((person, index) => (
                 <CarouselItem
                   key={person?.id || `skeleton-${index}`}
-                  className="pl-2 md:pl-4 basis-1/2 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                  className="pl-3 min-w-0 flex-shrink-0"
+                  style={{ maxWidth: '180px' }}
                 >
                   <PeopleCard
                     people={person}
@@ -111,7 +111,8 @@ export function PeopleCardList({ people, isLoading }: PeopleCardListProps) {
               {showRequestCard && (
                 <CarouselItem
                   key="request-author"
-                  className="pl-2 md:pl-4 basis-1/2 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                  className="pl-3 min-w-0 flex-shrink-0"
+                  style={{ maxWidth: '180px' }}
                 >
                   <RequestAuthorCard onClick={handleRequestAuthorClick} />
                 </CarouselItem>

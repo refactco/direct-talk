@@ -16,7 +16,7 @@ function HistoryItemSkeleton({ width }: { width: string }) {
   );
 }
 
-export function HistoryList(props: IHistoryListProps, isCollapsed?: boolean) {
+export function HistoryList(props: IHistoryListProps) {
   const { list, isLoading, onCloseSidebar } = props;
 
   // Ensure list is an array
@@ -47,7 +47,7 @@ export function HistoryList(props: IHistoryListProps, isCollapsed?: boolean) {
               <HistoryItemSkeleton width="w-[90px]" />
             </div>
           ) : (
-            <div className="text-sm text-muted-foreground pb-2">
+            <div className="text-sm text-muted-foreground/40 pb-2">
               No history records.
             </div>
           )}

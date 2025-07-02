@@ -14,11 +14,17 @@ interface AuthorRequestContextType {
   hasRequestData: boolean;
 }
 
-const AuthorRequestContext = createContext<AuthorRequestContextType | undefined>(undefined);
+const AuthorRequestContext = createContext<
+  AuthorRequestContextType | undefined
+>(undefined);
 
 const STORAGE_KEY = 'author-request-data';
 
-export function AuthorRequestProvider({ children }: { children: React.ReactNode }) {
+export function AuthorRequestProvider({
+  children
+}: {
+  children: React.ReactNode;
+}) {
   const [requestData, setRequestDataState] = useState<AuthorRequestData>({
     authorName: '',
     additionalNotes: ''
@@ -56,7 +62,9 @@ export function AuthorRequestProvider({ children }: { children: React.ReactNode 
     }
   };
 
-  const hasRequestData = requestData.authorName.trim() !== '' || requestData.additionalNotes.trim() !== '';
+  const hasRequestData =
+    requestData.authorName.trim() !== '' ||
+    requestData.additionalNotes.trim() !== '';
 
   return (
     <AuthorRequestContext.Provider
@@ -75,7 +83,9 @@ export function AuthorRequestProvider({ children }: { children: React.ReactNode 
 export function useAuthorRequest() {
   const context = useContext(AuthorRequestContext);
   if (context === undefined) {
-    throw new Error('useAuthorRequest must be used within an AuthorRequestProvider');
+    throw new Error(
+      'useAuthorRequest must be used within an AuthorRequestProvider'
+    );
   }
   return context;
-} 
+}

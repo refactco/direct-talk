@@ -176,7 +176,7 @@ export function Sidebar() {
               </div>
             </ScrollArea>
           </div>
-          <div className="flex flex-col gap-5 px-4 pb-4 items-center">
+          <div className="px-4 pb-8">
             <div>
               <Button
                 variant="outline"
@@ -195,20 +195,6 @@ export function Sidebar() {
               </Button>
             </div>
 
-            <div className="text-center">
-              <div className="flex flex-col gap-2">
-                <p className="text-xs text-muted-foreground">
-                  Made by{' '}
-                  <a
-                    href="https://refact.co"
-                    target="_blank"
-                    className="text-primary"
-                  >
-                    Refact
-                  </a>
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </div>

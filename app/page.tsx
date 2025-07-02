@@ -2,6 +2,7 @@
 
 import { PeopleCardList } from '@/components/people-card-list/people-card-list';
 import { ChatInput, type ChatInputRef } from '@/components/ChatInput';
+import { Footer } from '@/components/Footer';
 import { useSelectedResources } from '@/contexts/SelectedResourcesContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useChat } from '@/contexts/ChatContext';
@@ -45,16 +46,16 @@ export default function HomePage() {
   const autoFocusChatInput = () => {
     const isMobile = window.innerWidth <= 768;
     const isLandscape = window.innerWidth > window.innerHeight;
-    
-    console.log('Auto-focus check:', { 
-      isMobile, 
-      isLandscape, 
-      width: window.innerWidth, 
+
+    console.log('Auto-focus check:', {
+      isMobile,
+      isLandscape,
+      width: window.innerWidth,
       height: window.innerHeight,
       hasSelectedAuthor,
       chatInputRef: !!chatInputRef.current
     });
-    
+
     if (isMobile && isLandscape) {
       console.log('Triggering auto-focus for mobile landscape');
       // Small delay to ensure the chat input is rendered
@@ -62,13 +63,13 @@ export default function HomePage() {
         // Scroll to the chat input first
         const chatContainer = document.querySelector('[data-chat-input]');
         console.log('Chat container found:', !!chatContainer);
-        
+
         if (chatContainer) {
-          chatContainer.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center' 
+          chatContainer.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
           });
-          
+
           // Then focus the input
           setTimeout(() => {
             console.log('Attempting to focus input');
@@ -76,7 +77,7 @@ export default function HomePage() {
           }, 200);
         }
       }, 300);
-      
+
       return timer;
     } else {
       // For testing on desktop - let's also trigger focus but without the mobile/landscape check
@@ -84,18 +85,18 @@ export default function HomePage() {
       const timer = setTimeout(() => {
         const chatContainer = document.querySelector('[data-chat-input]');
         if (chatContainer) {
-          chatContainer.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center' 
+          chatContainer.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
           });
-          
+
           setTimeout(() => {
             console.log('Focusing input on desktop for testing');
             chatInputRef.current?.focus();
           }, 200);
         }
       }, 300);
-      
+
       return timer;
     }
   };
@@ -103,7 +104,7 @@ export default function HomePage() {
   // Auto-focus when author is selected or changed (regardless of authentication)
   useEffect(() => {
     if (!hasSelectedAuthor) return;
-    
+
     const timer = autoFocusChatInput();
     return () => {
       if (timer) clearTimeout(timer);
@@ -181,30 +182,41 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 md:gap-8 justify-normal md:justify-center min-h-[calc(100vh-6rem)] md:min-h-[calc(100vh-4rem)] p-4">
-      <div className="w-full max-w-3xl">
-        <div className="mb-6 sm:mb-12 px-4 md:px-0">
-          <h1 className="font-bold text-2xl md:text-3xl text-center text-foreground mb-2">
-            Chat with Your Favorite Thinkers
-          </h1>
-        </div>
-
-        <PeopleCardList people={people} isLoading={isLoading} />
-
-        {/* Chat Input - shows when an author is selected */}
-        {hasSelectedAuthor && (
-          <div className="mt-8 w-full" data-chat-input>
-            <ChatInput
-              ref={chatInputRef}
-              onSubmit={handleChatSubmit}
-              isLoading={false}
-              placeholder={`Ask ${(selectedResources[0] as any)?.name || 'the selected author'} anything...`}
-              disabled={false}
-              defaultValue={initialMessage || startChatData?.message || ''}
-            />
+    <div className="flex flex-col min-h-full overflow-x-hidden">
+      {/* Main Content Section */}
+      <section className="flex-1 flex flex-col items-center justify-center py-8">
+        <div className="w-full max-w-3xl px-4 min-w-0">
+          <div className="mb-6 sm:mb-8 text-center">
+            <h1 className="font-bold text-2xl md:text-3xl text-foreground mb-2">
+              Chat with Your Favorite Thinkers
+            </h1>
+            <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+              Ask your favorite authors anything, answers are AI-generated from their public interviews.
+            </p>
           </div>
-        )}
-      </div>
+
+          <div className="w-full overflow-x-hidden">
+            <PeopleCardList people={people} isLoading={isLoading} />
+          </div>
+
+          {/* Chat Input - shows when an author is selected */}
+          {hasSelectedAuthor && (
+            <div className="mt-6 w-full" data-chat-input>
+              <ChatInput
+                ref={chatInputRef}
+                onSubmit={handleChatSubmit}
+                isLoading={false}
+                placeholder={`Ask ${(selectedResources[0] as any)?.name || 'the selected author'} anything...`}
+                disabled={false}
+                defaultValue={initialMessage || startChatData?.message || ''}
+              />
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Footer Section */}
+      <Footer />
     </div>
   );
 }
