@@ -194,7 +194,6 @@ export function Sidebar() {
                 </span>
               </Button>
             </div>
-
           </div>
         </div>
       </div>

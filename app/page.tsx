@@ -191,7 +191,8 @@ export default function HomePage() {
               Chat with Your Favorite Thinkers
             </h1>
             <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-              Ask your favorite authors anything, answers are AI-generated from their public interviews.
+              Ask your favorite authors anything, answers are AI-generated from
+              their public interviews.
             </p>
           </div>
 
